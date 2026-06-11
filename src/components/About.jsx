@@ -59,21 +59,11 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
           <p style={styles.intro}>
-            I got into tech the practical way — during my IT degree, I had the chance to intern at CallHounds
-            Global as a Network Engineer, where I was asked if I knew how to code. I gave it a shot with Java,
-            and what started as a small DNS tool turned into a ticketing system the team still uses. I also
-            spent time at Deutsche Business Solutions as a Service Desk &amp; Field Support Intern, learning
-            enterprise support with ServiceNow and maintaining POS systems for Caltex.
+            I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
           </p>
           <p style={{ ...styles.intro, marginBottom: 48 }}>
-            Those experiences taught me that I enjoy building things more than just keeping them running.
-            Now I'm hoping to find a junior developer role where I can keep learning, take on real problems,
-            and ship software that actually helps.
+            Those experiences showed me I like building things more than just maintaining them. Now I am looking for a junior developer role where I can keep learning, work on real problems, and build software that people actually use.
           </p>
-        <p style={{ ...styles.intro, marginBottom: 48 }}>
-          Now I'm looking for a junior developer role where I can bring that same ownership —
-          take a problem, figure it out, and ship working software. Java, Spring Boot, Android, or
-          backend — if there's a spec and a deadline, I'll deliver.
         </p>
 
         <div className="grid-2">
