@@ -1,11 +1,7 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useForm, ValidationError } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
-// -- reCAPTCHA -------------------------------------------------
-// 1. Created at https://www.google.com/recaptcha/admin (Domain: justrhey.github.io)
-// 2. Paste the Secret key in Formspree dashboard (Settings > Spam)
-// 3. This is the Site key:
 const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
 
 const styles = {
@@ -86,10 +82,6 @@ const styles = {
     minHeight: 120,
     transition: 'border-color 0.25s, box-shadow 0.25s',
   },
-  captchaWrap: {
-    marginTop: 4,
-    minHeight: 78,
-  },
   btn: {
     padding: '14px 32px',
     border: '1px solid #fff',
@@ -150,58 +142,37 @@ const IconLinkedIn = () => (
 
 export default function Contact() {
   const [state, handleSubmit] = useForm('xzdqajkr')
-  const [captchaError, setCaptchaError] = useState('')
+  const [captchaErr, setCaptchaErr] = useState('')
   const ref = useScrollReveal()
-  const captchaRef = useRef(null)
   const captchaInputRef = useRef(null)
-  const scriptLoaded = useRef(false)
+  const formRef = useRef(null)
 
-  // load reCAPTCHA script once
+  // native submit listener — fires before React's onSubmit
+  // sets the captcha token so Formspree picks it up
   useEffect(() => {
-    if (scriptLoaded.current || document.querySelector('.g-recaptcha')) return
-    const el = document.createElement('script')
-    el.src = `https://www.google.com/recaptcha/api.js?render=explicit`
-    el.async = true
-    el.defer = true
-    el.onload = () => {
-      if (window.grecaptcha && captchaRef.current) {
-        window.grecaptcha.render(captchaRef.current, {
-          sitekey: RECAPTCHA_SITE_KEY,
-          theme: 'dark',
-        })
+    const form = formRef.current
+    if (!form || form.dataset.captchaReady) return
+    form.dataset.captchaReady = '1'
+    const handler = () => {
+      const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
+      if (captchaInputRef.current) {
+        captchaInputRef.current.value = token
       }
     }
-    document.head.appendChild(el)
-    scriptLoaded.current = true
+    form.addEventListener('submit', handler)
+    return () => form.removeEventListener('submit', handler)
   }, [])
 
-  // render captcha if script already loaded (e.g. hot reload)
-  useEffect(() => {
-    if (window.grecaptcha && window.grecaptcha.render && captchaRef.current) {
-      try { window.grecaptcha.render(captchaRef.current, { sitekey: RECAPTCHA_SITE_KEY, theme: 'dark' }) }
-      catch { /* already rendered */ }
-    }
-  }, [])
-
-  // custom submit: inject captcha token before Formspree handles it
   const onSubmit = (e) => {
-    e.preventDefault()
-    setCaptchaError('')
-
     const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
     if (!token) {
-      setCaptchaError('Please complete the captcha.')
+      e.preventDefault()
+      setCaptchaErr('Please complete the captcha.')
       return
     }
-
-    if (captchaInputRef.current) {
-      captchaInputRef.current.value = token
-    }
-
-    const form = e.currentTarget
-    handleSubmit({ ...e, target: form }).then(() => {
-      if (window.grecaptcha) window.grecaptcha.reset()
-    })
+    setCaptchaErr('')
+    // token already set by the native listener — just let Formspree handle it
+    handleSubmit(e)
   }
 
   return (
@@ -216,36 +187,23 @@ export default function Contact() {
               who delivers — Java, Spring Boot, Android, or backend — let's talk.
             </p>
             <div style={styles.links}>
-              <a
-                href="mailto:justrhey.tambong@gmail.com"
-                style={styles.link}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}
-              >
+              <a href="mailto:justrhey.tambong@gmail.com" style={styles.link}
+                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
+                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
                 <IconMail />
                 <span style={styles.linkLabel}>Email</span>
                 justrhey.tambong@gmail.com
               </a>
-              <a
-                href="https://github.com/justrhey"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={styles.link}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}
-              >
+              <a href="https://github.com/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
+                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
+                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
                 <IconGitHub />
                 <span style={styles.linkLabel}>GitHub</span>
                 github.com/justrhey
               </a>
-              <a
-                href="https://linkedin.com/in/justrhey"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={styles.link}
-                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}
-              >
+              <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
+                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
+                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
                 <IconLinkedIn />
                 <span style={styles.linkLabel}>LinkedIn</span>
                 linkedin.com/in/justrhey
@@ -253,54 +211,36 @@ export default function Contact() {
             </div>
           </div>
 
-          <form className="contact-form" style={styles.form} onSubmit={onSubmit}>
+          <form ref={formRef} className="contact-form" style={styles.form} onSubmit={onSubmit}>
             <div style={styles.field}>
               <label style={styles.label} htmlFor="name">Name</label>
-              <input
-                id="name"
-                name="name"
-                style={styles.input}
-                required
-                placeholder="Your name"
-                onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
-              />
+              <input id="name" name="name" style={styles.input} required placeholder="Your name"
+                     onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
+                     onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
               <ValidationError field="name" errors={state.errors} />
             </div>
 
             <div style={styles.field}>
               <label style={styles.label} htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                name="email"
-                style={styles.input}
-                required
-                placeholder="you@example.com"
-                onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
-              />
+              <input id="email" type="email" name="email" style={styles.input} required placeholder="you@example.com"
+                     onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
+                     onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
               <ValidationError field="email" errors={state.errors} />
             </div>
 
             <div style={styles.field}>
               <label style={styles.label} htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                style={styles.textarea}
-                required
-                placeholder="What's on your mind?"
-                onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
-              />
+              <textarea id="message" name="message" style={styles.textarea} required placeholder="What's on your mind?"
+                        onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
+                        onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
               <ValidationError field="message" errors={state.errors} />
             </div>
 
-            {/* hidden captcha token — set before submit */}
+            {/* hidden captcha token — value set by native submit listener */}
             <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
 
-            <div style={styles.captchaWrap} ref={captchaRef} />
+            {/* auto-rendered by reCAPTCHA API (script loaded in index.html) */}
+            <div className="g-recaptcha" data-sitekey={RECAPTCHA_SITE_KEY} data-theme="dark" style={{ marginTop: 4 }} />
 
             {state.succeeded ? (
               <div style={styles.successBox}>
@@ -309,10 +249,10 @@ export default function Contact() {
               </div>
             ) : (
               <>
-                {(captchaError || state.errors?.length > 0) && (
+                {(captchaErr || state.errors?.length > 0) && (
                   <div>
-                    {captchaError && <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaError}</p>}
-                    {!captchaError && state.errors?.length > 0 && (
+                    {captchaErr && <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr}</p>}
+                    {!captchaErr && state.errors?.length > 0 && (
                       <p style={{ color: '#e44', fontSize: '0.85rem' }}>Something went wrong. Email me directly instead.</p>
                     )}
                     <p style={styles.fallbackLink}>
@@ -320,13 +260,10 @@ export default function Contact() {
                     </p>
                   </div>
                 )}
-                <button
-                  type="submit"
-                  disabled={state.submitting}
-                  style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
-                  onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                  onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}
-                >
+                <button type="submit" disabled={state.submitting}
+                        style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
+                        onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+                        onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
                   {state.submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </>
