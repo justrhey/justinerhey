@@ -1,5 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
+
+// -- reCAPTCHA -------------------------------------------------
+// 1. Get YOUR OWN free keys at https://www.google.com/recaptcha/admin
+//    (select reCAPTCHA v2 "I'm not a robot")
+// 2. In Formspree dashboard (Settings > Spam), add the secret key
+// 3. Replace this test key with your actual site key:
+const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
 
 const styles = {
   wrapper: {
@@ -77,6 +84,10 @@ const styles = {
     minHeight: 120,
     transition: 'border-color 0.2s',
   },
+  captchaWrap: {
+    marginTop: 4,
+    minHeight: 78,
+  },
   btn: {
     padding: '12px 28px',
     border: '1px solid #fff',
@@ -103,16 +114,58 @@ export default function Contact() {
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
   const ref = useScrollReveal()
+  const captchaRef = useRef(null)
+  const scriptLoaded = useRef(false)
+
+  // load reCAPTCHA script once
+  useEffect(() => {
+    if (scriptLoaded.current || document.querySelector('.g-recaptcha')) return
+    const el = document.createElement('script')
+    el.src = `https://www.google.com/recaptcha/api.js?render=explicit`
+    el.async = true
+    el.defer = true
+    el.onload = () => {
+      if (window.grecaptcha && captchaRef.current) {
+        window.grecaptcha.render(captchaRef.current, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          theme: 'dark',
+        })
+      }
+    }
+    document.head.appendChild(el)
+    scriptLoaded.current = true
+  }, [])
+
+  // render captcha if script already loaded (e.g. hot reload)
+  useEffect(() => {
+    if (window.grecaptcha && window.grecaptcha.render && captchaRef.current) {
+      try {
+        window.grecaptcha.render(captchaRef.current, {
+          sitekey: RECAPTCHA_SITE_KEY,
+          theme: 'dark',
+        })
+      } catch { /* already rendered */ }
+    }
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSending(true)
     setError('')
+
+    const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
+    if (!token) {
+      setError('Please complete the captcha.')
+      setSending(false)
+      return
+    }
+
     try {
       const fd = new FormData()
       fd.append('name', name)
       fd.append('email', email)
       fd.append('message', message)
+      fd.append('g-recaptcha-response', token)
 
       const res = await fetch('https://formspree.io/f/xqapbqyo', {
         method: 'POST',
@@ -124,8 +177,15 @@ export default function Contact() {
         setName('')
         setEmail('')
         setMessage('')
+        if (window.grecaptcha) window.grecaptcha.reset()
       } else {
-        setError('Something went wrong. Try again or email me directly.')
+        const text = await res.text()
+        if (text.includes('captcha') || text.includes('CAPTCHA')) {
+          setError('Captcha verification failed. Please try again.')
+          if (window.grecaptcha) window.grecaptcha.reset()
+        } else {
+          setError('Something went wrong. Try again or email me directly.')
+        }
       }
     } catch {
       setError('Network error. Please email me directly.')
@@ -205,6 +265,8 @@ export default function Contact() {
                 onBlur={(e) => e.target.style.borderColor = '#1a1a1a'}
               />
             </div>
+            <div style={styles.captchaWrap} ref={captchaRef} />
+
             {error && (
               <div>
                 <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
