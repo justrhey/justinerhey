@@ -82,8 +82,11 @@ const styles = {
   },
   image: {
     width: '100%',
+    maxHeight: 360,
+    objectFit: 'contain',
     border: '1px solid #222',
     display: 'block',
+    background: '#0a0a0a',
   },
   actions: {
     display: 'flex',
