@@ -88,6 +88,11 @@ const styles = {
     transition: 'all 0.2s',
     alignSelf: 'flex-start',
   },
+  fallbackLink: {
+    color: '#888',
+    fontSize: '0.85rem',
+    marginTop: 4,
+  },
 }
 
 export default function Contact() {
@@ -104,10 +109,15 @@ export default function Contact() {
     setSending(true)
     setError('')
     try {
+      const fd = new FormData()
+      fd.append('name', name)
+      fd.append('email', email)
+      fd.append('message', message)
+
       const res = await fetch('https://formspree.io/f/xqapbqyo', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message })
+        body: fd,
+        headers: { 'Accept': 'application/json' },
       })
       if (res.ok) {
         setSent(true)
@@ -118,7 +128,7 @@ export default function Contact() {
         setError('Something went wrong. Try again or email me directly.')
       }
     } catch {
-      setError('Network error. Please email me directly at justrhey.tambong021@gmail.com')
+      setError('Network error. Please email me directly.')
     }
     setSending(false)
   }
@@ -196,7 +206,14 @@ export default function Contact() {
               />
             </div>
             {error && (
-              <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
+              <div>
+                <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
+                <p style={styles.fallbackLink}>
+                  <a href="mailto:justrhey.tambong021@gmail.com" style={{ color: '#888' }}>
+                    justrhey.tambong021@gmail.com
+                  </a>
+                </p>
+              </div>
             )}
             <button
               type="submit"
