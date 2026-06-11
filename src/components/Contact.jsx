@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
+import { useForm } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const FORMSPREE_ID = 'xzdqajkr'
@@ -145,16 +146,16 @@ const IconLinkedIn = () => (
 )
 
 export default function Contact() {
-  const [submitting, setSubmitting] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [errMsg, setErrMsg] = useState('')
+  const [state, handleSubmit] = useForm(FORMSPREE_ID)
   const [captchaErr, setCaptchaErr] = useState('')
+  const [formErr, setFormErr] = useState('')
   const ref = useScrollReveal()
   const formRef = useRef(null)
   const captchaContainerRef = useRef(null)
   const widgetIdRef = useRef(null)
+  const captchaInputRef = useRef(null)
 
-  // render captcha once API is ready — simplified
+  // Render captcha once the API is ready
   useEffect(() => {
     const renderWidget = () => {
       if (!captchaContainerRef.current || widgetIdRef.current !== null) return
@@ -168,14 +169,44 @@ export default function Contact() {
 
     if (renderWidget()) return
 
-    // Poll until grecaptcha is ready
     const interval = setInterval(() => {
       if (renderWidget()) clearInterval(interval)
     }, 300)
     return () => clearInterval(interval)
   }, [])
 
-  // rate limiter — first 3 tries free, then 1min wait stacking up
+  // Reset captcha and clear form error on successful submission
+  useEffect(() => {
+    if (state.succeeded) {
+      if (window.grecaptcha && widgetIdRef.current !== null) {
+        window.grecaptcha.reset(widgetIdRef.current)
+      }
+      formRef.current?.reset()
+    }
+  }, [state.succeeded])
+
+  // Map Formspree errors to a display message
+  useEffect(() => {
+    if (state.errors && state.errors.getFormErrors) {
+      const formErrors = state.errors.getFormErrors()
+      if (formErrors.length > 0) {
+        const err = formErrors[0]
+        let msg = 'Something went wrong. Please email me directly.'
+        if (err?.message) {
+          msg = err.message + ' — please email me directly.'
+        }
+        // Catch invalid-keys specifically
+        if (err?.code === 'invalid-keys' || (err?.detail && err.detail.includes('invalid-keys'))) {
+          msg = 'reCAPTCHA is not configured correctly on the server. Please email me directly.'
+        }
+        setFormErr(msg)
+      }
+    } else {
+      setFormErr('')
+    }
+  }, [state.errors])
+
+  // Rate limiter — first 3 tries free, then 1min wait stacking up
   const checkRateLimit = () => {
     const key = 'portfolio_submit_count'
     const hour = 60 * 60 * 1000
@@ -183,7 +214,6 @@ export default function Contact() {
     let data
     try { data = JSON.parse(localStorage.getItem(key)) } catch { data = null }
 
-    // Reset if more than an hour has passed
     if (!data || now - data.time > hour) {
       localStorage.setItem(key, JSON.stringify({ count: 1, time: now }))
       return { allowed: true }
@@ -192,14 +222,12 @@ export default function Contact() {
     data.count++
     localStorage.setItem(key, JSON.stringify(data))
 
-    // First 3 tries — always allowed
     if (data.count <= 3) return { allowed: true }
 
-    // After 3: wait time stacks (1min, 2min, 3min...)
     const waitMinutes = data.count - 3
     const nextAllowed = data.time + waitMinutes * 60 * 1000
     if (now < nextAllowed) {
-      data.count-- // undo the increment since we're blocking
+      data.count--
       localStorage.setItem(key, JSON.stringify(data))
       return { allowed: false, wait: waitMinutes }
     }
@@ -207,63 +235,35 @@ export default function Contact() {
     return { allowed: true }
   }
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
-    setErrMsg('')
     setCaptchaErr('')
+    setFormErr('')
 
-    // Get captcha token
-    const grecaptcha = window.grecaptcha
-    const token = grecaptcha && typeof grecaptcha.getResponse === 'function'
-      ? grecaptcha.getResponse(widgetIdRef.current)
-      : ''
-
+    // Validate captcha
+    const token = window.grecaptcha?.getResponse?.(widgetIdRef.current)
     if (!token) {
       setCaptchaErr('Please complete the captcha.')
       return
     }
 
+    // Inject token into hidden input for Formspree
+    if (captchaInputRef.current) {
+      captchaInputRef.current.value = token
+    }
+
+    // Check rate limit
     const limit = checkRateLimit()
     if (!limit.allowed) {
       setCaptchaErr(`Too fast. Please wait ${limit.wait} minute${limit.wait > 1 ? 's' : ''} before trying again.`)
       return
     }
 
-    setSubmitting(true)
-
-    try {
-      const formData = new FormData(formRef.current)
-      formData.set('g-recaptcha-response', token)
-
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-        method: 'POST',
-        body: formData,
-        headers: { Accept: 'application/json' },
-      })
-
-      if (res.ok) {
-        setSent(true)
-        formRef.current.reset()
-        if (window.grecaptcha && widgetIdRef.current !== null) {
-          window.grecaptcha.reset(widgetIdRef.current)
-        }
-      } else {
-        let msg = 'Something went wrong. Please email me directly.'
-        try {
-          const data = await res.json()
-          if (data?.error) msg = data.error + ' — please email me directly.'
-          if (data?.error_codes?.includes('invalid-keys')) {
-            msg = 'reCAPTCHA is not configured correctly on the server. Please email me directly.'
-          }
-        } catch {}
-        setErrMsg(msg)
-      }
-    } catch {
-      setErrMsg('Network error. Please email me directly.')
-    } finally {
-      setSubmitting(false)
-    }
+    // Let @formspree/react handle the actual submission
+    handleSubmit(e)
   }
+
+  const displayErr = captchaErr || formErr
 
   return (
     <section id="contact" ref={ref}>
@@ -326,6 +326,9 @@ export default function Contact() {
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
+            {/* Hidden input for reCAPTCHA token — value set before submit */}
+            <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
+
             {/* reCAPTCHA rendered here once API loads */}
             <div ref={captchaContainerRef} style={{ marginTop: 4, padding: 10, background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 4, minHeight: 78 }} />
 
@@ -333,28 +336,28 @@ export default function Contact() {
               Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
             </p>
 
-            {sent ? (
+            {state.succeeded ? (
               <div style={styles.successBox}>
                 <p style={styles.successText}>Message sent!</p>
                 <p style={styles.successSub}>Thanks for reaching out — I'll get back to you soon.</p>
               </div>
             ) : (
               <>
-                {(captchaErr || errMsg) && (
+                {displayErr && (
                   <div>
-                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr || errMsg}</p>
-                    {(errMsg) && (
+                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{displayErr}</p>
+                    {formErr && (
                       <p style={styles.fallbackLink}>
                         <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
                       </p>
                     )}
                   </div>
                 )}
-                <button type="submit" disabled={submitting}
-                        style={{ ...styles.btn, opacity: submitting ? 0.5 : 1 }}
-                        onMouseEnter={(e) => { if (!submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                        onMouseLeave={(e) => { if (!submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
-                  {submitting ? 'Sending...' : 'Send Message'}
+                <button type="submit" disabled={state.submitting}
+                        style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
+                        onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+                        onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
+                  {state.submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </>
             )}
