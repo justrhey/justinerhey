@@ -1,7 +1,12 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const FORMSPREE_ID = 'xzdqajkr'
+const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
+// ⚠️ If Formspree returns error_codes=["invalid-keys"]:
+//    Go to formspree.io → your form → Settings → reCAPTCHA
+//    Paste the SECRET key that matches this SITE key from
+//    https://www.google.com/recaptcha/admin
 
 const styles = {
   form: {
@@ -143,8 +148,32 @@ export default function Contact() {
   const [submitting, setSubmitting] = useState(false)
   const [sent, setSent] = useState(false)
   const [errMsg, setErrMsg] = useState('')
+  const [captchaErr, setCaptchaErr] = useState('')
   const ref = useScrollReveal()
   const formRef = useRef(null)
+  const captchaContainerRef = useRef(null)
+  const widgetIdRef = useRef(null)
+
+  // render captcha once API is ready — simplified
+  useEffect(() => {
+    const renderWidget = () => {
+      if (!captchaContainerRef.current || widgetIdRef.current !== null) return
+      if (typeof window.grecaptcha?.render !== 'function') return false
+      widgetIdRef.current = window.grecaptcha.render(captchaContainerRef.current, {
+        sitekey: RECAPTCHA_SITE_KEY,
+        theme: 'dark',
+      })
+      return true
+    }
+
+    if (renderWidget()) return
+
+    // Poll until grecaptcha is ready
+    const interval = setInterval(() => {
+      if (renderWidget()) clearInterval(interval)
+    }, 300)
+    return () => clearInterval(interval)
+  }, [])
 
   // rate limiter — first 3 tries free, then 1min wait stacking up
   const checkRateLimit = () => {
@@ -181,10 +210,22 @@ export default function Contact() {
   const onSubmit = async (e) => {
     e.preventDefault()
     setErrMsg('')
+    setCaptchaErr('')
+
+    // Get captcha token
+    const grecaptcha = window.grecaptcha
+    const token = grecaptcha && typeof grecaptcha.getResponse === 'function'
+      ? grecaptcha.getResponse(widgetIdRef.current)
+      : ''
+
+    if (!token) {
+      setCaptchaErr('Please complete the captcha.')
+      return
+    }
 
     const limit = checkRateLimit()
     if (!limit.allowed) {
-      setErrMsg(`Too fast. Please wait ${limit.wait} minute${limit.wait > 1 ? 's' : ''} before trying again.`)
+      setCaptchaErr(`Too fast. Please wait ${limit.wait} minute${limit.wait > 1 ? 's' : ''} before trying again.`)
       return
     }
 
@@ -192,6 +233,7 @@ export default function Contact() {
 
     try {
       const formData = new FormData(formRef.current)
+      formData.set('g-recaptcha-response', token)
 
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
@@ -202,11 +244,17 @@ export default function Contact() {
       if (res.ok) {
         setSent(true)
         formRef.current.reset()
+        if (window.grecaptcha && widgetIdRef.current !== null) {
+          window.grecaptcha.reset(widgetIdRef.current)
+        }
       } else {
         let msg = 'Something went wrong. Please email me directly.'
         try {
           const data = await res.json()
           if (data?.error) msg = data.error + ' — please email me directly.'
+          if (data?.error_codes?.includes('invalid-keys')) {
+            msg = 'reCAPTCHA is not configured correctly on the server. Please email me directly.'
+          }
         } catch {}
         setErrMsg(msg)
       }
@@ -278,6 +326,9 @@ export default function Contact() {
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
+            {/* reCAPTCHA rendered here once API loads */}
+            <div ref={captchaContainerRef} style={{ marginTop: 4, padding: 10, background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 4, minHeight: 78 }} />
+
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
               Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
             </p>
@@ -289,12 +340,14 @@ export default function Contact() {
               </div>
             ) : (
               <>
-                {errMsg && (
+                {(captchaErr || errMsg) && (
                   <div>
-                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{errMsg}</p>
-                    <p style={styles.fallbackLink}>
-                      <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
-                    </p>
+                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr || errMsg}</p>
+                    {(errMsg) && (
+                      <p style={styles.fallbackLink}>
+                        <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
+                      </p>
+                    )}
                   </div>
                 )}
                 <button type="submit" disabled={submitting}
