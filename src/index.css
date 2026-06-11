@@ -43,6 +43,8 @@ section {
 #hero {
   padding: 0;
   scroll-margin-top: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .section-label {
@@ -69,6 +71,42 @@ section {
   margin-top: 10px;
 }
 
+/* ---- Buttons ---- */
+.btn-primary {
+  padding: 14px 36px;
+  border: 1px solid #fff;
+  background: #fff;
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+}
+.btn-primary:hover {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+
+.btn-outline {
+  padding: 14px 36px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+}
+.btn-outline:hover {
+  border-color: #fff;
+}
+
+/* ---- Animations ---- */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
@@ -89,6 +127,8 @@ section {
 .fade-in-children > *:nth-child(4) { animation-delay: 0.2s; }
 .fade-in-children > *:nth-child(5) { animation-delay: 0.25s; }
 .fade-in-children > *:nth-child(6) { animation-delay: 0.3s; }
+.fade-in-children > *:nth-child(7) { animation-delay: 0.35s; }
+.fade-in-children > *:nth-child(8) { animation-delay: 0.4s; }
 
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.95); }
@@ -99,6 +139,7 @@ section {
   animation: scaleIn 0.2s ease forwards;
 }
 
+/* ---- Card hover ---- */
 .card-hover {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
 }
@@ -108,6 +149,35 @@ section {
   box-shadow: 0 8px 30px rgba(0,0,0,0.4);
 }
 
+/* ---- Hero responsive ---- */
+.hero-wrap {
+  display: flex;
+  gap: 56px;
+  align-items: center;
+}
+
+.hero-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #555;
+  letter-spacing: -1px;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
 @media (max-width: 768px) {
   .section-title {
     font-size: 1.5rem;
@@ -115,5 +185,25 @@ section {
   }
   section {
     padding: 80px 0;
+  }
+  .hero-wrap {
+    flex-direction: column;
+    gap: 32px;
+    text-align: center;
+  }
+  .hero-avatar {
+    width: 110px;
+    height: 110px;
+    font-size: 2rem;
+  }
+  .btn-primary, .btn-outline {
+    padding: 12px 28px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 48px;
   }
 }
