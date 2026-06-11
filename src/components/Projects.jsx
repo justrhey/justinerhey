@@ -4,7 +4,7 @@ import ProjectModal from './ProjectModal.jsx'
 const projects = [
   {
     title: 'DNS Ping Automation SDK',
-    role: 'Personal Project',
+    role: 'Internship Project',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
     url: 'https://github.com/justrhey/Pinger',
     intro: 'Java SDK for automated DNS ping monitoring with ICMP/TCP support. Tracks server availability, latency, and packet loss.',
@@ -12,7 +12,7 @@ const projects = [
   },
   {
     title: 'Ticketing System (Spring Boot)',
-    role: 'Personal Project',
+    role: 'Internship Project',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     url: 'https://github.com/justrhey/ticket-management-system',
     intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management.',
