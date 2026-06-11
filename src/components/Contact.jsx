@@ -148,7 +148,6 @@ export default function Contact() {
   const captchaInputRef = useRef(null)
   const captchaContainerRef = useRef(null)
   const captchaRendered = useRef(false)
-  const formRef = useRef(null)
 
   // listen for reCAPTCHA API ready event
   useEffect(() => {
@@ -158,42 +157,55 @@ export default function Contact() {
     return () => window.removeEventListener('recaptcha-ready', onReady)
   }, [])
 
-  // render the captcha widget once the API is ready and the container exists
+  // render captcha widget — callback updates hidden input directly
   useEffect(() => {
     if (recaptchaReady && captchaContainerRef.current && !captchaRendered.current) {
       captchaRendered.current = true
       window.grecaptcha.render(captchaContainerRef.current, {
         sitekey: RECAPTCHA_SITE_KEY,
         theme: 'dark',
+        callback: (token) => {
+          if (captchaInputRef.current) captchaInputRef.current.value = token
+        },
+        'expired-callback': () => {
+          if (captchaInputRef.current) captchaInputRef.current.value = ''
+        },
       })
     }
   }, [recaptchaReady])
 
-  // native submit listener — fires before React's onSubmit
-  // sets the captcha token so Formspree picks it up
-  useEffect(() => {
-    const form = formRef.current
-    if (!form || form.dataset.captchaReady) return
-    form.dataset.captchaReady = '1'
-    const handler = () => {
-      const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
-      if (captchaInputRef.current) {
-        captchaInputRef.current.value = token
-      }
+  // rate limiter — max 3 submissions per IP per hour (client-side)
+  const checkRateLimit = () => {
+    const key = 'portfolio_submit_count'
+    const hour = 60 * 60 * 1000
+    const now = Date.now()
+    let data
+    try { data = JSON.parse(localStorage.getItem(key)) } catch { data = null }
+    if (!data || now - data.time > hour) {
+      localStorage.setItem(key, JSON.stringify({ count: 1, time: now }))
+      return true
     }
-    form.addEventListener('submit', handler)
-    return () => form.removeEventListener('submit', handler)
-  }, [])
+    if (data.count >= 3) return false
+    data.count++
+    localStorage.setItem(key, JSON.stringify(data))
+    return true
+  }
 
   const onSubmit = (e) => {
-    const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
+    const token = captchaInputRef.current?.value
     if (!token) {
       e.preventDefault()
       setCaptchaErr('Please complete the captcha.')
       return
     }
+
+    if (!checkRateLimit()) {
+      e.preventDefault()
+      setCaptchaErr('Too many submissions. Please try again later.')
+      return
+    }
+
     setCaptchaErr('')
-    // token already set by the native listener — just let Formspree handle it
     handleSubmit(e)
   }
 
@@ -233,7 +245,7 @@ export default function Contact() {
             </div>
           </div>
 
-          <form ref={formRef} className="contact-form" style={styles.form} onSubmit={onSubmit}>
+          <form className="contact-form" style={styles.form} onSubmit={onSubmit}>
             <div style={styles.field}>
               <label style={styles.label} htmlFor="name">Name</label>
               <input id="name" name="name" style={styles.input} required placeholder="Your name"
