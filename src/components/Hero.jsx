@@ -51,7 +51,7 @@ export default function Hero() {
             <h1 style={heroStyles.name}>
               Justine Rhey <span style={heroStyles.highlight}>M. Tambong</span>
             </h1>
-            <p style={heroStyles.tagline}>IT Graduate — Learning Java &amp; Spring Boot</p>
+            <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
               BS Information Technology &middot; Java &middot; Spring Boot &middot; Backend Development &middot; Android
             </p>
