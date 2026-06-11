@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 // -- reCAPTCHA -------------------------------------------------
-// 1. Get YOUR OWN free keys at https://www.google.com/recaptcha/admin
+// 1. Go to https://www.google.com/recaptcha/admin
 //    (select reCAPTCHA v2 "I'm not a robot")
+//    Domain: justrhey.github.io
 // 2. In Formspree dashboard (Settings > Spam), add the secret key
 // 3. Replace this test key with your actual site key:
 const RECAPTCHA_SITE_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
