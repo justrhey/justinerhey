@@ -28,6 +28,28 @@ const styles = {
     color: '#bbb',
     fontSize: '0.95rem',
   },
+  sectionHeader: {
+    color: '#555',
+    fontSize: '0.65rem',
+    textTransform: 'uppercase',
+    letterSpacing: '1.5px',
+    marginBottom: 12,
+  },
+  detailList: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 6,
+  },
+  detailItem: {
+    color: '#777',
+    fontSize: '0.85rem',
+    lineHeight: 1.6,
+    paddingLeft: 0,
+  },
+  dot: {
+    color: '#555',
+    marginRight: 8,
+  },
 }
 
 const IconGraduation = () => (
@@ -59,37 +81,69 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network and System Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also handled remote servers, Active Directory, and a Linux CLI application for call routing with an L1-to-escalation workflow where I was the last stop before escalation. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
+          I got into tech the practical way — two internships, real production environments, and a lot of Java.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
-          Those experiences showed me I like building things more than just maintaining them. Now I am looking for a junior developer role where I can keep learning, work on real problems, and build software that people actually use.
+          Now I am looking for a junior developer role where I can keep learning, build software people actually use, and work on real problems.
         </p>
 
         <div className="grid-2">
           <div>
-            <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
-              <IconGraduation />
-              <p style={styles.text}>
-                <span style={styles.highlight}>BS Information Technology</span> at Jesus Reigns Christian College
-              </p>
+            <div style={{ marginBottom: 32 }}>
+              <p style={styles.sectionHeader}>Education</p>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <IconGraduation />
+                <div>
+                  <p style={styles.text}>
+                    <span style={styles.highlight}>BS Information Technology</span>
+                  </p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2 }}>Jesus Reigns Christian College</p>
+                </div>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
-              <IconBriefcase />
-              <p style={styles.text}>
-                <span style={styles.highlight}>Network and System Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK, managed remote servers and Active Directory. Used a Linux CLI application for call routing. Worked an escalation pipeline: tickets went from L1 → L2 (me) → escalation if unresolved.
-              </p>
+
+            <div style={{ marginBottom: 32 }}>
+              <p style={styles.sectionHeader}>Experience</p>
+
+              <div style={{ display: 'flex', gap: 12, marginBottom: 20, alignItems: 'flex-start' }}>
+                <IconBriefcase />
+                <div>
+                  <p style={styles.text}>
+                    <span style={styles.highlight}>Network and System Engineer Intern</span>
+                  </p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global</p>
+                  <div style={styles.detailList}>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Built DNS automation SDK with Java Swing for ICMP/TCP monitoring</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Managed remote servers and Active Directory</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Used a Linux CLI application for outbound/inbound call routing</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Escalation pipeline: L1 &#8594; L2 (me) &#8594; escalation if unresolved</p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <IconBriefcase />
+                <div>
+                  <p style={styles.text}>
+                    <span style={styles.highlight}>Service Desk and Field Support Intern</span>
+                  </p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
+                  <div style={styles.detailList}>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting via ServiceNow</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Maintained POS systems for Caltex stations</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
-              <IconBriefcase />
-              <p style={styles.text}>
-                <span style={styles.highlight}>Service Desk and Field Support Intern</span> at Deutsche Business Solutions &mdash; Assisted technical support, remote troubleshooting, ServiceNow, maintained POS systems for Caltex
-              </p>
-            </div>
-            <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-              <IconWrench />
-              <p style={styles.text}>
-                <span style={styles.highlight}>Tech Stack:</span> Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust &middot; ServiceNow &middot; Linux &middot; Active Directory
-              </p>
+
+            <div>
+              <p style={styles.sectionHeader}>Tech Stack</p>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <IconWrench />
+                <p style={styles.text}>
+                  Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust &middot; ServiceNow &middot; Linux &middot; Active Directory
+                </p>
+              </div>
             </div>
           </div>
           <div className="info-grid">

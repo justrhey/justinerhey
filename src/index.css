@@ -28,6 +28,22 @@ img {
   display: block;
 }
 
+/* ---- Skeleton loading ---- */
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
 .container {
   max-width: 1100px;
   margin: 0 auto;

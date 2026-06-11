@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const heroStyles = {
   section: {
     display: 'flex',
@@ -41,12 +43,19 @@ const heroStyles = {
 }
 
 export default function Hero() {
+  const [imgLoaded, setImgLoaded] = useState(false)
+
   return (
     <section id="hero" style={heroStyles.section}>
       <div className="container">
         <div className="hero-wrap">
-          <div className="hero-avatar">
-            <img src="./images/new_profike.png" alt="Justine Rhey M. Tambong" />
+          <div className={`hero-avatar${!imgLoaded ? ' skeleton skeleton-circle' : ''}`}>
+            <img
+              src="./images/new_profike.png"
+              alt="Justine Rhey M. Tambong"
+              onLoad={() => setImgLoaded(true)}
+              style={imgLoaded ? {} : { display: 'none' }}
+            />
           </div>
           <div className="hero-text">
             <p style={heroStyles.greeting}>Hi, I'm</p>
