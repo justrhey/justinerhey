@@ -76,7 +76,7 @@ const styles = {
   },
   imageGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
     gap: 16,
     marginBottom: 36,
   },
@@ -123,24 +123,21 @@ export default function ProjectModal({ project, onClose }) {
 
         <div style={styles.divider} />
 
-        <p style={styles.sectionLabel}>Overview</p>
-        <p style={styles.story}>{project.intro}</p>
-
         {project.images && (
-          <>
-            <p style={styles.sectionLabel}>Screenshots</p>
-            <div style={styles.imageGrid}>
-              {project.images.map((img) => (
-                <img
-                  key={img}
-                  src={`./images/${project.slug || project.title.toLowerCase()}/${img}`}
-                  alt={`${project.title} screenshot`}
-                  style={styles.image}
-                />
-              ))}
-            </div>
-          </>
+          <div style={styles.imageGrid}>
+            {project.images.map((img) => (
+              <img
+                key={img}
+                src={`./images/${project.slug || project.title.toLowerCase()}/${img}`}
+                alt={`${project.title} screenshot`}
+                style={styles.image}
+              />
+            ))}
+          </div>
         )}
+
+        <p style={{ ...styles.sectionLabel, marginTop: project.images ? 8 : 0 }}>Overview</p>
+        <p style={styles.story}>{project.intro}</p>
 
         <div style={styles.actions}>
           <a
