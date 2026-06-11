@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useForm, ValidationError } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 // -- reCAPTCHA -------------------------------------------------
@@ -148,14 +149,11 @@ const IconLinkedIn = () => (
 )
 
 export default function Contact() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-  const [sending, setSending] = useState(false)
-  const [sent, setSent] = useState(false)
-  const [error, setError] = useState('')
+  const [state, handleSubmit] = useForm('xzdqajkr')
+  const [captchaError, setCaptchaError] = useState('')
   const ref = useScrollReveal()
   const captchaRef = useRef(null)
+  const captchaInputRef = useRef(null)
   const scriptLoaded = useRef(false)
 
   // load reCAPTCHA script once
@@ -180,58 +178,30 @@ export default function Contact() {
   // render captcha if script already loaded (e.g. hot reload)
   useEffect(() => {
     if (window.grecaptcha && window.grecaptcha.render && captchaRef.current) {
-      try {
-        window.grecaptcha.render(captchaRef.current, {
-          sitekey: RECAPTCHA_SITE_KEY,
-          theme: 'dark',
-        })
-      } catch { /* already rendered */ }
+      try { window.grecaptcha.render(captchaRef.current, { sitekey: RECAPTCHA_SITE_KEY, theme: 'dark' }) }
+      catch { /* already rendered */ }
     }
   }, [])
 
-  const handleSubmit = async (e) => {
+  // custom submit: inject captcha token before Formspree handles it
+  const onSubmit = (e) => {
     e.preventDefault()
-    setSending(true)
-    setError('')
+    setCaptchaError('')
 
     const token = window.grecaptcha ? window.grecaptcha.getResponse() : ''
     if (!token) {
-      setError('Please complete the captcha.')
-      setSending(false)
+      setCaptchaError('Please complete the captcha.')
       return
     }
 
-    try {
-      const fd = new FormData()
-      fd.append('name', name)
-      fd.append('email', email)
-      fd.append('message', message)
-      fd.append('g-recaptcha-response', token)
-
-      const res = await fetch('https://formspree.io/f/xqapbqyo', {
-        method: 'POST',
-        body: fd,
-        headers: { 'Accept': 'application/json' },
-      })
-      if (res.ok) {
-        setSent(true)
-        setName('')
-        setEmail('')
-        setMessage('')
-        if (window.grecaptcha) window.grecaptcha.reset()
-      } else {
-        const text = await res.text()
-        if (text.includes('captcha') || text.includes('CAPTCHA')) {
-          setError('Captcha verification failed. Refresh and try again, or email me directly.')
-          if (window.grecaptcha) window.grecaptcha.reset()
-        } else {
-          setError('Form submission failed. Please email me directly — I\'ll respond right away.')
-        }
-      }
-    } catch {
-      setError('Could not reach the form service. Drop me an email instead at justrhey.tambong@gmail.com')
+    if (captchaInputRef.current) {
+      captchaInputRef.current.value = token
     }
-    setSending(false)
+
+    const form = e.currentTarget
+    handleSubmit({ ...e, target: form }).then(() => {
+      if (window.grecaptcha) window.grecaptcha.reset()
+    })
   }
 
   return (
@@ -282,74 +252,82 @@ export default function Contact() {
               </a>
             </div>
           </div>
-          <form className="contact-form" style={styles.form} onSubmit={handleSubmit}>
+
+          <form className="contact-form" style={styles.form} onSubmit={onSubmit}>
             <div style={styles.field}>
               <label style={styles.label} htmlFor="name">Name</label>
               <input
                 id="name"
+                name="name"
                 style={styles.input}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
                 required
                 placeholder="Your name"
                 onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                 onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
               />
+              <ValidationError field="name" errors={state.errors} />
             </div>
+
             <div style={styles.field}>
               <label style={styles.label} htmlFor="email">Email</label>
               <input
                 id="email"
                 type="email"
+                name="email"
                 style={styles.input}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="you@example.com"
                 onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                 onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
               />
+              <ValidationError field="email" errors={state.errors} />
             </div>
+
             <div style={styles.field}>
               <label style={styles.label} htmlFor="message">Message</label>
               <textarea
                 id="message"
+                name="message"
                 style={styles.textarea}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
                 required
                 placeholder="What's on your mind?"
                 onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                 onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }}
               />
+              <ValidationError field="message" errors={state.errors} />
             </div>
+
+            {/* hidden captcha token — set before submit */}
+            <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
+
             <div style={styles.captchaWrap} ref={captchaRef} />
 
-            {sent ? (
+            {state.succeeded ? (
               <div style={styles.successBox}>
                 <p style={styles.successText}>Message sent!</p>
                 <p style={styles.successSub}>Thanks for reaching out — I'll get back to you soon.</p>
               </div>
             ) : (
               <>
-                {error && (
+                {(captchaError || state.errors?.length > 0) && (
                   <div>
-                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
+                    {captchaError && <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaError}</p>}
+                    {!captchaError && state.errors?.length > 0 && (
+                      <p style={{ color: '#e44', fontSize: '0.85rem' }}>Something went wrong. Email me directly instead.</p>
+                    )}
                     <p style={styles.fallbackLink}>
-                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>
-                        justrhey.tambong@gmail.com
-                      </a>
+                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
                     </p>
                   </div>
                 )}
                 <button
                   type="submit"
-                  disabled={sending}
-                  style={{ ...styles.btn, opacity: sending ? 0.5 : 1 }}
-                  onMouseEnter={(e) => { if (!sending) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                  onMouseLeave={(e) => { if (!sending) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}
+                  disabled={state.submitting}
+                  style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
+                  onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+                  onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}
                 >
-                  {sending ? 'Sending...' : 'Send Message'}
+                  {state.submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </>
             )}
