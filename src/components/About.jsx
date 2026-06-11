@@ -111,7 +111,7 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>Network and System Engineer Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space &middot; August 27 – October 28, 2025</p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space</p>
                   <div style={styles.detailList}>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Built DNS automation SDK with Java Swing for ICMP/TCP monitoring</p>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Managed remote servers and Active Directory</p>
@@ -126,7 +126,7 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>Field Support and Desk Support Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions &middot; January 5, 2026 – March 14, 2026</p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
                   <div style={styles.detailList}>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting</p>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Performed QA, setup, and maintenance of POS systems across Caltex fuel stations for reliable transaction processing</p>
