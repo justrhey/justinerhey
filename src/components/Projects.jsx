@@ -29,6 +29,7 @@ const projects = [
     role: 'Solo Developer',
     intro: 'Android music player with lyrics display, equalizer, playlist management, and grammar-based party mode. Built with Kotlin and Jetpack Compose.',
     url: 'https://github.com/justrhey/Cassie',
+    images: ['albums.jpeg', 'artist.jpeg', 'home.jpeg', 'playlist.jpeg', 'top50.jpeg'],
   },
   {
     title: 'Usmentz',

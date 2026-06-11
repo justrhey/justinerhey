@@ -13,7 +13,7 @@ const styles = {
   modal: {
     background: '#0d0d0d',
     border: '1px solid #222',
-    maxWidth: 600,
+    maxWidth: 640,
     width: '100%',
     maxHeight: '90vh',
     overflow: 'auto',
@@ -61,7 +61,7 @@ const styles = {
     background: '#1a1a1a',
     marginBottom: 28,
   },
-  storyLabel: {
+  sectionLabel: {
     fontSize: '0.65rem',
     textTransform: 'uppercase',
     letterSpacing: '2px',
@@ -73,6 +73,17 @@ const styles = {
     fontSize: '0.95rem',
     lineHeight: 1.9,
     marginBottom: 32,
+  },
+  imageGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+    gap: 12,
+    marginBottom: 32,
+  },
+  image: {
+    width: '100%',
+    border: '1px solid #222',
+    display: 'block',
   },
   actions: {
     display: 'flex',
@@ -113,6 +124,22 @@ export default function ProjectModal({ project, onClose }) {
 
         <p style={styles.sectionLabel}>Overview</p>
         <p style={styles.story}>{project.intro}</p>
+
+        {project.images && (
+          <>
+            <p style={styles.sectionLabel}>Screenshots</p>
+            <div style={styles.imageGrid}>
+              {project.images.map((img) => (
+                <img
+                  key={img}
+                  src={`./images/${project.title.toLowerCase()}/${img}`}
+                  alt={`${project.title} screenshot`}
+                  style={styles.image}
+                />
+              ))}
+            </div>
+          </>
+        )}
 
         <div style={styles.actions}>
           <a
