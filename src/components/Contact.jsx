@@ -1,8 +1,8 @@
 import { useRef, useState, useEffect } from 'react'
-import { useForm, ValidationError } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
+const FORMSPREE_ID = 'xzdqajkr'
 
 const styles = {
   form: {
@@ -141,10 +141,13 @@ const IconLinkedIn = () => (
 )
 
 export default function Contact() {
-  const [state, handleSubmit] = useForm('xzdqajkr')
+  const [submitting, setSubmitting] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [errMsg, setErrMsg] = useState('')
   const [captchaErr, setCaptchaErr] = useState('')
   const [recaptchaReady, setRecaptchaReady] = useState(window._recaptchaReady || false)
   const ref = useScrollReveal()
+  const formRef = useRef(null)
   const captchaInputRef = useRef(null)
   const captchaContainerRef = useRef(null)
   const captchaRendered = useRef(false)
@@ -174,7 +177,7 @@ export default function Contact() {
     }
   }, [recaptchaReady])
 
-  // rate limiter — max 3 submissions per IP per hour (client-side)
+  // rate limiter — max 3 submissions per hour (client-side)
   const checkRateLimit = () => {
     const key = 'portfolio_submit_count'
     const hour = 60 * 60 * 1000
@@ -191,22 +194,43 @@ export default function Contact() {
     return true
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    setErrMsg('')
+    setCaptchaErr('')
+
     const token = captchaInputRef.current?.value
     if (!token) {
-      e.preventDefault()
       setCaptchaErr('Please complete the captcha.')
       return
     }
 
     if (!checkRateLimit()) {
-      e.preventDefault()
       setCaptchaErr('Too many submissions. Please try again later.')
       return
     }
 
-    setCaptchaErr('')
-    handleSubmit(e)
+    setSubmitting(true)
+
+    try {
+      const formData = new FormData(formRef.current)
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        body: formData,
+        headers: { Accept: 'application/json' },
+      })
+
+      if (res.ok) {
+        setSent(true)
+      } else {
+        const data = await res.json()
+        setErrMsg(data?.error || 'Something went wrong. Please email me directly.')
+      }
+    } catch {
+      setErrMsg('Network error. Please email me directly.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -245,13 +269,12 @@ export default function Contact() {
             </div>
           </div>
 
-          <form className="contact-form" style={styles.form} onSubmit={onSubmit}>
+          <form ref={formRef} className="contact-form" style={styles.form} onSubmit={onSubmit}>
             <div style={styles.field}>
               <label style={styles.label} htmlFor="name">Name</label>
               <input id="name" name="name" style={styles.input} required placeholder="Your name"
                      onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                      onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
-              <ValidationError field="name" errors={state.errors} />
             </div>
 
             <div style={styles.field}>
@@ -259,7 +282,6 @@ export default function Contact() {
               <input id="email" type="email" name="email" style={styles.input} required placeholder="you@example.com"
                      onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                      onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
-              <ValidationError field="email" errors={state.errors} />
             </div>
 
             <div style={styles.field}>
@@ -267,38 +289,36 @@ export default function Contact() {
               <textarea id="message" name="message" style={styles.textarea} required placeholder="What's on your mind?"
                         onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                         onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
-              <ValidationError field="message" errors={state.errors} />
             </div>
 
-            {/* hidden captcha token — value set by native submit listener */}
+            {/* hidden captcha token — updated by captcha callback */}
             <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
 
             {/* reCAPTCHA rendered here once API loads */}
             <div ref={captchaContainerRef} style={{ marginTop: 4, minHeight: 78 }} />
 
-            {state.succeeded ? (
+            {sent ? (
               <div style={styles.successBox}>
                 <p style={styles.successText}>Message sent!</p>
                 <p style={styles.successSub}>Thanks for reaching out — I'll get back to you soon.</p>
               </div>
             ) : (
               <>
-                {(captchaErr || state.errors?.length > 0) && (
+                {(captchaErr || errMsg) && (
                   <div>
-                    {captchaErr && <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr}</p>}
-                    {!captchaErr && state.errors?.length > 0 && (
-                      <p style={{ color: '#e44', fontSize: '0.85rem' }}>Something went wrong. Email me directly instead.</p>
+                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr || errMsg}</p>
+                    {errMsg && (
+                      <p style={styles.fallbackLink}>
+                        <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+                      </p>
                     )}
-                    <p style={styles.fallbackLink}>
-                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
-                    </p>
                   </div>
                 )}
-                <button type="submit" disabled={state.submitting}
-                        style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
-                        onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                        onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
-                  {state.submitting ? 'Sending...' : 'Send Message'}
+                <button type="submit" disabled={submitting}
+                        style={{ ...styles.btn, opacity: submitting ? 0.5 : 1 }}
+                        onMouseEnter={(e) => { if (!submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+                        onMouseLeave={(e) => { if (!submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
+                  {submitting ? 'Sending...' : 'Send Message'}
                 </button>
               </>
             )}
