@@ -82,7 +82,7 @@ const styles = {
   },
   image: {
     width: '100%',
-    maxHeight: 360,
+    maxHeight: 520,
     objectFit: 'contain',
     border: '1px solid #222',
     display: 'block',
@@ -135,7 +135,7 @@ export default function ProjectModal({ project, onClose }) {
               {project.images.map((img) => (
                 <img
                   key={img}
-                  src={`./images/${project.title.toLowerCase()}/${img}`}
+                  src={`./images/${project.slug || project.title.toLowerCase()}/${img}`}
                   alt={`${project.title} screenshot`}
                   style={styles.image}
                 />
