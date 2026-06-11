@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="container">
         <div className="hero-wrap">
           <div className="hero-avatar">
-            <img src="./images/profile_justine.jpeg" alt="Justine Rhey M. Tambong" />
+            <img src="./images/new_profike.png" alt="Justine Rhey M. Tambong" />
           </div>
           <div className="hero-text">
             <p style={heroStyles.greeting}>Hi, I'm</p>
