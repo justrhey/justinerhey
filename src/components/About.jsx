@@ -58,12 +58,11 @@ export default function About() {
         <p className="section-label">About</p>
         <h2 className="section-title">About Me</h2>
 
-          <p style={styles.intro}>
-            I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
-          </p>
-          <p style={{ ...styles.intro, marginBottom: 48 }}>
-            Those experiences showed me I like building things more than just maintaining them. Now I am looking for a junior developer role where I can keep learning, work on real problems, and build software that people actually use.
-          </p>
+        <p style={styles.intro}>
+          I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also handled remote servers, Active Directory, and a Linux CLI tool for call routing where I was the last escalation point. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
+        </p>
+        <p style={{ ...styles.intro, marginBottom: 48 }}>
+          Those experiences showed me I like building things more than just maintaining them. Now I am looking for a junior developer role where I can keep learning, work on real problems, and build software that people actually use.
         </p>
 
         <div className="grid-2">
@@ -77,19 +76,19 @@ export default function About() {
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
               <IconBriefcase />
               <p style={styles.text}>
-                <span style={styles.highlight}>Network Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK &amp; designed Ticketing System
+                <span style={styles.highlight}>Network Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK, managed remote servers, Active Directory, and used a Linux CLI tool for outbound/inbound calls. The workflow was: if a ticket failed at first level, it moved to me. If I could not resolve it, I was the last stop before escalation.
               </p>
             </div>
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
               <IconBriefcase />
               <p style={styles.text}>
-                <span style={styles.highlight}>Service Desk &amp; Field Support Intern</span> at Deutsche Business Solutions &mdash; Assisted technical support, remote troubleshooting, ServiceNow, maintained POS systems for Caltex
+                <span style={styles.highlight}>Service Desk and Field Support Intern</span> at Deutsche Business Solutions &mdash; Assisted technical support, remote troubleshooting, ServiceNow, maintained POS systems for Caltex
               </p>
             </div>
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
               <IconWrench />
               <p style={styles.text}>
-                <span style={styles.highlight}>Tech Stack:</span> Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust &middot; ServiceNow
+                <span style={styles.highlight}>Tech Stack:</span> Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust &middot; ServiceNow &middot; Linux &middot; Active Directory
               </p>
             </div>
           </div>
