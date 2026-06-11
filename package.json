@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://justrhey.github.io/-justrhey",
+  "homepage": "https://justrhey.github.io/justinerhey",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
