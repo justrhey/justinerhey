@@ -81,10 +81,10 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I enjoy the lower layers of the OSI model as much as writing Java. Setting up a personal server over SSH, catching a TCP handshake in Wireshark, or running a quick Nmap scan — surface-level stuff, but it is where my curiosity starts.
+          I enjoy the lower layers of the OSI model as much as writing Java. Setting up a personal server over SSH, catching a TCP handshake in Wireshark, or running a quick Nmap scan. These may be surface-level explorations, but they are where my curiosity starts.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
-          That same curiosity carries into programming and security. I like understanding what happens before the code runs — how a DNS query resolves, what a packet looks like on the wire, how a Linux desktop actually works under the panels and themes. I am still early in the stack, but I enjoy seeing how the layers fit together.
+          That same curiosity extends into programming and security. I like understanding what happens before the code runs, how a DNS query resolves, what a packet looks like on the wire, and how a Linux desktop actually works beneath the panels and themes. I am still early in the stack, but I enjoy seeing how the layers fit together.
         </p>
 
         <div className="grid-2">
