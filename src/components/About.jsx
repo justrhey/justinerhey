@@ -59,10 +59,12 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I got into tech the practical way — during my IT degree, I landed a Network Engineer Internship
-          at CallHounds Global where I was asked if I could code. I said yes, built a DNS automation tool
-          in Java Swing, and that project turned into a full ticketing system the team still uses.
-          That's when I knew: I don't just want to maintain systems — I want to build them.
+          I got into tech the practical way — during my IT degree, I interned at CallHounds Global
+          as a Network Engineer where I was asked if I could code. I said yes, built a DNS automation
+          tool in Java Swing, and that grew into a full ticketing system. I also worked at Deutsche
+          Business Solutions as a Service Desk &amp; Field Support Intern, maintaining POS systems for
+          Caltex and handling enterprise support with ServiceNow. That's when I knew: I don't just
+          want to maintain systems — I want to build them.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
           Now I'm looking for a junior developer role where I can bring that same ownership —
@@ -84,10 +86,16 @@ export default function About() {
                 <span style={styles.highlight}>Network Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK &amp; designed Ticketing System
               </p>
             </div>
+            <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
+              <IconBriefcase />
+              <p style={styles.text}>
+                <span style={styles.highlight}>Service Desk &amp; Field Support Intern</span> at Deutsche Business Solutions &mdash; Assisted technical support, remote troubleshooting, ServiceNow, maintained POS systems for Caltex
+              </p>
+            </div>
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
               <IconWrench />
               <p style={styles.text}>
-                <span style={styles.highlight}>Tech Stack:</span> Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust
+                <span style={styles.highlight}>Tech Stack:</span> Java &middot; Spring Boot &middot; REST API &middot; Android &middot; Kotlin &middot; PHP &middot; Rust &middot; ServiceNow
               </p>
             </div>
           </div>
