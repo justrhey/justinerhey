@@ -111,12 +111,11 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>Network and System Engineer Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global</p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space &middot; August 27 – October 28, 2025</p>
                   <div style={styles.detailList}>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Built DNS automation SDK with Java Swing for ICMP/TCP monitoring</p>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Managed remote servers and Active Directory</p>
                     <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Used a Linux CLI application for outbound/inbound call routing</p>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Escalation pipeline: L1 &#8594; L2 (me) &#8594; escalation if unresolved</p>
                   </div>
                 </div>
               </div>
@@ -125,13 +124,13 @@ export default function About() {
                 <IconBriefcase />
                 <div>
                   <p style={styles.text}>
-                    <span style={styles.highlight}>Service Desk and Field Support Intern</span>
+                    <span style={styles.highlight}>Field Support and Desk Support Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
+                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions &middot; January 5, 2026 – March 14, 2026</p>
                   <div style={styles.detailList}>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting for 200+ users via ServiceNow</p>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> QA'd POS systems for data handling compliance and Wamos sync verification</p>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Daily XML backups for critical configuration and transaction data</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Performed QA, setup, and maintenance of POS systems across Caltex fuel stations for reliable transaction processing</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Administered daily XML backup routines for critical configuration and transaction data to ensure disaster recovery readiness</p>
                   </div>
                 </div>
               </div>
