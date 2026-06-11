@@ -111,8 +111,8 @@ export default function ProjectModal({ project, onClose }) {
 
         <div style={styles.divider} />
 
-        <p style={styles.storyLabel}>The Story</p>
-        <p style={styles.story}>{project.story}</p>
+        <p style={styles.sectionLabel}>Overview</p>
+        <p style={styles.story}>{project.intro}</p>
 
         <div style={styles.actions}>
           <a

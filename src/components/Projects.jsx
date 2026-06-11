@@ -6,42 +6,42 @@ const projects = [
     title: 'DNS Ping Automation SDK',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
     role: 'Solo Developer',
-    story: "During my internship at CallHounds Global, I noticed the team was manually pinging DNS servers through CMD - type ping, wait, check, repeat. I already knew Java, so I built a tool that automated the whole process: logging, sound alerts, background execution. It used OOP with some spaghetti code, but it got the job done. That was my first real programming project.",
+    intro: "Built a Java SDK that automates DNS ping monitoring with structured logging and sound notifications. Replaced manual CMD-based workflows. Uses OOP patterns. Deployed during internship at CallHounds Global.",
     url: 'https://github.com/justrhey/Pinger',
   },
   {
     title: 'Ticketing System (Spring Boot)',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     role: 'Solo Developer',
-    story: "After seeing the DNS tool, the IT department head asked if I could build a ticketing system for them. I said yes, then panicked because I had never built a web app before. I learned Spring Boot as I went, building one feature at a time. Every time I finished something, I would ask for a review: 'Is this what you had in mind?' Then they would tell me what to add next. Basically Agile without knowing what Agile was. It taught me how to turn someone else's requirements into working software, one iteration at a time.",
+    intro: "RESTful ticketing system with layered DAO/Service/Repository architecture. GET endpoints, toString representation, structured data handling. Built for the IT department at CallHounds Global with iterative feedback cycles.",
     url: 'https://github.com/justrhey/ticket-management-system',
   },
   {
     title: 'EHR Blockchain System',
     tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
     role: 'Capstone Project',
-    story: 'My college capstone, a blockchain-based Electronic Health Record system. Built in Rust. It has JWT authentication, Stellar identity integration, AES-GCM encryption, TOTP 2FA, FHIR outbound, and PostgreSQL persistence. Definitely the hardest thing I have attempted so far. I spent countless nights debugging Rust borrow checker errors and figuring out how blockchain actually works under the hood.',
+    intro: 'Blockchain-based Electronic Health Record system in Rust. Features JWT auth, Stellar identity, AES-GCM encryption, TOTP 2FA, FHIR outbound, and PostgreSQL persistence. Capstone project for BS IT degree.',
     url: 'https://github.com/justrhey/capstone',
   },
   {
     title: 'Cassie',
     tech: ['Kotlin', 'Jetpack Compose', 'Android', 'Media Player', 'Room DB'],
     role: 'Solo Developer',
-    story: 'I built this Android music player to learn Kotlin and Jetpack Compose from scratch. It has lyrics display, an equalizer, playlist management, and a party mode that generates song lines using grammar rules. Most of the code was written while watching tutorials at 2am.',
+    intro: 'Android music player with lyrics display, equalizer, playlist management, and grammar-based party mode. Built with Kotlin and Jetpack Compose.',
     url: 'https://github.com/justrhey/Cassie',
   },
   {
     title: 'Usmentz',
     tech: ['Java', 'Android', 'Room DB', 'Firestore', 'Material Design'],
     role: 'Solo Developer',
-    story: 'A date planning Android app with calendar, expense tracking, photo booth, and reviews. I wanted to understand how to structure a full mobile app with local persistence (Room DB) and cloud sync (Firestore). My first experience with Material Design guidelines.',
+    intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync with Firestore.',
     url: 'https://github.com/justrhey/usmentz',
   },
   {
     title: 'POS System',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
     role: 'Solo Developer',
-    story: 'A simple point-of-sale system for small business inventory and transaction management. Built with PHP to understand how traditional LAMP stack web apps work end to end, from database schema design to rendering HTML.',
+    intro: 'Point-of-sale system for small business inventory and transaction management. Built with PHP and MySQL.',
     url: 'https://github.com/justrhey/pos-system',
   },
 ]
@@ -120,7 +120,7 @@ export default function Projects() {
                 ))}
               </div>
               <span style={styles.link}>
-                Read the story &rarr;
+                Details &rarr;
               </span>
             </div>
           ))}

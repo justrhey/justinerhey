@@ -77,12 +77,9 @@ export default function Hero() {
           </h1>
           <p style={heroStyles.tagline}>IT Graduate &bull; Learning Java &amp; Spring Boot</p>
           <p style={heroStyles.subtitle}>
-            During my Network Engineer internship at CallHounds Global, I noticed the team was doing manual DNS
-            pings through CMD. I thought there might be a better way, so I used my Java knowledge to build
-            a small automation tool. That first project led me to discover Spring Boot, and before I knew it,
-            I was designing a ticketing system with the IT department head.
-            <br /><br />
-            I'm still early in my journey, but I love solving problems through code.
+            Network Engineer intern at CallHounds Global. Built a Java DNS ping automation tool
+            to replace manual CMD workflows, then designed a Spring Boot ticketing system with the
+            IT department head. Java, Spring Boot, and backend development.
           </p>
           <div style={heroStyles.cta}>
             <button
