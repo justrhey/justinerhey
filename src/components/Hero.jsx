@@ -78,7 +78,7 @@ export default function Hero() {
           <p style={heroStyles.tagline}>IT Graduate &bull; Learning Java &amp; Spring Boot</p>
           <p style={heroStyles.subtitle}>
             During my Network Engineer internship at CallHounds Global, I noticed the team was doing manual DNS
-            pings through CMD. I thought there might be a better way — so I spent nights learning Java to build
+            pings through CMD. I thought there might be a better way, so I used my Java knowledge to build
             a small automation tool. That first project led me to discover Spring Boot, and before I knew it,
             I was designing a ticketing system with the IT department head.
             <br /><br />

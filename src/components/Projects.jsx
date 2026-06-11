@@ -6,21 +6,21 @@ const projects = [
     title: 'DNS Ping Automation SDK',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
     role: 'Solo Developer',
-    story: "During my internship at CallHounds Global, I noticed the team was manually pinging DNS servers through CMD — type ping, wait, check, repeat. I thought there had to be a better way. I went home, opened YouTube, and started learning Java. A few weeks later, I had a working tool that automated the whole process: logging, sound alerts, background execution. It wasn't pretty code, but it worked. That was my first real programming project.",
+    story: "During my internship at CallHounds Global, I noticed the team was manually pinging DNS servers through CMD - type ping, wait, check, repeat. I already knew Java, so I built a tool that automated the whole process: logging, sound alerts, background execution. It used OOP with some spaghetti code, but it got the job done. That was my first real programming project.",
     url: 'https://github.com/justrhey/Pinger',
   },
   {
     title: 'Ticketing System (Spring Boot)',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     role: 'Solo Developer',
-    story: "After seeing the DNS tool, the IT department head asked if I could build a ticketing system for them. I said yes — then panicked because I'd never built a web app before. I learned Spring Boot as I went, building one feature at a time. Every time I finished something, I'd ask for a review: 'Is this what you had in mind?' Then they'd tell me what to add next. Basically Agile without knowing what Agile was. It taught me how to turn someone else's requirements into working software, one iteration at a time.",
+    story: "After seeing the DNS tool, the IT department head asked if I could build a ticketing system for them. I said yes, then panicked because I had never built a web app before. I learned Spring Boot as I went, building one feature at a time. Every time I finished something, I would ask for a review: 'Is this what you had in mind?' Then they would tell me what to add next. Basically Agile without knowing what Agile was. It taught me how to turn someone else's requirements into working software, one iteration at a time.",
     url: 'https://github.com/justrhey/ticket-management-system',
   },
   {
     title: 'EHR Blockchain System',
     tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
     role: 'Capstone Project',
-    story: 'My college capstone — a blockchain-based Electronic Health Record system. Built in Rust. It has JWT authentication, Stellar identity integration, AES-GCM encryption, TOTP 2FA, FHIR outbound, and PostgreSQL persistence. Definitely the hardest thing I have attempted so far. I spent countless nights debugging Rust borrow checker errors and figuring out how blockchain actually works under the hood.',
+    story: 'My college capstone, a blockchain-based Electronic Health Record system. Built in Rust. It has JWT authentication, Stellar identity integration, AES-GCM encryption, TOTP 2FA, FHIR outbound, and PostgreSQL persistence. Definitely the hardest thing I have attempted so far. I spent countless nights debugging Rust borrow checker errors and figuring out how blockchain actually works under the hood.',
     url: 'https://github.com/justrhey/capstone',
   },
   {
@@ -41,7 +41,7 @@ const projects = [
     title: 'POS System',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
     role: 'Solo Developer',
-    story: 'A simple point-of-sale system for small business inventory and transaction management. Built with PHP to understand how traditional LAMP stack web apps work end-to-end — from database schema design to rendering HTML.',
+    story: 'A simple point-of-sale system for small business inventory and transaction management. Built with PHP to understand how traditional LAMP stack web apps work end to end, from database schema design to rendering HTML.',
     url: 'https://github.com/justrhey/pos-system',
   },
 ]
