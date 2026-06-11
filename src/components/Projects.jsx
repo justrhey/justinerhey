@@ -4,80 +4,85 @@ import ProjectModal from './ProjectModal.jsx'
 const projects = [
   {
     title: 'DNS Ping Automation SDK',
+    role: 'Solo Developer',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
-    role: 'Personal Project',
-    intro: "Java SDK for automated DNS ping monitoring. Structured logging, sound notifications, CLI-based. OOP patterns. Replaced manual CMD workflows during internship at CallHounds Global.",
     url: 'https://github.com/justrhey/Pinger',
+    intro: 'Java SDK for automated DNS ping monitoring with ICMP/TCP support. Tracks server availability, latency, and packet loss.',
+    images: null
   },
   {
     title: 'Ticketing System (Spring Boot)',
+    role: 'Solo Developer',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
-    role: 'Personal Project',
-    intro: "RESTful ticketing system. DAO/Service/Repository architecture. GET endpoints, toString, structured data handling. Built for IT department with iterative feedback cycles.",
     url: 'https://github.com/justrhey/ticket-management-system',
+    intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management.',
+    images: null
   },
   {
     title: 'EHR Blockchain System',
-    tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
     role: 'Capstone Project',
-    intro: 'Blockchain-based EHR system in Rust. JWT auth, Stellar identity, AES-GCM encryption, TOTP 2FA, FHIR outbound, PostgreSQL. BS IT capstone project.',
+    tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
     url: 'https://github.com/justrhey/capstone',
+    intro: 'Blockchain-based Electronic Health Record system in Rust with JWT auth, Stellar identity, AES-GCM encryption, and FHIR support.',
+    images: null
   },
   {
     title: 'Cassie',
+    role: 'Solo Developer',
     tech: ['Kotlin', 'Jetpack Compose', 'Android', 'Media Player', 'Room DB'],
-    role: 'Personal Project',
-    intro: 'Android music player. Kotlin, Jetpack Compose. Lyrics display, equalizer, playlist management, grammar-based party mode.',
     url: 'https://github.com/justrhey/Cassie',
-    images: ['albums.jpeg', 'artist.jpeg', 'home.jpeg', 'playlist.jpeg', 'top50.jpeg'],
+    intro: 'Android music player with Jetpack Compose UI. Features playlist management, equalizer, lyrics display, and grammar-based party mode.',
+    images: ['albums.jpeg', 'artist.jpeg', 'home.jpeg', 'playlist.jpeg', 'top50.jpeg']
   },
   {
     title: 'Usmentz',
+    role: 'Solo Developer',
     tech: ['Java', 'Android', 'Room DB', 'Firestore', 'Material Design'],
-    role: 'Personal Project',
-    intro: 'Date planning Android app. Calendar, expense tracking, photo booth, reviews. Room DB local storage, Firestore sync.',
     url: 'https://github.com/justrhey/usmentz',
+    intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync via Firestore.',
+    images: null
   },
   {
     title: 'POS System',
+    role: 'Solo Developer',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
-    role: 'Personal Project',
-    intro: 'Point-of-sale system. PHP, MySQL. Inventory management, transaction tracking for small businesses.',
     url: 'https://github.com/justrhey/pos-system',
-  },
+    intro: 'Point-of-sale system for small business inventory and transaction management. Full LAMP stack from DB schema to rendered HTML.',
+    images: null
+  }
 ]
 
-const styles = {
+const cardStyles = {
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-    gap: 20,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+    gap: 16,
   },
   card: {
     border: '1px solid #1a1a1a',
     padding: 24,
+    cursor: 'pointer',
+    transition: 'all 0.2s',
     display: 'flex',
     flexDirection: 'column',
-    transition: 'all 0.2s',
-    cursor: 'pointer',
-  },
-  title: {
-    fontSize: '1.05rem',
-    fontWeight: 600,
-    marginBottom: 4,
   },
   role: {
-    fontSize: '0.75rem',
+    fontSize: '0.65rem',
     color: '#555',
     textTransform: 'uppercase',
     letterSpacing: '1px',
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: '1.1rem',
+    fontWeight: 600,
     marginBottom: 14,
   },
-  tech: {
+  tags: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 16,
+    marginBottom: 'auto',
   },
   tag: {
     fontSize: '0.7rem',
@@ -88,47 +93,57 @@ const styles = {
   link: {
     fontSize: '0.8rem',
     color: '#555',
+    marginTop: 16,
+    transition: 'color 0.2s',
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 6,
-    marginTop: 'auto',
-    transition: 'color 0.2s',
+    gap: 4,
   },
 }
 
 export default function Projects() {
-  const [selected, setSelected] = useState(null)
+  const [selectedProject, setSelectedProject] = useState(null)
 
   return (
     <section id="projects">
       <div className="container">
         <p className="section-label">Projects</p>
         <h2 className="section-title">Things I've Built</h2>
-        <div style={styles.grid}>
-          {projects.map((p) => (
+        <div style={cardStyles.grid}>
+          {projects.map((project, index) => (
             <div
-              key={p.title}
-              style={styles.card}
-              onClick={() => setSelected(p)}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#333' }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a' }}
+              key={index}
+              style={cardStyles.card}
+              onClick={() => setSelectedProject(project)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#333'
+                const link = e.currentTarget.querySelector('.card-link')
+                if (link) { link.style.color = '#ccc' }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#1a1a1a'
+                const link = e.currentTarget.querySelector('.card-link')
+                if (link) { link.style.color = '#555' }
+              }}
             >
-              <h3 style={styles.title}>{p.title}</h3>
-              <p style={styles.role}>{p.role}</p>
-              <div style={styles.tech}>
-                {p.tech.map((t) => (
-                  <span key={t} style={styles.tag}>{t}</span>
+              <p style={cardStyles.role}>{project.role}</p>
+              <h3 style={cardStyles.title}>{project.title}</h3>
+              <div style={cardStyles.tags}>
+                {project.tech.map((tag, i) => (
+                  <span key={i} style={cardStyles.tag}>{tag}</span>
                 ))}
               </div>
-              <span style={styles.link}>
-                Details &rarr;
-              </span>
+              <span className="card-link" style={cardStyles.link}>Read the story &rarr;</span>
             </div>
           ))}
         </div>
+        {selectedProject && (
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
       </div>
-
-      <ProjectModal project={selected} onClose={() => setSelected(null)} />
     </section>
   )
 }

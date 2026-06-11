@@ -3,7 +3,6 @@ const heroStyles = {
     minHeight: '100vh',
     display: 'flex',
     alignItems: 'center',
-    borderBottom: '1px solid #1a1a1a',
   },
   content: {
     maxWidth: 800,
@@ -75,9 +74,9 @@ export default function Hero() {
           <h1 style={heroStyles.name}>
             Justine <span style={heroStyles.highlight}>Rhey</span>
           </h1>
-          <p style={heroStyles.tagline}>IT Graduate &bull; Learning Java &amp; Spring Boot</p>
+          <p style={heroStyles.tagline}>IT Graduate — Learning Java &amp; Spring Boot</p>
           <p style={heroStyles.subtitle}>
-            BS Information Technology &bull; Java &bull; Spring Boot &bull; Backend Development &bull; Android
+            BS Information Technology &middot; Java &middot; Spring Boot &middot; Backend Development &middot; Android
           </p>
           <div style={heroStyles.cta}>
             <button
