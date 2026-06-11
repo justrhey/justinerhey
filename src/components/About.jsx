@@ -81,10 +81,10 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I work at the intersection of software development and networking. On the programming side, I build with Java and Spring Boot. On the infrastructure side, I repurposed an old laptop with Ubuntu Server CLI and tried SSH over it to test connectivity. Foundational stuff, but it gives me a better sense of how systems communicate.
+          A backend developer who understands the network beneath the code. I build production-grade APIs and services with <strong style={{ color: '#fff' }}>Java</strong> and <strong style={{ color: '#fff' }}>Spring Boot</strong>, and I bring hands-on experience with Linux servers, remote access via SSH, and basic network security concepts like wireless handshake capture and Nmap reconnaissance.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
-          On the security side, I have captured wireless handshakes with aircrack-ng and tried my hand at Nmap. I am also drawn to what happens beneath the interface. How a DNS query resolves, what a packet looks like on the wire, and how a Linux desktop behaves when customized beyond the defaults. Still building experience, but I find these areas worth the time.
+          What sets me apart is curiosity about the full stack — from DNS resolution and packet-level inspection to customizing Linux environments from the command line up. I may still be building experience, but I approach every system with the same mindset: understand how it works before you build on it.
         </p>
 
         <div className="grid-2">
