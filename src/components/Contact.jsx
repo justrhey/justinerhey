@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
-const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
 const FORMSPREE_ID = 'xzdqajkr'
 
 const styles = {
@@ -169,21 +168,36 @@ export default function Contact() {
     return () => clearInterval(interval)
   }, [])
 
-  // rate limiter — max 3 submissions per hour (client-side)
+  // rate limiter — first 3 tries free, then 1min wait stacking up
   const checkRateLimit = () => {
     const key = 'portfolio_submit_count'
     const hour = 60 * 60 * 1000
     const now = Date.now()
     let data
     try { data = JSON.parse(localStorage.getItem(key)) } catch { data = null }
+
+    // Reset if more than an hour has passed
     if (!data || now - data.time > hour) {
       localStorage.setItem(key, JSON.stringify({ count: 1, time: now }))
-      return true
+      return { allowed: true }
     }
-    if (data.count >= 3) return false
+
     data.count++
     localStorage.setItem(key, JSON.stringify(data))
-    return true
+
+    // First 3 tries — always allowed
+    if (data.count <= 3) return { allowed: true }
+
+    // After 3: wait time stacks (1min, 2min, 3min...)
+    const waitMinutes = data.count - 3
+    const nextAllowed = data.time + waitMinutes * 60 * 1000
+    if (now < nextAllowed) {
+      data.count-- // undo the increment since we're blocking
+      localStorage.setItem(key, JSON.stringify(data))
+      return { allowed: false, wait: waitMinutes }
+    }
+
+    return { allowed: true }
   }
 
   const onSubmit = async (e) => {
@@ -201,8 +215,9 @@ export default function Contact() {
       return
     }
 
-    if (!checkRateLimit()) {
-      setCaptchaErr('Too many submissions. Please try again later.')
+    const limit = checkRateLimit()
+    if (!limit.allowed) {
+      setCaptchaErr(`Too fast. Please wait ${limit.wait} minute${limit.wait > 1 ? 's' : ''} before trying again.`)
       return
     }
 
