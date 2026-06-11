@@ -178,6 +178,27 @@ section {
   min-width: 0;
 }
 
+/* ---- Two-column grids (About, Contact) ---- */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ---- Info rows (About) ---- */
+.info-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.info-row {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+
 @media (max-width: 768px) {
   .section-title {
     font-size: 1.5rem;
@@ -196,9 +217,48 @@ section {
     height: 110px;
     font-size: 2rem;
   }
+  .hero-cta {
+    justify-content: center;
+  }
   .btn-primary, .btn-outline {
     padding: 12px 28px;
     font-size: 0.8rem;
+  }
+  .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .contact-form {
+    gap: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding: 60px 0;
+  }
+  .container {
+    padding: 0 16px;
+  }
+  .section-title {
+    font-size: 1.25rem;
+    margin-bottom: 24px;
+  }
+  .hero-avatar {
+    width: 90px;
+    height: 90px;
+    font-size: 1.6rem;
+  }
+  .hero-wrap {
+    gap: 24px;
+  }
+  .info-row {
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 0;
+  }
+  .grid-2 {
+    gap: 24px;
   }
 }
 

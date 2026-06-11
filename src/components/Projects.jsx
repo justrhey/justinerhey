@@ -7,9 +7,9 @@ const projects = [
     title: 'DNS Ping Automation SDK',
     slug: 'dns-ping',
     role: 'Internship Project',
-    tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
+    tech: ['Java', 'Java Swing', 'Networking', 'DNS', 'ICMP/TCP', 'File I/O'],
     url: 'https://github.com/justrhey/Pinger',
-    intro: 'Java SDK for automated DNS ping monitoring with ICMP/TCP support. Tracks server availability, latency, and packet loss.',
+    intro: 'During my internship as a Network and System Intern, I was asked if I could code. I chose Java and delivered a production-grade DNS monitoring tool built with Java Swing — handling ICMP/TCP pings, uptime tracking, latency analysis, packet loss detection, and automated report exports. Every feature solved a real problem I encountered on the job.',
     images: ['main.png']
   },
   {

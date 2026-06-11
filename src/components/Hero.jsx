@@ -55,7 +55,7 @@ export default function Hero() {
             <p style={heroStyles.subtitle}>
               BS Information Technology &middot; Java &middot; Spring Boot &middot; Backend Development &middot; Android
             </p>
-            <div style={heroStyles.cta}>
+            <div className="hero-cta" style={heroStyles.cta}>
               <button
                 className="btn-primary"
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}

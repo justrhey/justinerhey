@@ -1,10 +1,4 @@
 const styles = {
-  grid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: 48,
-    alignItems: 'start',
-  },
   text: {
     color: '#aaa',
     fontSize: '0.95rem',
@@ -13,16 +7,6 @@ const styles = {
   highlight: {
     color: '#fff',
     fontWeight: 500,
-  },
-  info: {
-    display: 'grid',
-    gap: 16,
-  },
-  row: {
-    display: 'flex',
-    gap: 12,
-    padding: '14px 0',
-    borderBottom: '1px solid #1a1a1a',
   },
   label: {
     color: '#666',
@@ -66,7 +50,7 @@ export default function About() {
       <div className="container">
         <p className="section-label">About</p>
         <h2 className="section-title">Highlights</h2>
-        <div style={styles.grid}>
+        <div className="grid-2">
           <div>
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
               <IconGraduation />
@@ -87,28 +71,28 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div style={styles.info}>
-            <div style={styles.row}>
+          <div className="info-grid">
+            <div className="info-row">
               <span style={styles.label}>Name</span>
               <span style={styles.value}>Justine Rhey M. Tambong</span>
             </div>
-            <div style={styles.row}>
+            <div className="info-row">
               <span style={styles.label}>Location</span>
               <span style={styles.value}>Metro Manila, Philippines</span>
             </div>
-            <div style={styles.row}>
+            <div className="info-row">
               <span style={styles.label}>Degree</span>
               <span style={styles.value}>BS Information Technology</span>
             </div>
-            <div style={styles.row}>
+            <div className="info-row">
               <span style={styles.label}>School</span>
               <span style={styles.value}>Jesus Reigns Christian College</span>
             </div>
-            <div style={styles.row}>
+            <div className="info-row">
               <span style={styles.label}>Email</span>
               <span style={styles.value}>justrhey.tambong@gmail.com</span>
             </div>
-            <div style={styles.row}>
+            <div className="info-row">
               <span style={styles.label}>GitHub</span>
               <span style={styles.value}>github.com/justrhey</span>
             </div>
