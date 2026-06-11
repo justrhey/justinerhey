@@ -63,16 +63,13 @@ export default function Hero() {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-wrap">
           <div className={`hero-avatar${!imgLoaded ? ' skeleton skeleton-circle' : ''}`}>
-            <picture>
-              <source srcSet="./images/new_profike.webp" type="image/webp" />
-              <img
-                src="./images/new_profike.png"
-                alt="Justine Rhey M. Tambong"
-                loading="lazy"
-                onLoad={() => setImgLoaded(true)}
-                style={imgLoaded ? {} : { display: 'none' }}
-              />
-            </picture>
+            <img
+              src="./images/new_profike.png"
+              alt="Justine Rhey M. Tambong"
+              onLoad={() => setImgLoaded(true)}
+              onError={() => setImgLoaded(true)}
+              style={imgLoaded ? {} : { display: 'none' }}
+            />
           </div>
           <div className="hero-text">
             <p style={heroStyles.greeting}>I build tools that teams actually use</p>

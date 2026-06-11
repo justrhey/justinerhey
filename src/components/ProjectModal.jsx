@@ -181,7 +181,7 @@ export default function ProjectModal({ project, onClose }) {
               loading="lazy"
               style={{ ...styles.image, display: imgLoaded ? 'block' : 'none' }}
               onLoad={() => setImgLoaded(true)}
-              onError={(e) => { e.target.style.display = 'none'; setImgLoaded(true) }}
+              onError={() => setImgLoaded(true)}
             />
             {images.length > 1 && (
               <>
