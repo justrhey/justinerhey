@@ -147,36 +147,25 @@ export default function Contact() {
   const [captchaErr, setCaptchaErr] = useState('')
   const ref = useScrollReveal()
   const formRef = useRef(null)
-  const captchaInputRef = useRef(null)
   const captchaContainerRef = useRef(null)
-  const captchaRendered = useRef(false)
+  const widgetIdRef = useRef(null)
 
-  // render captcha widget as soon as grecaptcha is available
+  // render captcha once API is ready
   useEffect(() => {
     const renderWidget = () => {
-      if (captchaRendered.current || !captchaContainerRef.current) return
-      if (typeof window.grecaptcha?.render !== 'function') return false
-      captchaRendered.current = true
-      window.grecaptcha.render(captchaContainerRef.current, {
+      if (!captchaContainerRef.current || widgetIdRef.current !== null) return
+      if (typeof window.grecaptcha?.render !== 'function') return
+      widgetIdRef.current = window.grecaptcha.render(captchaContainerRef.current, {
         sitekey: RECAPTCHA_SITE_KEY,
         theme: 'dark',
-        callback: (token) => {
-          if (captchaInputRef.current) captchaInputRef.current.value = token
-        },
-        'expired-callback': () => {
-          if (captchaInputRef.current) captchaInputRef.current.value = ''
-        },
       })
-      return true
     }
-
-    // Try immediately
-    if (renderWidget()) return
-
-    // Poll until grecaptcha is ready
+    // Try now
+    if (window.recaptchaApiReady) { renderWidget(); return }
+    // Poll until ready
     const interval = setInterval(() => {
-      if (renderWidget()) clearInterval(interval)
-    }, 300)
+      if (window.recaptchaApiReady) { renderWidget(); clearInterval(interval) }
+    }, 200)
     return () => clearInterval(interval)
   }, [])
 
@@ -202,11 +191,10 @@ export default function Contact() {
     setErrMsg('')
     setCaptchaErr('')
 
-    // Try to get token from hidden input or directly from grecaptcha
-    let token = captchaInputRef.current?.value
-    if (!token && typeof window.grecaptcha?.getResponse === 'function') {
-      token = window.grecaptcha.getResponse()
-    }
+    // Get captcha token directly from the rendered widget
+    const token = typeof window.grecaptcha?.getResponse === 'function'
+      ? window.grecaptcha.getResponse(widgetIdRef.current)
+      : ''
 
     if (!token) {
       setCaptchaErr('Please complete the captcha.')
@@ -220,11 +208,11 @@ export default function Contact() {
 
     setSubmitting(true)
 
-    // Ensure hidden input has the token before sending
-    if (captchaInputRef.current) captchaInputRef.current.value = token
-
     try {
+      // Build form data and inject captcha token
       const formData = new FormData(formRef.current)
+      formData.set('g-recaptcha-response', token)
+
       const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
         method: 'POST',
         body: formData,
@@ -234,7 +222,9 @@ export default function Contact() {
       if (res.ok) {
         setSent(true)
         formRef.current.reset()
-        if (window.grecaptcha) window.grecaptcha.reset()
+        if (window.grecaptcha && widgetIdRef.current !== null) {
+          window.grecaptcha.reset(widgetIdRef.current)
+        }
       } else {
         let msg = 'Something went wrong. Please email me directly.'
         try {
@@ -307,9 +297,6 @@ export default function Contact() {
                         onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
                         onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
             </div>
-
-            {/* hidden captcha token — updated by captcha callback */}
-            <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
 
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
