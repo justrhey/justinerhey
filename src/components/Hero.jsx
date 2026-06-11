@@ -77,8 +77,7 @@ export default function Hero() {
           </h1>
           <p style={heroStyles.tagline}>IT Graduate &bull; Learning Java &amp; Spring Boot</p>
           <p style={heroStyles.subtitle}>
-            BS Information Technology graduate. Aspiring software developer.
-            Java, Spring Boot, and backend development.
+            BS Information Technology &bull; Java &bull; Spring Boot &bull; Backend Development &bull; Android
           </p>
           <div style={heroStyles.cta}>
             <button

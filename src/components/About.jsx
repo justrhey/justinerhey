@@ -8,7 +8,7 @@ const styles = {
   text: {
     color: '#aaa',
     fontSize: '1rem',
-    lineHeight: 1.9,
+    lineHeight: 2,
   },
   highlight: {
     color: '#fff',
@@ -42,23 +42,19 @@ export default function About() {
     <section id="about">
       <div className="container">
         <p className="section-label">About</p>
-        <h2 className="section-title">Background</h2>
+        <h2 className="section-title">Highlights</h2>
         <div style={styles.grid}>
           <div>
             <p style={styles.text}>
-              BS Information Technology graduate from <span style={styles.highlight}>Jesus Reigns Christian College</span>.
+              BS Information Technology &bull; Jesus Reigns Christian College
             </p>
             <br />
             <p style={styles.text}>
-              Completed a <span style={styles.highlight}>Network Engineer internship</span> at CallHounds Global
-              where I built a Java DNS ping automation tool and designed a Spring Boot ticketing system
-              in collaboration with the IT department head.
+              CallHounds Global &bull; Network Engineer Intern &bull; Built DNS automation SDK &bull; Designed Ticketing System
             </p>
             <br />
             <p style={styles.text}>
-              Java and <span style={styles.highlight}>Spring Boot</span> for backend development,
-              with experience in Android, networking, and database management.
-              Looking for a junior developer role.
+              Java &bull; Spring Boot &bull; REST API &bull; Android &bull; Kotlin &bull; PHP &bull; Rust
             </p>
           </div>
           <div style={styles.info}>
