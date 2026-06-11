@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const FORMSPREE_ID = 'xzdqajkr'
+const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
 
 const styles = {
   form: {
