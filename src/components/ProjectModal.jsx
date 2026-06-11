@@ -141,14 +141,21 @@ const styles = {
 
 export default function ProjectModal({ project, onClose }) {
   const [imgIndex, setImgIndex] = useState(0)
+  const [imgLoaded, setImgLoaded] = useState(false)
 
   if (!project) return null
 
   const images = project.images || []
   const hasImages = images.length > 0
 
-  const prevImg = () => setImgIndex((i) => (i > 0 ? i - 1 : images.length - 1))
-  const nextImg = () => setImgIndex((i) => (i < images.length - 1 ? i + 1 : 0))
+  const prevImg = () => {
+    setImgIndex((i) => (i > 0 ? i - 1 : images.length - 1))
+    setImgLoaded(false)
+  }
+  const nextImg = () => {
+    setImgIndex((i) => (i < images.length - 1 ? i + 1 : 0))
+    setImgLoaded(false)
+  }
 
   return (
     <div style={styles.backdrop} onClick={onClose}>
@@ -167,11 +174,13 @@ export default function ProjectModal({ project, onClose }) {
 
         {hasImages && (
           <div style={styles.viewerWrap}>
+            {!imgLoaded && <div className="skeleton skeleton-image" />}
             <img
               src={`./images/${project.slug || project.title.toLowerCase()}/${images[imgIndex]}`}
               alt={`${project.title} screenshot ${imgIndex + 1}`}
-              style={styles.image}
-              onError={(e) => { e.target.style.display = 'none' }}
+              style={{ ...styles.image, display: imgLoaded ? 'block' : 'none' }}
+              onLoad={() => setImgLoaded(true)}
+              onError={(e) => { e.target.style.display = 'none'; setImgLoaded(true) }}
             />
             {images.length > 1 && (
               <>
