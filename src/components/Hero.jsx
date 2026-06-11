@@ -45,7 +45,9 @@ export default function Hero() {
     <section id="hero" style={heroStyles.section}>
       <div className="container">
         <div className="hero-wrap">
-          <div className="hero-avatar">JR</div>
+          <div className="hero-avatar">
+            <img src="./images/profile_justine.jpeg" alt="Justine Rhey M. Tambong" />
+          </div>
           <div className="hero-text">
             <p style={heroStyles.greeting}>Hi, I'm</p>
             <h1 style={heroStyles.name}>
