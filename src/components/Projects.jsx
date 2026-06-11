@@ -5,14 +5,14 @@ const projects = [
   {
     title: 'DNS Ping Automation SDK',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
-    role: 'Solo Developer',
+    role: 'Personal Project',
     intro: "Built a Java SDK that automates DNS ping monitoring with structured logging and sound notifications. Replaced manual CMD-based workflows. Uses OOP patterns. Deployed during internship at CallHounds Global.",
     url: 'https://github.com/justrhey/Pinger',
   },
   {
     title: 'Ticketing System (Spring Boot)',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
-    role: 'Solo Developer',
+    role: 'Personal Project',
     intro: "RESTful ticketing system with layered DAO/Service/Repository architecture. GET endpoints, toString representation, structured data handling. Built for the IT department at CallHounds Global with iterative feedback cycles.",
     url: 'https://github.com/justrhey/ticket-management-system',
   },
@@ -26,7 +26,7 @@ const projects = [
   {
     title: 'Cassie',
     tech: ['Kotlin', 'Jetpack Compose', 'Android', 'Media Player', 'Room DB'],
-    role: 'Solo Developer',
+    role: 'Personal Project',
     intro: 'Android music player with lyrics display, equalizer, playlist management, and grammar-based party mode. Built with Kotlin and Jetpack Compose.',
     url: 'https://github.com/justrhey/Cassie',
     images: ['albums.jpeg', 'artist.jpeg', 'home.jpeg', 'playlist.jpeg', 'top50.jpeg'],
@@ -34,14 +34,14 @@ const projects = [
   {
     title: 'Usmentz',
     tech: ['Java', 'Android', 'Room DB', 'Firestore', 'Material Design'],
-    role: 'Solo Developer',
+    role: 'Personal Project',
     intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync with Firestore.',
     url: 'https://github.com/justrhey/usmentz',
   },
   {
     title: 'POS System',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
-    role: 'Solo Developer',
+    role: 'Personal Project',
     intro: 'Point-of-sale system for small business inventory and transaction management. Built with PHP and MySQL.',
     url: 'https://github.com/justrhey/pos-system',
   },
