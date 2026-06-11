@@ -2,6 +2,13 @@ import { useState } from 'react'
 import ProjectModal from './ProjectModal.jsx'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
+const roleColors = {
+  'Internship Project': '#4a9eff',
+  'Capstone Project': '#b388ff',
+  'Personal Project': '#69f0ae',
+  'School Project': '#ffab40',
+}
+
 const projects = [
   {
     title: 'DNS Ping Automation SDK',
@@ -25,7 +32,7 @@ const projects = [
     role: 'Capstone Project',
     tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
     url: 'https://github.com/justrhey/capstone',
-    intro: 'Blockchain-based Electronic Health Record system in Rust with JWT auth, Stellar identity, AES-GCM encryption, and FHIR support.',
+    intro: 'Capstone project exploring blockchain for secure health record exchange. Built in Rust with JWT auth, Stellar identity, and AES-GCM encryption — focused on understanding distributed trust rather than reinventing healthcare.',
     images: null
   },
   {
@@ -61,19 +68,28 @@ const cardStyles = {
     gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
     gap: 16,
   },
-  card: {
+  card: (role) => ({
     border: '1px solid #1a1a1a',
+    borderLeft: `3px solid ${roleColors[role] || '#333'}`,
     padding: 24,
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
-  },
+  }),
   role: {
     fontSize: '0.65rem',
     color: '#555',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     marginBottom: 10,
+  },
+  roleDot: {
+    display: 'inline-block',
+    width: 8,
+    height: 8,
+    borderRadius: '50%',
+    marginRight: 8,
+    verticalAlign: 'middle',
   },
   title: {
     fontSize: '1.1rem',
@@ -94,12 +110,12 @@ const cardStyles = {
   },
   link: {
     fontSize: '0.8rem',
-    color: '#555',
+    color: '#888',
     marginTop: 16,
-    transition: 'color 0.2s',
+    transition: 'color 0.25s, gap 0.25s',
     display: 'inline-flex',
     alignItems: 'center',
-    gap: 4,
+    gap: 6,
   },
 }
 
@@ -117,20 +133,23 @@ export default function Projects() {
             <div
               key={index}
               className="card-hover"
-              style={cardStyles.card}
+              style={cardStyles.card(project.role)}
               onClick={() => setSelectedProject(project)}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = '#333'
                 const link = e.currentTarget.querySelector('.card-link')
-                if (link) { link.style.color = '#ccc' }
+                if (link) { link.style.color = '#fff' }
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = '#1a1a1a'
                 const link = e.currentTarget.querySelector('.card-link')
-                if (link) { link.style.color = '#555' }
+                if (link) { link.style.color = '#888' }
               }}
             >
-              <p style={cardStyles.role}>{project.role}</p>
+              <p style={cardStyles.role}>
+                <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || '#555' }} />
+                {project.role}
+              </p>
               <h3 style={cardStyles.title}>{project.title}</h3>
               <div style={cardStyles.tags}>
                 {project.tech.map((tag, i) => (

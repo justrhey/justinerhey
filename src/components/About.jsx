@@ -1,4 +1,13 @@
+import useScrollReveal from '../hooks/useScrollReveal.js'
+
 const styles = {
+  intro: {
+    color: '#aaa',
+    fontSize: '0.95rem',
+    lineHeight: 1.9,
+    marginBottom: 36,
+    maxWidth: 600,
+  },
   text: {
     color: '#aaa',
     fontSize: '0.95rem',
@@ -41,15 +50,26 @@ const IconWrench = () => (
   </svg>
 )
 
-import useScrollReveal from '../hooks/useScrollReveal.js'
-
 export default function About() {
   const ref = useScrollReveal()
   return (
     <section id="about" ref={ref}>
       <div className="container">
         <p className="section-label">About</p>
-        <h2 className="section-title">Highlights</h2>
+        <h2 className="section-title">About Me</h2>
+
+        <p style={styles.intro}>
+          I got into tech the practical way — during my IT degree, I landed a Network Engineer Internship
+          at CallHounds Global where I was asked if I could code. I said yes, built a DNS automation tool
+          in Java Swing, and that project turned into a full ticketing system the team still uses.
+          That's when I knew: I don't just want to maintain systems — I want to build them.
+        </p>
+        <p style={{ ...styles.intro, marginBottom: 48 }}>
+          Now I'm looking for a junior developer role where I can bring that same ownership —
+          take a problem, figure it out, and ship working software. Java, Spring Boot, Android, or
+          backend — if there's a spec and a deadline, I'll deliver.
+        </p>
+
         <div className="grid-2">
           <div>
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
@@ -95,6 +115,16 @@ export default function About() {
             <div className="info-row">
               <span style={styles.label}>GitHub</span>
               <span style={styles.value}>github.com/justrhey</span>
+            </div>
+            <div className="info-row">
+              <span style={styles.label}>LinkedIn</span>
+              <span style={styles.value}>
+                <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'none' }}
+                   onMouseEnter={(e) => e.target.style.color = '#fff'}
+                   onMouseLeave={(e) => e.target.style.color = '#bbb'}>
+                  linkedin.com/in/justrhey
+                </a>
+              </span>
             </div>
           </div>
         </div>

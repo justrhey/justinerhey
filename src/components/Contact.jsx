@@ -144,14 +144,14 @@ export default function Contact() {
       } else {
         const text = await res.text()
         if (text.includes('captcha') || text.includes('CAPTCHA')) {
-          setError('Captcha verification failed. Please try again.')
+          setError('Captcha verification failed. Refresh and try again, or email me directly.')
           if (window.grecaptcha) window.grecaptcha.reset()
         } else {
-          setError('Something went wrong. Try again or email me directly.')
+          setError('Form submission failed. Please email me directly — I\'ll respond right away.')
         }
       }
     } catch {
-      setError('Network error. Please email me directly.')
+      setError('Could not reach the form service. Drop me an email instead at justrhey.tambong@gmail.com')
     }
     setSending(false)
   }
@@ -164,8 +164,8 @@ export default function Contact() {
         <div className="grid-2">
           <div>
             <p style={styles.intro}>
-              I'm looking for a junior developer role where I can learn and contribute.
-              If you'd like to chat, I'd love to hear from you.
+              I'm ready to build and ship. If you're hiring a junior developer
+              who delivers — Java, Spring Boot, Android, or backend — let's talk.
             </p>
             <div style={styles.links}>
               <a
@@ -187,6 +187,17 @@ export default function Contact() {
               >
                 <span style={styles.linkLabel}>GitHub</span>
                 github.com/justrhey
+              </a>
+              <a
+                href="https://linkedin.com/in/justrhey"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.link}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444' }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a' }}
+              >
+                <span style={styles.linkLabel}>LinkedIn</span>
+                linkedin.com/in/justrhey
               </a>
             </div>
           </div>

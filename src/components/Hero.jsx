@@ -62,6 +62,14 @@ export default function Hero() {
               >
                 See What I've Built
               </button>
+              <a
+                className="btn-resume"
+                href="./resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume &darr;
+              </a>
               <button
                 className="btn-outline"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
