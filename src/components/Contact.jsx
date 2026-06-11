@@ -206,13 +206,13 @@ export default function Contact() {
             </p>
             <div style={styles.links}>
               <a
-                href="mailto:justrhey.tambong021@gmail.com"
+                href="mailto:justrhey.tambong@gmail.com"
                 style={styles.link}
                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444' }}
                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a' }}
               >
                 <span style={styles.linkLabel}>Email</span>
-                justrhey.tambong021@gmail.com
+                justrhey.tambong@gmail.com
               </a>
               <a
                 href="https://github.com/justrhey"
@@ -271,8 +271,8 @@ export default function Contact() {
               <div>
                 <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
                 <p style={styles.fallbackLink}>
-                  <a href="mailto:justrhey.tambong021@gmail.com" style={{ color: '#888' }}>
-                    justrhey.tambong021@gmail.com
+                  <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>
+                    justrhey.tambong@gmail.com
                   </a>
                 </p>
               </div>

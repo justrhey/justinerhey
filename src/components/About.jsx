@@ -106,7 +106,7 @@ export default function About() {
             </div>
             <div style={styles.row}>
               <span style={styles.label}>Email</span>
-              <span style={styles.value}>justrhey.tambong021@gmail.com</span>
+              <span style={styles.value}>justrhey.tambong@gmail.com</span>
             </div>
             <div style={styles.row}>
               <span style={styles.label}>GitHub</span>
