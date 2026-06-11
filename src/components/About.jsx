@@ -81,10 +81,10 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I work at the intersection of software development and networking. I have repurposed an old laptop as a personal server and tried remoting into it, captured wireless handshakes with aircrack-ng, and tried my hand at Nmap. Foundational work, but it informs how I approach building and troubleshooting systems.
+          I work at the intersection of software development and networking. I repurposed an old laptop as a personal server and tried SSH over it to test connectivity. Foundational stuff, but it gives me a better sense of how systems communicate.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
-          I am drawn to what happens beneath the interface. How a DNS query resolves, what a packet looks like on the wire, and how a Linux desktop behaves when customized beyond the defaults. Still building experience in these areas, but I find them worth the time.
+          On the security side, I have captured wireless handshakes with aircrack-ng and tried my hand at Nmap. I am also drawn to what happens beneath the interface. How a DNS query resolves, what a packet looks like on the wire, and how a Linux desktop behaves when customized beyond the defaults. Still building experience, but I find these areas worth the time.
         </p>
 
         <div className="grid-2">
