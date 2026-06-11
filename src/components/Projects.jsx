@@ -44,7 +44,7 @@ const projects = [
   },
   {
     title: 'POS System',
-    role: 'Personal Project',
+    role: 'School Project',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
     url: 'https://github.com/justrhey/pos-system',
     intro: 'Point-of-sale system for small business inventory and transaction management. Full LAMP stack from DB schema to rendered HTML.',
