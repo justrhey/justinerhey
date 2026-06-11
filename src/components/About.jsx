@@ -81,7 +81,7 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I work at the intersection of software development and networking. I have set up a personal server over SSH, captured a TCP handshake in Wireshark, and run basic Nmap scans. Foundational work, but it informs how I approach building and troubleshooting systems.
+          I work at the intersection of software development and networking. I have set up a personal server over SSH, run basic wireless network scans, and tried my hand at Nmap. Foundational work, but it informs how I approach building and troubleshooting systems.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
           I am drawn to what happens beneath the interface. How a DNS query resolves, what a packet looks like on the wire, and how a Linux desktop behaves when customized beyond the defaults. Still building experience in these areas, but I find them worth the time.
