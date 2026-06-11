@@ -3,11 +3,9 @@ import { useForm } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const FORMSPREE_ID = 'xzdqajkr'
-const RECAPTCHA_SITE_KEY = '6LcxIhktAAAAAJblepWiL2LThw3lT_WWVkz4iy3x'
-// ⚠️ If Formspree returns error_codes=["invalid-keys"]:
-//    Go to formspree.io → your form → Settings → reCAPTCHA
-//    Paste the SECRET key that matches this SITE key from
-//    https://www.google.com/recaptcha/admin
+const RECAPTCHA_SITE_KEY = '6LcKeRktAAAAAChuBG9PXRi2lIvSj90vK7_lPqgt'
+// ⚠️ reCAPTCHA v3 (invisible) — set the SECRET key in Formspree dashboard:
+//    formspree.io → your form → Settings → reCAPTCHA
 
 const styles = {
   form: {
@@ -151,36 +149,11 @@ export default function Contact() {
   const [formErr, setFormErr] = useState('')
   const ref = useScrollReveal()
   const formRef = useRef(null)
-  const captchaContainerRef = useRef(null)
-  const widgetIdRef = useRef(null)
   const captchaInputRef = useRef(null)
 
-  // Render captcha once the API is ready
-  useEffect(() => {
-    const renderWidget = () => {
-      if (!captchaContainerRef.current || widgetIdRef.current !== null) return
-      if (typeof window.grecaptcha?.render !== 'function') return false
-      widgetIdRef.current = window.grecaptcha.render(captchaContainerRef.current, {
-        sitekey: RECAPTCHA_SITE_KEY,
-        theme: 'dark',
-      })
-      return true
-    }
-
-    if (renderWidget()) return
-
-    const interval = setInterval(() => {
-      if (renderWidget()) clearInterval(interval)
-    }, 300)
-    return () => clearInterval(interval)
-  }, [])
-
-  // Reset captcha and clear form error on successful submission
+  // Reset form on successful submission
   useEffect(() => {
     if (state.succeeded) {
-      if (window.grecaptcha && widgetIdRef.current !== null) {
-        window.grecaptcha.reset(widgetIdRef.current)
-      }
       formRef.current?.reset()
     }
   }, [state.succeeded])
@@ -235,15 +208,28 @@ export default function Contact() {
     return { allowed: true }
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     setCaptchaErr('')
     setFormErr('')
 
-    // Validate captcha
-    const token = window.grecaptcha?.getResponse?.(widgetIdRef.current)
+    // Get reCAPTCHA Enterprise v3 token (invisible, no user interaction)
+    const grecaptcha = window.grecaptcha
+    if (!grecaptcha?.enterprise) {
+      setCaptchaErr('Captcha not loaded. Please try again.')
+      return
+    }
+
+    let token
+    try {
+      token = await grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'submit' })
+    } catch {
+      setCaptchaErr('Captcha verification failed. Please try again.')
+      return
+    }
+
     if (!token) {
-      setCaptchaErr('Please complete the captcha.')
+      setCaptchaErr('Captcha verification failed. Please try again.')
       return
     }
 
@@ -326,11 +312,8 @@ export default function Contact() {
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
-            {/* Hidden input for reCAPTCHA token — value set before submit */}
+            {/* Hidden input for reCAPTCHA token — value set on submit via grecaptcha.enterprise.execute() */}
             <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
-
-            {/* reCAPTCHA rendered here once API loads */}
-            <div ref={captchaContainerRef} style={{ marginTop: 4, padding: 10, background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 4, minHeight: 78 }} />
 
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
               Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
