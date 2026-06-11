@@ -203,13 +203,13 @@ section {
 /* ---- Hero responsive ---- */
 .hero-wrap {
   display: flex;
-  gap: 56px;
+  gap: 48px;
   align-items: center;
 }
 
 .hero-avatar {
-  width: 140px;
-  height: 140px;
+  width: 130px;
+  height: 130px;
   border-radius: 50%;
   background: #111;
   border: 2px solid #333;
@@ -222,6 +222,7 @@ section {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
 }
 
@@ -272,7 +273,6 @@ section {
   .hero-avatar {
     width: 110px;
     height: 110px;
-    font-size: 2rem;
   }
   .hero-cta {
     justify-content: center;
@@ -304,7 +304,6 @@ section {
   .hero-avatar {
     width: 90px;
     height: 90px;
-    font-size: 1.6rem;
   }
   .hero-wrap {
     gap: 24px;
