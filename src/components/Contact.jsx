@@ -222,9 +222,17 @@ export default function Contact() {
 
       if (res.ok) {
         setSent(true)
+        formRef.current.reset()
+        // Reset captcha
+        if (window.grecaptcha) window.grecaptcha.reset()
+        if (captchaInputRef.current) captchaInputRef.current.value = ''
       } else {
-        const data = await res.json()
-        setErrMsg(data?.error || 'Something went wrong. Please email me directly.')
+        let msg = 'Something went wrong. Please email me directly.'
+        try {
+          const data = await res.json()
+          if (data?.error) msg = data.error + ' — please email me directly.'
+        } catch {}
+        setErrMsg(msg)
       }
     } catch {
       setErrMsg('Network error. Please email me directly.')
@@ -294,8 +302,15 @@ export default function Contact() {
             {/* hidden captcha token — updated by captcha callback */}
             <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
 
+            {/* Formspree honeypot — must be empty for human submissions */}
+            <input type="text" name="_gotcha" style={{ display: 'none' }} />
+
             {/* reCAPTCHA rendered here once API loads */}
             <div ref={captchaContainerRef} style={{ marginTop: 4, minHeight: 78 }} />
+
+            <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
+              Or email me directly: <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+            </p>
 
             {sent ? (
               <div style={styles.successBox}>
