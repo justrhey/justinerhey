@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import ProjectModal from './ProjectModal.jsx'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const projects = [
   {
@@ -64,7 +65,6 @@ const cardStyles = {
     border: '1px solid #1a1a1a',
     padding: 24,
     cursor: 'pointer',
-    transition: 'all 0.2s',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -105,9 +105,10 @@ const cardStyles = {
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
+  const ref = useScrollReveal()
 
   return (
-    <section id="projects">
+    <section id="projects" ref={ref}>
       <div className="container">
         <p className="section-label">Projects</p>
         <h2 className="section-title">Things I've Built</h2>
@@ -115,6 +116,7 @@ export default function Projects() {
           {projects.map((project, index) => (
             <div
               key={index}
+              className="card-hover"
               style={cardStyles.card}
               onClick={() => setSelectedProject(project)}
               onMouseEnter={(e) => {

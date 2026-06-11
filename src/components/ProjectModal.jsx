@@ -110,7 +110,7 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div style={styles.backdrop} onClick={onClose}>
-      <div style={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className="modal-enter" style={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button style={styles.close} onClick={onClose}>&#10005;</button>
 
         <h3 style={styles.title}>{project.title}</h3>
@@ -131,6 +131,7 @@ export default function ProjectModal({ project, onClose }) {
                 src={`./images/${project.slug || project.title.toLowerCase()}/${img}`}
                 alt={`${project.title} screenshot`}
                 style={styles.image}
+                onError={(e) => { e.target.style.display = 'none' }}
               />
             ))}
           </div>

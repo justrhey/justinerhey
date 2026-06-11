@@ -34,7 +34,6 @@ const styles = {
   card: {
     border: '1px solid #1a1a1a',
     padding: 32,
-    transition: 'border-color 0.2s',
   },
   category: {
     fontSize: '0.75rem',
@@ -59,16 +58,20 @@ const styles = {
   },
 }
 
+import useScrollReveal from '../hooks/useScrollReveal.js'
+
 export default function Skills() {
+  const ref = useScrollReveal()
   return (
-    <section id="skills">
+    <section id="skills" ref={ref}>
       <div className="container">
         <p className="section-label">Skills</p>
         <h2 className="section-title">Technologies I Work With</h2>
-        <div style={styles.grid}>
+        <div className="fade-in-children" style={styles.grid}>
           {skillCategories.map((cat) => (
             <div
               key={cat.title}
+              className="card-hover"
               style={styles.card}
               onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#444')}
               onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#1a1a1a')}

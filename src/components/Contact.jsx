@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const styles = {
   wrapper: {
@@ -93,17 +94,37 @@ export default function Contact() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+  const ref = useScrollReveal()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const mailto = `mailto:justrhey.tambong021@gmail.com?subject=Contact from ${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0A— ${encodeURIComponent(name)} (${encodeURIComponent(email)})`
-    window.location.href = mailto
-    setSent(true)
+    setSending(true)
+    setError('')
+    try {
+      const res = await fetch('https://formspree.io/f/xqapbqyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, message })
+      })
+      if (res.ok) {
+        setSent(true)
+        setName('')
+        setEmail('')
+        setMessage('')
+      } else {
+        setError('Something went wrong. Try again or email me directly.')
+      }
+    } catch {
+      setError('Network error. Please email me directly at justrhey.tambong021@gmail.com')
+    }
+    setSending(false)
   }
 
   return (
-    <section id="contact">
+    <section id="contact" ref={ref}>
       <div className="container">
         <p className="section-label">Contact</p>
         <h2 className="section-title">Reach Out</h2>
@@ -174,13 +195,17 @@ export default function Contact() {
                 onBlur={(e) => e.target.style.borderColor = '#1a1a1a'}
               />
             </div>
+            {error && (
+              <p style={{ color: '#e44', fontSize: '0.85rem' }}>{error}</p>
+            )}
             <button
               type="submit"
-              style={styles.btn}
-              onMouseEnter={(e) => { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' }}
-              onMouseLeave={(e) => { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' }}
+              disabled={sending}
+              style={{ ...styles.btn, opacity: sending ? 0.6 : 1 }}
+              onMouseEnter={(e) => { if (!sending) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+              onMouseLeave={(e) => { if (!sending) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}
             >
-              {sent ? 'Message Sent!' : 'Send Message'}
+              {sending ? 'Sending...' : sent ? 'Message Sent!' : 'Send Message'}
             </button>
           </form>
         </div>

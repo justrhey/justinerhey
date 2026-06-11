@@ -57,9 +57,12 @@ const IconWrench = () => (
   </svg>
 )
 
+import useScrollReveal from '../hooks/useScrollReveal.js'
+
 export default function About() {
+  const ref = useScrollReveal()
   return (
-    <section id="about">
+    <section id="about" ref={ref}>
       <div className="container">
         <p className="section-label">About</p>
         <h2 className="section-title">Highlights</h2>
@@ -84,7 +87,25 @@ export default function About() {
               </p>
             </div>
           </div>
-          <div style={styles.info}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{
+              width: 120,
+              height: 120,
+              borderRadius: '50%',
+              background: '#111',
+              border: '2px solid #222',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '2rem',
+              fontWeight: 700,
+              color: '#444',
+              letterSpacing: '-1px',
+              flexShrink: 0,
+            }}>
+              JR
+            </div>
+            <div style={styles.info}>
             <div style={styles.row}>
               <span style={styles.label}>Name</span>
               <span style={styles.value}>Justine Rhey M. Tambong</span>
@@ -111,6 +132,7 @@ export default function About() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   )
