@@ -78,15 +78,15 @@ export default function Hero() {
             </h1>
             <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
-              Java developer who ships real features — from DNS monitoring tools to production ticketing systems
+              Java developer who ships real features. From DNS monitoring tools to production ticketing systems.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }}>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(59,130,246,0.15)', color: '#93c5fd', borderRadius: 4, border: '1px solid rgba(59,130,246,0.3)' }}>Java</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(34,197,94,0.15)', color: '#86efac', borderRadius: 4, border: '1px solid rgba(34,197,94,0.3)' }}>Spring Boot</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(249,115,22,0.15)', color: '#fdba74', borderRadius: 4, border: '1px solid rgba(249,115,22,0.3)' }}>REST APIs</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(14,165,233,0.15)', color: '#7dd3fc', borderRadius: 4, border: '1px solid rgba(14,165,233,0.3)' }}>Docker</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(234,179,8,0.15)', color: '#fde047', borderRadius: 4, border: '1px solid rgba(234,179,8,0.3)' }}>Linux</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: 'rgba(168,85,247,0.15)', color: '#d8b4fe', borderRadius: 4, border: '1px solid rgba(168,85,247,0.3)' }}>Networking</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Java</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Spring Boot</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>REST APIs</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Docker</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Linux</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Networking</span>
             </div>
             <div className="hero-cta" style={heroStyles.cta}>
               <button
