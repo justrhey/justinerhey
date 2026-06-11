@@ -203,16 +203,16 @@ section {
 /* ---- Hero responsive ---- */
 .hero-wrap {
   display: flex;
-  gap: 48px;
-  align-items: center;
+  gap: 40px;
+  align-items: flex-start;
 }
 
 .hero-avatar {
-  width: 130px;
-  height: 130px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   background: #111;
-  border: 2px solid #333;
+  border: 2px solid #444;
   overflow: hidden;
   flex-shrink: 0;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -271,8 +271,8 @@ section {
     text-align: center;
   }
   .hero-avatar {
-    width: 110px;
-    height: 110px;
+    width: 150px;
+    height: 150px;
   }
   .hero-cta {
     justify-content: center;
@@ -302,8 +302,8 @@ section {
     margin-bottom: 24px;
   }
   .hero-avatar {
-    width: 90px;
-    height: 90px;
+    width: 110px;
+    height: 110px;
   }
   .hero-wrap {
     gap: 24px;
