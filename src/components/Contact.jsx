@@ -253,12 +253,12 @@ export default function Contact() {
               who delivers — Java, Spring Boot, Android, or backend — let's talk.
             </p>
             <div style={styles.links}>
-              <a href="mailto:justrhey.tambong@gmail.com" style={styles.link}
+              <a href="mailto:justinerhey021@gmail.com" style={styles.link}
                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
                 <IconMail />
                 <span style={styles.linkLabel}>Email</span>
-                justrhey.tambong@gmail.com
+                justinerhey021@gmail.com
               </a>
               <a href="https://github.com/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
@@ -309,7 +309,7 @@ export default function Contact() {
             <div ref={captchaContainerRef} style={{ marginTop: 4, minHeight: 78 }} />
 
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
-              Or email me directly: <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+              Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
             </p>
 
             {sent ? (
@@ -324,7 +324,7 @@ export default function Contact() {
                     <p style={{ color: '#e44', fontSize: '0.85rem' }}>{captchaErr || errMsg}</p>
                     {errMsg && (
                       <p style={styles.fallbackLink}>
-                        <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+                        <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
                       </p>
                     )}
                   </div>
