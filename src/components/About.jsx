@@ -59,7 +59,7 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also handled remote servers, Active Directory, and a Linux CLI tool for outbound/inbound calls where I was the last escalation point. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
+          I got into tech the practical way. During my IT degree I interned at CallHounds Global as a Network and System Engineer. They asked if I knew how to code so I tried Java. What started as a small DNS tool turned into a ticketing system the team actually used. I also handled remote servers, Active Directory, and a Linux CLI call routing script with an L1-to-escalation workflow where I was the last stop before escalation. I also worked at Deutsche Business Solutions as a Service Desk and Field Support Intern handling enterprise support with ServiceNow and maintaining POS systems for Caltex.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
           Those experiences showed me I like building things more than just maintaining them. Now I am looking for a junior developer role where I can keep learning, work on real problems, and build software that people actually use.
@@ -76,7 +76,7 @@ export default function About() {
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
               <IconBriefcase />
               <p style={styles.text}>
-                <span style={styles.highlight}>Network Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK, managed remote servers, Active Directory, and a Linux CLI script for call routing: exe = ../../route_call.sh extension/destination
+                <span style={styles.highlight}>Network and System Engineer Intern</span> at CallHounds Global &mdash; Built DNS automation SDK, managed remote servers and Active Directory. Developed a Linux CLI script that mapped internal extensions to outbound/inbound destinations with an escalation pipeline: ticket flow went from L1 → L2 (me) → escalation if unresolved.
               </p>
             </div>
             <div style={{ display: 'flex', gap: 12, marginBottom: 24, alignItems: 'flex-start' }}>
