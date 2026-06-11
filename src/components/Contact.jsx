@@ -150,22 +150,24 @@ export default function Contact() {
   const captchaContainerRef = useRef(null)
   const widgetIdRef = useRef(null)
 
-  // render captcha once API is ready
+  // render captcha once API is ready — simplified
   useEffect(() => {
     const renderWidget = () => {
       if (!captchaContainerRef.current || widgetIdRef.current !== null) return
-      if (typeof window.grecaptcha?.render !== 'function') return
+      if (typeof window.grecaptcha?.render !== 'function') return false
       widgetIdRef.current = window.grecaptcha.render(captchaContainerRef.current, {
         sitekey: RECAPTCHA_SITE_KEY,
         theme: 'dark',
       })
+      return true
     }
-    // Try now
-    if (window.recaptchaApiReady) { renderWidget(); return }
-    // Poll until ready
+
+    if (renderWidget()) return
+
+    // Poll until grecaptcha is ready
     const interval = setInterval(() => {
-      if (window.recaptchaApiReady) { renderWidget(); clearInterval(interval) }
-    }, 200)
+      if (renderWidget()) clearInterval(interval)
+    }, 300)
     return () => clearInterval(interval)
   }, [])
 
@@ -206,9 +208,10 @@ export default function Contact() {
     setErrMsg('')
     setCaptchaErr('')
 
-    // Get captcha token directly from the rendered widget
-    const token = typeof window.grecaptcha?.getResponse === 'function'
-      ? window.grecaptcha.getResponse(widgetIdRef.current)
+    // Get captcha token — check grecaptcha is loaded
+    const grecaptcha = window.grecaptcha
+    const token = grecaptcha && typeof grecaptcha.getResponse === 'function'
+      ? grecaptcha.getResponse(widgetIdRef.current)
       : ''
 
     if (!token) {
@@ -318,7 +321,7 @@ export default function Contact() {
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
             {/* reCAPTCHA rendered here once API loads */}
-            <div ref={captchaContainerRef} style={{ marginTop: 4, minHeight: 78 }} />
+            <div ref={captchaContainerRef} style={{ marginTop: 4, padding: 10, background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 4, minHeight: 78 }} />
 
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
               Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
