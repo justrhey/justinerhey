@@ -178,6 +178,7 @@ export default function ProjectModal({ project, onClose }) {
             <img
               src={`./images/${project.slug || project.title.toLowerCase()}/${images[imgIndex]}`}
               alt={`${project.title} screenshot ${imgIndex + 1}`}
+              loading="lazy"
               style={{ ...styles.image, display: imgLoaded ? 'block' : 'none' }}
               onLoad={() => setImgLoaded(true)}
               onError={(e) => { e.target.style.display = 'none'; setImgLoaded(true) }}

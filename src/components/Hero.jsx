@@ -4,6 +4,18 @@ const heroStyles = {
   section: {
     display: 'flex',
     alignItems: 'center',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  gradient: {
+    position: 'absolute',
+    top: '-30%',
+    left: '-10%',
+    width: '60%',
+    height: '80%',
+    background: 'radial-gradient(ellipse at center, rgba(74,158,255,0.08) 0%, rgba(179,136,255,0.04) 50%, transparent 70%)',
+    pointerEvents: 'none',
+    zIndex: 0,
   },
   greeting: {
     fontSize: '0.8rem',
@@ -47,24 +59,29 @@ export default function Hero() {
 
   return (
     <section id="hero" style={heroStyles.section}>
-      <div className="container">
+      <div style={heroStyles.gradient} />
+      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
         <div className="hero-wrap">
           <div className={`hero-avatar${!imgLoaded ? ' skeleton skeleton-circle' : ''}`}>
-            <img
-              src="./images/new_profike.png"
-              alt="Justine Rhey M. Tambong"
-              onLoad={() => setImgLoaded(true)}
-              style={imgLoaded ? {} : { display: 'none' }}
-            />
+            <picture>
+              <source srcSet="./images/new_profike.webp" type="image/webp" />
+              <img
+                src="./images/new_profike.png"
+                alt="Justine Rhey M. Tambong"
+                loading="lazy"
+                onLoad={() => setImgLoaded(true)}
+                style={imgLoaded ? {} : { display: 'none' }}
+              />
+            </picture>
           </div>
           <div className="hero-text">
-            <p style={heroStyles.greeting}>Hi, I'm</p>
+            <p style={heroStyles.greeting}>I build tools that teams actually use</p>
             <h1 style={heroStyles.name}>
               Justine Rhey <span style={heroStyles.highlight}>M. Tambong</span>
             </h1>
             <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
-              BS Information Technology &middot; Java &middot; Spring Boot &middot; Backend Development &middot; Android
+              Java developer who ships real features — from DNS monitoring tools to production ticketing systems
             </p>
             <div className="hero-cta" style={heroStyles.cta}>
               <button
@@ -81,12 +98,6 @@ export default function Hero() {
               >
                 Resume &darr;
               </a>
-              <button
-                className="btn-outline"
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Say Hello
-              </button>
             </div>
           </div>
         </div>

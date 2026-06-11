@@ -255,6 +255,62 @@ section {
 }
 
 .hero-avatar:hover {
+  border-color: #888;
+  box-shadow: 0 0 40px rgba(74,158,255,0.15), 0 0 80px rgba(74,158,255,0.05);
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- Card hover with color glow ---- */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+}
+
+/* role-color glow on each card via inline borderLeft color — matched on hover */
+.card-hover:hover {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+}
+
+/* ---- Staggered project card reveal ---- */
+.project-grid > * {
+  opacity: 0;
+  animation: fadeUp 0.5s ease forwards;
+}
+.project-grid > *:nth-child(1) { animation-delay: 0.05s; }
+.project-grid > *:nth-child(2) { animation-delay: 0.1s; }
+.project-grid > *:nth-child(3) { animation-delay: 0.15s; }
+.project-grid > *:nth-child(4) { animation-delay: 0.2s; }
+.project-grid > *:nth-child(5) { animation-delay: 0.25s; }
+.project-grid > *:nth-child(6) { animation-delay: 0.3s; }
+
+.hero-avatar {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid #444;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.hero-avatar:hover {
   border-color: #666;
   box-shadow: 0 0 24px rgba(255,255,255,0.06);
 }
@@ -300,7 +356,7 @@ section {
     padding: 80px 0;
   }
   .hero-wrap {
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 32px;
     text-align: center;
   }

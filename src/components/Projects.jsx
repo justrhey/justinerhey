@@ -128,7 +128,7 @@ export default function Projects() {
       <div className="container">
         <p className="section-label">Projects</p>
         <h2 className="section-title">Things I've Built</h2>
-        <div style={cardStyles.grid}>
+          <div className="project-grid" style={cardStyles.grid}>
           {projects.map((project, index) => (
             <div
               key={index}
