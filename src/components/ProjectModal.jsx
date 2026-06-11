@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 const styles = {
   backdrop: {
     position: 'fixed',
@@ -13,11 +15,9 @@ const styles = {
   modal: {
     background: '#0d0d0d',
     border: '1px solid #222',
-    maxWidth: 'min(90vw, 820px)',
+    maxWidth: 'min(90vw, 740px)',
     width: '100%',
-    maxHeight: '90vh',
-    overflow: 'auto',
-    padding: 36,
+    padding: 32,
     position: 'relative',
   },
   close: {
@@ -31,74 +31,108 @@ const styles = {
     cursor: 'pointer',
     fontFamily: 'inherit',
     lineHeight: 1,
+    zIndex: 10,
   },
   title: {
-    fontSize: '1.3rem',
+    fontSize: '1.2rem',
     fontWeight: 600,
-    marginBottom: 4,
+    marginBottom: 2,
+    paddingRight: 28,
   },
   role: {
-    fontSize: '0.7rem',
+    fontSize: '0.65rem',
     color: '#555',
     textTransform: 'uppercase',
     letterSpacing: '1px',
-    marginBottom: 12,
+    marginBottom: 10,
   },
   techWrap: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 28,
+    marginBottom: 16,
   },
   tag: {
-    fontSize: '0.7rem',
-    padding: '3px 10px',
+    fontSize: '0.65rem',
+    padding: '2px 8px',
     border: '1px solid #2a2a2a',
     color: '#777',
   },
   divider: {
     height: '1px',
     background: '#1a1a1a',
-    marginBottom: 28,
+    marginBottom: 16,
   },
   sectionLabel: {
-    fontSize: '0.65rem',
+    fontSize: '0.6rem',
     textTransform: 'uppercase',
     letterSpacing: '2px',
     color: '#555',
-    marginBottom: 14,
+    marginBottom: 10,
   },
   story: {
     color: '#999',
-    fontSize: '0.95rem',
-    lineHeight: 1.9,
-    marginBottom: 32,
+    fontSize: '0.85rem',
+    lineHeight: 1.7,
+    margin: 0,
   },
-  imageGrid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-    gap: 16,
-    marginBottom: 36,
+  viewerWrap: {
+    position: 'relative',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#080808',
+    border: '1px solid #1a1a1a',
+    marginBottom: 16,
+    height: 340,
+    overflow: 'hidden',
   },
   image: {
-    width: '100%',
-    border: '1px solid #222',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
     display: 'block',
-    background: '#0a0a0a',
+  },
+  navBtn: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: 56,
+    background: 'rgba(0,0,0,0.4)',
+    border: 'none',
+    color: '#aaa',
+    fontSize: '1.4rem',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'background 0.2s',
+    fontFamily: 'inherit',
+    lineHeight: 1,
+  },
+  counter: {
+    position: 'absolute',
+    bottom: 10,
+    right: 14,
+    fontSize: '0.7rem',
+    color: '#666',
+    background: 'rgba(0,0,0,0.6)',
+    padding: '2px 10px',
   },
   actions: {
     display: 'flex',
     gap: 12,
     flexWrap: 'wrap',
+    marginTop: 16,
   },
   linkBtn: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 8,
-    padding: '10px 24px',
+    padding: '8px 20px',
     border: '1px solid #555',
     color: '#ccc',
-    fontSize: '0.85rem',
+    fontSize: '0.8rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
     textDecoration: 'none',
@@ -106,7 +140,15 @@ const styles = {
 }
 
 export default function ProjectModal({ project, onClose }) {
+  const [imgIndex, setImgIndex] = useState(0)
+
   if (!project) return null
+
+  const images = project.images || []
+  const hasImages = images.length > 0
+
+  const prevImg = () => setImgIndex((i) => (i > 0 ? i - 1 : images.length - 1))
+  const nextImg = () => setImgIndex((i) => (i < images.length - 1 ? i + 1 : 0))
 
   return (
     <div style={styles.backdrop} onClick={onClose}>
@@ -123,21 +165,39 @@ export default function ProjectModal({ project, onClose }) {
 
         <div style={styles.divider} />
 
-        {project.images && (
-          <div style={styles.imageGrid}>
-            {project.images.map((img) => (
-              <img
-                key={img}
-                src={`./images/${project.slug || project.title.toLowerCase()}/${img}`}
-                alt={`${project.title} screenshot`}
-                style={styles.image}
-                onError={(e) => { e.target.style.display = 'none' }}
-              />
-            ))}
+        {hasImages && (
+          <div style={styles.viewerWrap}>
+            <img
+              src={`./images/${project.slug || project.title.toLowerCase()}/${images[imgIndex]}`}
+              alt={`${project.title} screenshot ${imgIndex + 1}`}
+              style={styles.image}
+              onError={(e) => { e.target.style.display = 'none' }}
+            />
+            {images.length > 1 && (
+              <>
+                <button
+                  style={{ ...styles.navBtn, left: 0 }}
+                  onClick={prevImg}
+                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.7)' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.4)' }}
+                >
+                  &#10094;
+                </button>
+                <button
+                  style={{ ...styles.navBtn, right: 0 }}
+                  onClick={nextImg}
+                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.7)' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.4)' }}
+                >
+                  &#10095;
+                </button>
+                <span style={styles.counter}>{imgIndex + 1} / {images.length}</span>
+              </>
+            )}
           </div>
         )}
 
-        <p style={{ ...styles.sectionLabel, marginTop: project.images ? 8 : 0 }}>Overview</p>
+        <p style={styles.sectionLabel}>Overview</p>
         <p style={styles.story}>{project.intro}</p>
 
         <div style={styles.actions}>
