@@ -143,9 +143,31 @@ const IconLinkedIn = () => (
 export default function Contact() {
   const [state, handleSubmit] = useForm('xzdqajkr')
   const [captchaErr, setCaptchaErr] = useState('')
+  const [recaptchaReady, setRecaptchaReady] = useState(window._recaptchaReady || false)
   const ref = useScrollReveal()
   const captchaInputRef = useRef(null)
+  const captchaContainerRef = useRef(null)
+  const captchaRendered = useRef(false)
   const formRef = useRef(null)
+
+  // listen for reCAPTCHA API ready event
+  useEffect(() => {
+    const onReady = () => setRecaptchaReady(true)
+    window.addEventListener('recaptcha-ready', onReady)
+    if (window._recaptchaReady) setRecaptchaReady(true)
+    return () => window.removeEventListener('recaptcha-ready', onReady)
+  }, [])
+
+  // render the captcha widget once the API is ready and the container exists
+  useEffect(() => {
+    if (recaptchaReady && captchaContainerRef.current && !captchaRendered.current) {
+      captchaRendered.current = true
+      window.grecaptcha.render(captchaContainerRef.current, {
+        sitekey: RECAPTCHA_SITE_KEY,
+        theme: 'dark',
+      })
+    }
+  }, [recaptchaReady])
 
   // native submit listener — fires before React's onSubmit
   // sets the captcha token so Formspree picks it up
@@ -239,8 +261,8 @@ export default function Contact() {
             {/* hidden captcha token — value set by native submit listener */}
             <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
 
-            {/* auto-rendered by reCAPTCHA API (script loaded in index.html) */}
-            <div className="g-recaptcha" data-sitekey={RECAPTCHA_SITE_KEY} data-theme="dark" style={{ marginTop: 4 }} />
+            {/* reCAPTCHA rendered here once API loads */}
+            <div ref={captchaContainerRef} style={{ marginTop: 4, minHeight: 78 }} />
 
             {state.succeeded ? (
               <div style={styles.successBox}>
