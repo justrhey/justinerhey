@@ -129,8 +129,9 @@ export default function About() {
                   </p>
                   <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
                   <div style={styles.detailList}>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting via ServiceNow</p>
-                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Maintained POS systems for Caltex stations</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Enterprise IT support and remote troubleshooting for 200+ users via ServiceNow</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> QA'd POS systems for data handling compliance and verified syncing with Gilberto Wamos</p>
+                    <p style={styles.detailItem}><span style={styles.dot}>&#8226;</span> Daily XML backups for critical configuration and transaction data</p>
                   </div>
                 </div>
               </div>
