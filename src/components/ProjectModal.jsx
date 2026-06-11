@@ -13,7 +13,7 @@ const styles = {
   modal: {
     background: '#0d0d0d',
     border: '1px solid #222',
-    maxWidth: 640,
+    maxWidth: 'min(90vw, 820px)',
     width: '100%',
     maxHeight: '90vh',
     overflow: 'auto',
@@ -77,13 +77,11 @@ const styles = {
   imageGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-    gap: 12,
-    marginBottom: 32,
+    gap: 16,
+    marginBottom: 36,
   },
   image: {
     width: '100%',
-    maxHeight: 520,
-    objectFit: 'contain',
     border: '1px solid #222',
     display: 'block',
     background: '#0a0a0a',
