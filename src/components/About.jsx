@@ -81,10 +81,10 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I got into tech the practical way — two internships, real production environments, and a lot of Java.
+          I speak the OSI model as fluently as I write Java. From Layer 2 frames to Layer 7 handshakes — I am just as comfortable setting up a personal server over SSH as I am building a Spring Boot REST API.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
-          Now I am looking for a junior developer role where I can keep learning, build software people actually use, and work on real problems.
+          My curiosity lives at the intersection of networking, programming, and security. I spend time with Wireshark and Nmap to understand what is actually crossing the wire, and my Linux desktop is anything but stock — I customize everything from the window manager to the shell prompt. Whether it is a TCP handshake or a DNS resolution chain, I want to see the full picture before I write a single line of code.
         </p>
 
         <div className="grid-2">
