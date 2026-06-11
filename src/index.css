@@ -247,14 +247,20 @@ section {
 /* ---- Info rows (About) ---- */
 .info-grid {
   display: grid;
-  gap: 16px;
+  gap: 0;
+  border-left: 1px solid #1a1a1a;
+  padding-left: 32px;
 }
 
 .info-row {
   display: flex;
-  gap: 12px;
-  padding: 14px 0;
+  gap: 16px;
+  padding: 16px 0;
   border-bottom: 1px solid #1a1a1a;
+}
+
+.info-row:last-child {
+  border-bottom: none;
 }
 
 @media (max-width: 768px) {
@@ -311,7 +317,10 @@ section {
   .info-row {
     flex-direction: column;
     gap: 4px;
-    padding: 12px 0;
+    padding: 14px 0;
+  }
+  .info-grid {
+    padding-left: 20px;
   }
   .grid-2 {
     gap: 24px;
