@@ -4,7 +4,7 @@ import ProjectModal from './ProjectModal.jsx'
 const projects = [
   {
     title: 'DNS Ping Automation SDK',
-    role: 'Solo Developer',
+    role: 'Personal Project',
     tech: ['Java', 'Networking', 'DNS', 'CLI', 'File I/O'],
     url: 'https://github.com/justrhey/Pinger',
     intro: 'Java SDK for automated DNS ping monitoring with ICMP/TCP support. Tracks server availability, latency, and packet loss.',
@@ -12,7 +12,7 @@ const projects = [
   },
   {
     title: 'Ticketing System (Spring Boot)',
-    role: 'Solo Developer',
+    role: 'Personal Project',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     url: 'https://github.com/justrhey/ticket-management-system',
     intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management.',
@@ -28,7 +28,7 @@ const projects = [
   },
   {
     title: 'Cassie',
-    role: 'Solo Developer',
+    role: 'Personal Project',
     tech: ['Kotlin', 'Jetpack Compose', 'Android', 'Media Player', 'Room DB'],
     url: 'https://github.com/justrhey/Cassie',
     intro: 'Android music player with Jetpack Compose UI. Features playlist management, equalizer, lyrics display, and grammar-based party mode.',
@@ -36,7 +36,7 @@ const projects = [
   },
   {
     title: 'Usmentz',
-    role: 'Solo Developer',
+    role: 'Personal Project',
     tech: ['Java', 'Android', 'Room DB', 'Firestore', 'Material Design'],
     url: 'https://github.com/justrhey/usmentz',
     intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync via Firestore.',
@@ -44,7 +44,7 @@ const projects = [
   },
   {
     title: 'POS System',
-    role: 'Solo Developer',
+    role: 'Personal Project',
     tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
     url: 'https://github.com/justrhey/pos-system',
     intro: 'Point-of-sale system for small business inventory and transaction management. Full LAMP stack from DB schema to rendered HTML.',
