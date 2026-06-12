@@ -3,9 +3,6 @@ import { useForm } from '@formspree/react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const FORMSPREE_ID = 'xzdqajkr'
-const RECAPTCHA_SITE_KEY = '6LcKeRktAAAAAChuBG9PXRi2lIvSj90vK7_lPqgt'
-// ⚠️ reCAPTCHA v3 (invisible) — set the SECRET key in Formspree dashboard:
-//    formspree.io → your form → Settings → reCAPTCHA
 
 const styles = {
   form: {
@@ -145,11 +142,9 @@ const IconLinkedIn = () => (
 
 export default function Contact() {
   const [state, handleSubmit] = useForm(FORMSPREE_ID)
-  const [captchaErr, setCaptchaErr] = useState('')
   const [formErr, setFormErr] = useState('')
   const ref = useScrollReveal()
   const formRef = useRef(null)
-  const captchaInputRef = useRef(null)
 
   // Reset form on successful submission
   useEffect(() => {
@@ -168,10 +163,6 @@ export default function Contact() {
         if (err?.message) {
           msg = err.message + ' — please email me directly.'
         }
-        // Catch invalid-keys specifically
-        if (err?.code === 'invalid-keys' || (err?.detail && err.detail.includes('invalid-keys'))) {
-          msg = 'reCAPTCHA is not configured correctly on the server. Please email me directly.'
-        }
         setFormErr(msg)
       }
     } else {
@@ -179,77 +170,42 @@ export default function Contact() {
     }
   }, [state.errors])
 
-  // Rate limiter — first 3 tries free, then 1min wait stacking up
-  const checkRateLimit = () => {
-    const key = 'portfolio_submit_count'
-    const hour = 60 * 60 * 1000
+  // Cooldown limiter — 1 min first, then 2 min, 3 min... stacking
+  const checkCooldown = () => {
+    const key = 'portfolio_cooldown'
     const now = Date.now()
     let data
     try { data = JSON.parse(localStorage.getItem(key)) } catch { data = null }
 
-    if (!data || now - data.time > hour) {
+    if (!data) {
       localStorage.setItem(key, JSON.stringify({ count: 1, time: now }))
       return { allowed: true }
     }
 
-    data.count++
-    localStorage.setItem(key, JSON.stringify(data))
-
-    if (data.count <= 3) return { allowed: true }
-
-    const waitMinutes = data.count - 3
+    const waitMinutes = data.count
     const nextAllowed = data.time + waitMinutes * 60 * 1000
     if (now < nextAllowed) {
-      data.count--
-      localStorage.setItem(key, JSON.stringify(data))
       return { allowed: false, wait: waitMinutes }
     }
 
+    data.count++
+    data.time = now
+    localStorage.setItem(key, JSON.stringify(data))
     return { allowed: true }
   }
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
-    setCaptchaErr('')
     setFormErr('')
 
-    // Get reCAPTCHA Enterprise v3 token (invisible, no user interaction)
-    const grecaptcha = window.grecaptcha
-    if (!grecaptcha?.enterprise) {
-      setCaptchaErr('Captcha not loaded. Please try again.')
+    const cooldown = checkCooldown()
+    if (!cooldown.allowed) {
+      setFormErr(`Please wait ${cooldown.wait} minute${cooldown.wait > 1 ? 's' : ''} before sending again.`)
       return
     }
 
-    let token
-    try {
-      token = await grecaptcha.enterprise.execute(RECAPTCHA_SITE_KEY, { action: 'submit' })
-    } catch {
-      setCaptchaErr('Captcha verification failed. Please try again.')
-      return
-    }
-
-    if (!token) {
-      setCaptchaErr('Captcha verification failed. Please try again.')
-      return
-    }
-
-    // Inject token into hidden input for Formspree
-    if (captchaInputRef.current) {
-      captchaInputRef.current.value = token
-    }
-
-    // Check rate limit
-    const limit = checkRateLimit()
-    if (!limit.allowed) {
-      setCaptchaErr(`Too fast. Please wait ${limit.wait} minute${limit.wait > 1 ? 's' : ''} before trying again.`)
-      return
-    }
-
-    // Let @formspree/react handle the actual submission
     handleSubmit(e)
   }
-
-  const displayErr = captchaErr || formErr
 
   return (
     <section id="contact" ref={ref}>
@@ -312,9 +268,6 @@ export default function Contact() {
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
-            {/* Hidden input for reCAPTCHA token — value set on submit via grecaptcha.enterprise.execute() */}
-            <input type="hidden" name="g-recaptcha-response" ref={captchaInputRef} />
-
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
               Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
             </p>
@@ -326,14 +279,12 @@ export default function Contact() {
               </div>
             ) : (
               <>
-                {displayErr && (
+                {formErr && (
                   <div>
-                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{displayErr}</p>
-                    {formErr && (
-                      <p style={styles.fallbackLink}>
-                        <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
-                      </p>
-                    )}
+                    <p style={{ color: '#e44', fontSize: '0.85rem' }}>{formErr}</p>
+                    <p style={styles.fallbackLink}>
+                      <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
+                    </p>
                   </div>
                 )}
                 <button type="submit" disabled={state.submitting}
