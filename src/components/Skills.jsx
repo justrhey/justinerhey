@@ -1,29 +1,18 @@
+import { useState } from 'react'
 import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const skillCategories = [
   {
     title: 'Backend',
-    skills: ['Java', 'Spring Boot', 'REST API', 'Swagger', 'Maven'],
-  },
-  {
-    title: 'Mobile',
-    skills: ['Android', 'Android Studio', 'Room DB', 'Glide', 'Material Design'],
-  },
-  {
-    title: 'Frontend',
-    skills: ['HTML5', 'CSS3', 'JavaScript', 'React', 'Astro'],
+    skills: ['Java', 'Spring Boot', 'REST API', 'Maven'],
   },
   {
     title: 'Database',
     skills: ['MySQL', 'PostgreSQL', 'H2 Database'],
   },
   {
-      title: 'Languages',
-      skills: ['Java', 'Rust', 'Python', 'PHP', 'JavaScript', 'Kotlin', 'C++', 'C#'],
-  },
-  {
-    title: 'Tools & OS',
-    skills: ['Git', 'Arch Linux', 'Hyprland', 'Ubuntu', 'Fedora', 'Linux Mint', 'GNOME', 'KDE Plasma'],
+    title: 'Tools',
+    skills: ['Git', 'Linux', 'Docker'],
   },
 ]
 
@@ -74,11 +63,12 @@ const styles = {
 
 export default function Skills() {
   const ref = useScrollReveal()
+  const [certLoaded, setCertLoaded] = useState(false)
   return (
     <section id="skills" ref={ref}>
       <div className="container">
         <p className="section-label">Skills</p>
-        <h2 className="section-title">Technologies I Work With</h2>
+        <h2 className="section-title">Java Stack</h2>
         <div className="fade-in-children" style={styles.grid}>
           {skillCategories.map((cat) => (
             <div
@@ -106,8 +96,9 @@ export default function Skills() {
         <div className="fade-in-children" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 24 }}>
           {certificates.map((cert) => (
             <div key={cert.title} className="cert-card card-hover" style={{ padding: 0, overflow: 'hidden' }}>
-              <div className="cert-image">
-                <img src={cert.image} alt={cert.title} draggable={false} onDragStart={(e) => e.preventDefault()} />
+              <div className="cert-image" style={{ position: 'relative' }}>
+                {!certLoaded && <div className="skeleton skeleton-image" />}
+                <img src={cert.image} alt={cert.title} draggable={false} onDragStart={(e) => e.preventDefault()} className={certLoaded ? 'modal-image loaded' : 'modal-image'} onLoad={() => setCertLoaded(true)} onError={() => setCertLoaded(true)} />
               </div>
               <div style={{ padding: 24 }}>
                 <p style={{ fontSize: '0.65rem', color: '#555', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8 }}>{cert.type}</p>

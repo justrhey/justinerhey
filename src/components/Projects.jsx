@@ -28,36 +28,11 @@ const projects = [
     images: null
   },
   {
-    title: 'EHR Blockchain System',
-    role: 'Capstone Project',
-    tech: ['Rust', 'Actix-web', 'PostgreSQL', 'Blockchain', 'Stellar', 'JWT'],
-    url: 'https://github.com/justrhey/capstone',
-    intro: 'Capstone project exploring blockchain for secure health record exchange. Built in Rust with JWT auth, Stellar identity, and AES-GCM encryption — focused on understanding distributed trust rather than reinventing healthcare.',
-    images: null
-  },
-  {
-    title: 'Cassie',
-    slug: 'cassie',
-    role: 'Personal Project',
-    tech: ['Kotlin', 'Jetpack Compose', 'Android', 'Media Player', 'Room DB'],
-    url: 'https://github.com/justrhey/Cassie',
-    intro: 'Android music player with Jetpack Compose UI. Features playlist management, equalizer, lyrics display, and grammar-based party mode.',
-    images: ['albums.jpeg', 'artist.jpeg', 'home.jpeg', 'playlist.jpeg', 'top50.jpeg']
-  },
-  {
     title: 'Usmentz',
     role: 'Personal Project',
     tech: ['Java', 'Android', 'Room DB', 'Firestore', 'Material Design'],
     url: 'https://github.com/justrhey/usmentz',
     intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync via Firestore.',
-    images: null
-  },
-  {
-    title: 'POS System',
-    role: 'School Project',
-    tech: ['PHP', 'MySQL', 'HTML/CSS', 'JavaScript'],
-    url: 'https://github.com/justrhey/pos-system',
-    intro: 'Point-of-sale system for small business inventory and transaction management. Full LAMP stack from DB schema to rendered HTML.',
     images: null
   }
 ]

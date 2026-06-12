@@ -74,13 +74,13 @@ export default function Hero() {
             />
           </div>
           <div className="hero-text">
-            <p style={heroStyles.greeting}>I build tools that teams actually use</p>
+            <p style={heroStyles.greeting}>Learning Java, one project at a time</p>
             <h1 style={heroStyles.name}>
               Justine Rhey <span style={heroStyles.highlight}>M. Tambong</span>
             </h1>
             <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
-              Java developer who ships real features. From DNS monitoring tools to production ticketing systems.
+              Building small things to learn the craft. Currently exploring Java, Spring Boot, and backend development.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }}>
               <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Java</span>
