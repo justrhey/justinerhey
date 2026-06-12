@@ -21,24 +21,10 @@ const styles = {
     flexDirection: 'column',
     gap: 12,
   },
-  link: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: 14,
-    padding: '14px 20px',
-    border: '1px solid #1a1a1a',
-    color: '#bbb',
-    fontSize: '0.88rem',
-    cursor: 'pointer',
-    transition: 'all 0.25s',
-    textDecoration: 'none',
-  },
   linkIcon: {
     width: 20,
     height: 20,
     flexShrink: 0,
-    color: '#555',
-    transition: 'color 0.25s',
   },
   linkLabel: {
     color: '#555',
@@ -59,41 +45,12 @@ const styles = {
     letterSpacing: '1.5px',
   },
   input: {
-    padding: '12px 14px',
-    background: '#0a0a0a',
-    border: '1px solid #1a1a1a',
-    borderRadius: 4,
-    color: '#fff',
     fontSize: '0.9rem',
     fontFamily: 'inherit',
-    outline: 'none',
-    transition: 'border-color 0.25s, box-shadow 0.25s',
   },
   textarea: {
-    padding: '12px 14px',
-    background: '#0a0a0a',
-    border: '1px solid #1a1a1a',
-    borderRadius: 4,
-    color: '#fff',
     fontSize: '0.9rem',
     fontFamily: 'inherit',
-    outline: 'none',
-    resize: 'vertical',
-    minHeight: 120,
-    transition: 'border-color 0.25s, box-shadow 0.25s',
-  },
-  btn: {
-    padding: '14px 32px',
-    border: '1px solid #fff',
-    background: '#fff',
-    color: '#000',
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    cursor: 'pointer',
-    transition: 'all 0.25s',
-    alignSelf: 'flex-start',
-    fontFamily: 'inherit',
-    borderRadius: 4,
   },
   successBox: {
     padding: 24,
@@ -119,21 +76,21 @@ const styles = {
   },
 }
 
-const IconMail = () => (
-  <svg style={styles.linkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+const IconMail = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2" />
     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
   </svg>
 )
 
-const IconGitHub = () => (
-  <svg style={styles.linkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+const IconGitHub = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
   </svg>
 )
 
-const IconLinkedIn = () => (
-  <svg style={styles.linkIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+const IconLinkedIn = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
     <rect x="2" y="9" width="4" height="12" />
     <circle cx="4" cy="4" r="2" />
@@ -194,7 +151,7 @@ export default function Contact() {
       if (formErrors.length > 0) {
         const err = formErrors[0]
         let msg = 'Something went wrong. Please email me directly.'
-        if (err?.message) msg = err.message + ' — please email me directly.'
+        if (err?.message) msg = err.message + ' - please email me directly.'
         setFormErr(msg)
       }
     } else {
@@ -246,24 +203,18 @@ export default function Contact() {
               who delivers — Java, Spring Boot, Android, or backend — let's talk.
             </p>
             <div style={styles.links}>
-              <a href="mailto:justrhey.tambong@gmail.com" style={styles.link}
-                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
-                <IconMail />
+              <a href="mailto:justrhey.tambong@gmail.com" className="contact-link">
+                <IconMail className="contact-link-icon" />
                 <span style={styles.linkLabel}>Email</span>
                 justrhey.tambong@gmail.com
               </a>
-              <a href="https://github.com/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
-                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
-                <IconGitHub />
+              <a href="https://github.com/justrhey" target="_blank" rel="noopener noreferrer" className="contact-link">
+                <IconGitHub className="contact-link-icon" />
                 <span style={styles.linkLabel}>GitHub</span>
                 github.com/justrhey
               </a>
-              <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
-                 onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
-                 onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
-                <IconLinkedIn />
+              <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" className="contact-link">
+                <IconLinkedIn className="contact-link-icon" />
                 <span style={styles.linkLabel}>LinkedIn</span>
                 linkedin.com/in/justrhey
               </a>
@@ -273,23 +224,17 @@ export default function Contact() {
           <form ref={formRef} className="contact-form" style={styles.form} onSubmit={onSubmit}>
             <div style={styles.field}>
               <label style={styles.label} htmlFor="name">Name</label>
-              <input id="name" name="name" style={styles.input} required placeholder="Your name"
-                     onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                     onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
+              <input id="name" name="name" className="contact-input" style={styles.input} required placeholder="Your name" />
             </div>
 
             <div style={styles.field}>
               <label style={styles.label} htmlFor="email">Email</label>
-              <input id="email" type="email" name="email" style={styles.input} required placeholder="you@example.com"
-                     onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                     onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
+              <input id="email" type="email" name="email" className="contact-input" style={styles.input} required placeholder="you@example.com" />
             </div>
 
             <div style={styles.field}>
               <label style={styles.label} htmlFor="message">Message</label>
-              <textarea id="message" name="message" style={styles.textarea} required placeholder="What's on your mind?"
-                        onFocus={(e) => { e.target.style.borderColor = '#555'; e.target.style.boxShadow = '0 0 0 1px rgba(255,255,255,0.05)' }}
-                        onBlur={(e) => { e.target.style.borderColor = '#1a1a1a'; e.target.style.boxShadow = 'none' }} />
+              <textarea id="message" name="message" className="contact-textarea" style={styles.textarea} required placeholder="What's on your mind?" />
             </div>
 
             {/* Formspree honeypot — must be empty for human submissions */}
@@ -319,9 +264,7 @@ export default function Contact() {
                   </div>
                 ) : null}
                 <button type="submit" disabled={state.submitting || cooldownSecs > 0}
-                        style={{ ...styles.btn, opacity: (state.submitting || cooldownSecs > 0) ? 0.5 : 1 }}
-                        onMouseEnter={(e) => { if (!state.submitting && cooldownSecs <= 0) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                        onMouseLeave={(e) => { if (!state.submitting && cooldownSecs <= 0) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
+                        className="btn-submit">
                   {state.submitting ? 'Sending...' : cooldownSecs > 0 ? `Wait ${formatTime(cooldownSecs)}` : 'Send Message'}
                 </button>
               </>

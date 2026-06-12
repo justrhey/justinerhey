@@ -66,6 +66,8 @@ export default function Hero() {
             <img
               src="./images/new_profike.png"
               alt="Justine Rhey M. Tambong"
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
               onLoad={() => setImgLoaded(true)}
               onError={() => setImgLoaded(true)}
               style={imgLoaded ? {} : { display: 'none' }}

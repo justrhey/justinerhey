@@ -69,12 +69,7 @@ const cardStyles = {
     gap: 16,
   },
   card: (role) => ({
-    border: '1px solid #1a1a1a',
     borderLeft: `3px solid ${roleColors[role] || '#333'}`,
-    padding: 24,
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'column',
   }),
   role: {
     fontSize: '0.65rem',
@@ -110,9 +105,7 @@ const cardStyles = {
   },
   link: {
     fontSize: '0.8rem',
-    color: '#888',
     marginTop: 16,
-    transition: 'color 0.25s, gap 0.25s',
     display: 'inline-flex',
     alignItems: 'center',
     gap: 6,
@@ -129,22 +122,12 @@ export default function Projects() {
         <p className="section-label">Projects</p>
         <h2 className="section-title">Things I've Built</h2>
           <div className="project-grid" style={cardStyles.grid}>
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <div
-              key={index}
-              className="card-hover"
+              key={project.slug || project.title}
+              className="project-card card-hover"
               style={cardStyles.card(project.role)}
               onClick={() => setSelectedProject(project)}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#333'
-                const link = e.currentTarget.querySelector('.card-link')
-                if (link) { link.style.color = '#fff' }
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#1a1a1a'
-                const link = e.currentTarget.querySelector('.card-link')
-                if (link) { link.style.color = '#888' }
-              }}
             >
               <p style={cardStyles.role}>
                 <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || '#555' }} />
@@ -152,8 +135,8 @@ export default function Projects() {
               </p>
               <h3 style={cardStyles.title}>{project.title}</h3>
               <div style={cardStyles.tags}>
-                {project.tech.map((tag, i) => (
-                  <span key={i} style={cardStyles.tag}>{tag}</span>
+                {project.tech.map((tag) => (
+                  <span key={tag} style={cardStyles.tag}>{tag}</span>
                 ))}
               </div>
               <span className="card-link" style={cardStyles.link}>Read the story &rarr;</span>

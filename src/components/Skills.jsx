@@ -1,3 +1,5 @@
+import useScrollReveal from '../hooks/useScrollReveal.js'
+
 const skillCategories = [
   {
     title: 'Backend',
@@ -25,14 +27,22 @@ const skillCategories = [
   },
 ]
 
+const certificates = [
+  {
+    title: 'Windows Server 2016 Fundamentals Training',
+    issuer: 'Microsoft',
+    type: 'Certificate of Participation',
+    image: './images/certificates/certificate.png',
+  },
+]
+
 const styles = {
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-    gap: 32,
+    gap: 24,
   },
   card: {
-    border: '1px solid #1a1a1a',
     padding: 32,
   },
   category: {
@@ -50,15 +60,17 @@ const styles = {
   },
   tag: {
     padding: '6px 14px',
-    border: '1px solid #333',
     fontSize: '0.85rem',
-    color: '#ccc',
-    transition: 'all 0.2s',
-    cursor: 'default',
+  },
+  certSubtitle: {
+    fontSize: '0.8rem',
+    color: '#555',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    marginTop: 56,
+    marginBottom: 24,
   },
 }
-
-import useScrollReveal from '../hooks/useScrollReveal.js'
 
 export default function Skills() {
   const ref = useScrollReveal()
@@ -71,24 +83,37 @@ export default function Skills() {
           {skillCategories.map((cat) => (
             <div
               key={cat.title}
-              className="card-hover"
+              className="skill-card card-hover"
               style={styles.card}
-              onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#444')}
-              onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#1a1a1a')}
             >
               <p style={styles.category}>{cat.title}</p>
               <ul style={styles.list}>
                 {cat.skills.map((s) => (
                   <li
                     key={s}
+                    className="skill-tag"
                     style={styles.tag}
-                    onMouseEnter={(e) => { e.target.style.borderColor = '#fff'; e.target.style.color = '#fff' }}
-                    onMouseLeave={(e) => { e.target.style.borderColor = '#333'; e.target.style.color = '#ccc' }}
                   >
                     {s}
                   </li>
                 ))}
               </ul>
+            </div>
+          ))}
+        </div>
+
+        <p style={styles.certSubtitle}>Certifications</p>
+        <div className="fade-in-children" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: 24 }}>
+          {certificates.map((cert) => (
+            <div key={cert.title} className="cert-card card-hover" style={{ padding: 0, overflow: 'hidden' }}>
+              <div className="cert-image">
+                <img src={cert.image} alt={cert.title} draggable={false} onDragStart={(e) => e.preventDefault()} />
+              </div>
+              <div style={{ padding: 24 }}>
+                <p style={{ fontSize: '0.65rem', color: '#555', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8 }}>{cert.type}</p>
+                <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: 6 }}>{cert.title}</h3>
+                <p style={{ fontSize: '0.85rem', color: '#888' }}>{cert.issuer}</p>
+              </div>
             </div>
           ))}
         </div>

@@ -31,11 +31,6 @@ const navStyles = {
   },
   link: {
     fontSize: '0.85rem',
-    color: '#888',
-    transition: 'color 0.2s',
-    cursor: 'pointer',
-    background: 'none',
-    border: 'none',
     fontFamily: 'inherit',
   },
 }
@@ -66,11 +61,8 @@ export default function Navbar() {
             {sections.map((s) => (
               <li key={s}>
                 <button
-                  style={navStyles.link}
-                  onClick={() => scrollTo(s)}
-                  onMouseEnter={(e) => (e.target.style.color = '#fff')}
-                  onMouseLeave={(e) => (e.target.style.color = '#888')}
-                >
+                  className="nav-link"
+                  onClick={() => scrollTo(s)}>
                   {s}
                 </button>
               </li>
