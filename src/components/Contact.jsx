@@ -143,26 +143,58 @@ const IconLinkedIn = () => (
 export default function Contact() {
   const [state, handleSubmit] = useForm(FORMSPREE_ID)
   const [formErr, setFormErr] = useState('')
+  const [cooldownSecs, setCooldownSecs] = useState(0)
   const ref = useScrollReveal()
   const formRef = useRef(null)
 
-  // Reset form on successful submission
+  // Check for active cooldown on mount and after each tick
+  const getCooldownRemaining = () => {
+    const key = 'portfolio_cooldown'
+    try {
+      const data = JSON.parse(localStorage.getItem(key))
+      if (!data) return 0
+      const remaining = Math.ceil((data.time + data.count * 60 * 1000 - Date.now()) / 1000)
+      return remaining > 0 ? remaining : 0
+    } catch {
+      return 0
+    }
+  }
+
+  // Live countdown ticker
+  useEffect(() => {
+    if (cooldownSecs <= 0) return
+    const interval = setInterval(() => {
+      const remaining = getCooldownRemaining()
+      if (remaining <= 0) {
+        setCooldownSecs(0)
+        clearInterval(interval)
+      } else {
+        setCooldownSecs(remaining)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [cooldownSecs])
+
+  // Initialize cooldown on page load
+  useEffect(() => {
+    setCooldownSecs(getCooldownRemaining())
+  }, [])
+
+  // Reset form on success
   useEffect(() => {
     if (state.succeeded) {
       formRef.current?.reset()
     }
   }, [state.succeeded])
 
-  // Map Formspree errors to a display message
+  // Map Formspree errors
   useEffect(() => {
     if (state.errors && state.errors.getFormErrors) {
       const formErrors = state.errors.getFormErrors()
       if (formErrors.length > 0) {
         const err = formErrors[0]
         let msg = 'Something went wrong. Please email me directly.'
-        if (err?.message) {
-          msg = err.message + ' — please email me directly.'
-        }
+        if (err?.message) msg = err.message + ' — please email me directly.'
         setFormErr(msg)
       }
     } else {
@@ -170,41 +202,36 @@ export default function Contact() {
     }
   }, [state.errors])
 
-  // Cooldown limiter — 1 min first, then 2 min, 3 min... stacking
-  const checkCooldown = () => {
+  const startCooldown = () => {
     const key = 'portfolio_cooldown'
     const now = Date.now()
     let data
     try { data = JSON.parse(localStorage.getItem(key)) } catch { data = null }
 
     if (!data) {
-      localStorage.setItem(key, JSON.stringify({ count: 1, time: now }))
-      return { allowed: true }
+      data = { count: 1, time: now }
+    } else {
+      data.count = data.count + 1
+      data.time = now
     }
-
-    const waitMinutes = data.count
-    const nextAllowed = data.time + waitMinutes * 60 * 1000
-    if (now < nextAllowed) {
-      return { allowed: false, wait: waitMinutes }
-    }
-
-    data.count++
-    data.time = now
     localStorage.setItem(key, JSON.stringify(data))
-    return { allowed: true }
+    setCooldownSecs(data.count * 60)
   }
 
   const onSubmit = (e) => {
     e.preventDefault()
     setFormErr('')
 
-    const cooldown = checkCooldown()
-    if (!cooldown.allowed) {
-      setFormErr(`Please wait ${cooldown.wait} minute${cooldown.wait > 1 ? 's' : ''} before sending again.`)
-      return
-    }
+    if (cooldownSecs > 0) return
 
+    startCooldown()
     handleSubmit(e)
+  }
+
+  const formatTime = (secs) => {
+    const m = Math.floor(secs / 60)
+    const s = secs % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
   }
 
   return (
@@ -279,19 +306,23 @@ export default function Contact() {
               </div>
             ) : (
               <>
-                {formErr && (
+                {cooldownSecs > 0 ? (
+                  <p style={{ color: '#e44', fontSize: '0.85rem' }}>
+                    Wait {formatTime(cooldownSecs)} before sending again
+                  </p>
+                ) : formErr ? (
                   <div>
                     <p style={{ color: '#e44', fontSize: '0.85rem' }}>{formErr}</p>
                     <p style={styles.fallbackLink}>
                       <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
                     </p>
                   </div>
-                )}
-                <button type="submit" disabled={state.submitting}
-                        style={{ ...styles.btn, opacity: state.submitting ? 0.5 : 1 }}
-                        onMouseEnter={(e) => { if (!state.submitting) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
-                        onMouseLeave={(e) => { if (!state.submitting) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
-                  {state.submitting ? 'Sending...' : 'Send Message'}
+                ) : null}
+                <button type="submit" disabled={state.submitting || cooldownSecs > 0}
+                        style={{ ...styles.btn, opacity: (state.submitting || cooldownSecs > 0) ? 0.5 : 1 }}
+                        onMouseEnter={(e) => { if (!state.submitting && cooldownSecs <= 0) { e.target.style.background = '#1a1a1a'; e.target.style.color = '#fff'; e.target.style.borderColor = '#1a1a1a' } }}
+                        onMouseLeave={(e) => { if (!state.submitting && cooldownSecs <= 0) { e.target.style.background = '#fff'; e.target.style.color = '#000'; e.target.style.borderColor = '#fff' } }}>
+                  {state.submitting ? 'Sending...' : cooldownSecs > 0 ? `Wait ${formatTime(cooldownSecs)}` : 'Send Message'}
                 </button>
               </>
             )}
