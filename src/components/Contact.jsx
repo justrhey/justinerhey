@@ -219,12 +219,12 @@ export default function Contact() {
               who delivers — Java, Spring Boot, Android, or backend — let's talk.
             </p>
             <div style={styles.links}>
-              <a href="mailto:justinerhey021@gmail.com" style={styles.link}
+              <a href="mailto:justrhey.tambong@gmail.com" style={styles.link}
                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#1a1a1a'; e.currentTarget.querySelector('svg').style.color = '#555' }}>
                 <IconMail />
                 <span style={styles.linkLabel}>Email</span>
-                justinerhey021@gmail.com
+                justrhey.tambong@gmail.com
               </a>
               <a href="https://github.com/justrhey" target="_blank" rel="noopener noreferrer" style={styles.link}
                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#444'; e.currentTarget.querySelector('svg').style.color = '#bbb' }}
@@ -269,7 +269,7 @@ export default function Contact() {
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
             <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
-              Or email me directly: <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
+              Or email me directly: <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
             </p>
 
             {state.succeeded ? (
@@ -283,7 +283,7 @@ export default function Contact() {
                   <div>
                     <p style={{ color: '#e44', fontSize: '0.85rem' }}>{formErr}</p>
                     <p style={styles.fallbackLink}>
-                      <a href="mailto:justinerhey021@gmail.com" style={{ color: '#888' }}>justinerhey021@gmail.com</a>
+                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
                     </p>
                   </div>
                 )}
