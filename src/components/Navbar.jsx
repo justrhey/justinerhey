@@ -33,12 +33,30 @@ const navStyles = {
     fontSize: '0.85rem',
     fontFamily: 'inherit',
   },
+  hamburger: {
+    background: 'none',
+    border: '1px solid #333',
+    color: '#fff',
+    fontSize: '1.2rem',
+    cursor: 'pointer',
+    padding: '8px 12px',
+    fontFamily: 'inherit',
+    lineHeight: 1,
+  },
+  mobileMenu: {
+    display: 'none',
+    flexDirection: 'column',
+    gap: 8,
+    padding: '12px 24px 20px',
+    borderTop: '1px solid #1a1a1a',
+  },
 }
 
 const sections = ['About', 'Skills', 'Projects', 'Contact']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50)
@@ -48,6 +66,7 @@ export default function Navbar() {
 
   const scrollTo = (id) => {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
+    setMenuOpen(false)
   }
 
   return (
@@ -56,7 +75,14 @@ export default function Navbar() {
         <div style={navStyles.logo}>
           JR<span style={{ color: '#666' }}>.</span>
         </div>
-        <nav>
+        <button
+          className="hamburger"
+          style={navStyles.hamburger}
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? '\u2715' : '\u2630'}
+        </button>
+        <nav className="desktop-nav">
           <ul style={navStyles.nav}>
             {sections.map((s) => (
               <li key={s}>
@@ -69,6 +95,18 @@ export default function Navbar() {
             ))}
           </ul>
         </nav>
+      </div>
+      <div className="mobile-menu" style={{ ...navStyles.mobileMenu, display: menuOpen ? 'flex' : 'none' }}>
+        {sections.map((s) => (
+          <button
+            key={s}
+            className="nav-link"
+            style={{ textAlign: 'left', padding: '8px 0', fontSize: '0.95rem' }}
+            onClick={() => scrollTo(s)}
+          >
+            {s}
+          </button>
+        ))}
       </div>
     </header>
   )

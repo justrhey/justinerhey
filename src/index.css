@@ -538,6 +538,34 @@ section {
   }
 }
 
+.hamburger {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .desktop-nav {
+    display: none !important;
+  }
+  .hamburger {
+    display: block;
+  }
+  .project-card {
+    padding: 18px !important;
+  }
+  .project-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .modal-content {
+    padding: 20px !important;
+  }
+  .modal-viewer {
+    height: 220px !important;
+  }
+  .hero-text p:last-of-type {
+    font-size: 0.88rem !important;
+  }
+}
+
 @media (min-width: 1200px) {
   .container {
     padding: 0 48px;

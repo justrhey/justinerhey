@@ -159,7 +159,7 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div style={styles.backdrop} onClick={onClose}>
-      <div className="modal-enter" style={styles.modal} onClick={(e) => e.stopPropagation()}>
+      <div className="modal-enter modal-content" style={styles.modal} onClick={(e) => e.stopPropagation()}>
         <button style={styles.close} onClick={onClose}>&#10005;</button>
 
         <h3 style={styles.title}>{project.title}</h3>
@@ -173,7 +173,7 @@ export default function ProjectModal({ project, onClose }) {
         <div style={styles.divider} />
 
         {hasImages && (
-          <div style={styles.viewerWrap}>
+          <div className="modal-viewer" style={styles.viewerWrap}>
             <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {!imgLoaded && <div className="skeleton skeleton-image" />}
               <img
