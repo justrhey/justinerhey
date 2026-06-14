@@ -21,12 +21,13 @@ const projects = [
   },
   {
     title: 'Ticketing System (Spring Boot)',
+    slug: 'ticketing-system',
     role: 'Internship Project',
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     url: 'https://github.com/justrhey/ticket-management-system',
     demoUrl: 'https://ticket-management-system-production-4013.up.railway.app',
     intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management.',
-    images: null
+    images: ['screenshot1.png', 'screenshot2.png']
   },
   {
     title: 'Usmentz',
