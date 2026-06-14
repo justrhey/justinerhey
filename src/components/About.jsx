@@ -197,18 +197,7 @@ export default function About() {
           </div>
         </div>
 
-        <div style={{ marginTop: 64 }}>
-          <p style={styles.sectionHeader}>GitHub Activity</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }} dangerouslySetInnerHTML={{
-            __html: [
-              '<img src="https://github-readme-stats.vercel.app/api?username=justrhey&show_icons=true&count_private=true&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888&icon_color=555" alt="GitHub Stats" style="max-width:100%;height:auto" />',
-              '<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=justrhey&layout=compact&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888" alt="Top Languages" style="max-width:100%;height:auto" />',
-            ].join(' ')
-          }} />
-          <div style={{ marginTop: 16, textAlign: 'center' }} dangerouslySetInnerHTML={{
-            __html: '<img src="https://ghchart.rshah.org/justrhey" alt="GitHub Contribution Chart" style="max-width:100%;height:auto;border:1px solid #1a1a1a" />'
-          }} />
-        </div>
+
       </div>
     </section>
   )
