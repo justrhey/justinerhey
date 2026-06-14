@@ -36,6 +36,24 @@ const projects = [
     url: 'https://github.com/justrhey/usmentz',
     intro: 'Date planning Android app with calendar, expense tracking, photo booth, and reviews. Local persistence with Room DB and cloud sync via Firestore.',
     images: null
+  },
+  {
+    title: 'Cassie',
+    slug: 'cassie',
+    role: 'Personal Project',
+    tech: ['Kotlin', 'Jetpack Compose', 'Media3', 'ExoPlayer', 'MVVM'],
+    url: 'https://github.com/justrhey/Cassie',
+    intro: 'Music player app built with Kotlin and Jetpack Compose. Features album browsing, artist view, playlist management, and media playback using Media3 ExoPlayer with MVVM architecture.',
+    images: ['home.jpeg', 'albums.jpeg', 'artist.jpeg', 'playlist.jpeg', 'top50.jpeg']
+  },
+  {
+    title: 'POS System',
+    slug: 'pos-system',
+    role: 'School Project',
+    tech: ['Java', 'JavaFX', 'SQLite', 'JDBC', 'MVC'],
+    url: 'https://github.com/justrhey/POS-System',
+    intro: 'Point-of-Sale system with inventory management, sales tracking, receipt generation, and reporting. Built with JavaFX for the UI layer and SQLite for local persistence.',
+    images: null
   }
 ]
 
@@ -130,4 +148,3 @@ export default function Projects() {
     </section>
   )
 }
-console.log('VERIFY_SOURCE_WAS_READ');
