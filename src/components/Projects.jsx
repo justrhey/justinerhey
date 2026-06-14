@@ -130,3 +130,4 @@ export default function Projects() {
     </section>
   )
 }
+console.log('VERIFY_SOURCE_WAS_READ');
