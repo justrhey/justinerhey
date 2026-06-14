@@ -80,15 +80,16 @@ export default function Hero() {
             </h1>
             <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
-              Building small things to learn the craft. Currently exploring Java, Spring Boot, and backend development.
+              Building small things to learn the craft. Currently exploring Java, Spring Boot, PHP, and backend development.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }}>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Java</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Spring Boot</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>REST APIs</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Docker</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Linux</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222' }}>Networking</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-java-plain" style={{ fontSize: '0.9rem' }}/> Java</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-spring-plain" style={{ fontSize: '0.9rem' }}/> Spring Boot</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-php-plain" style={{ fontSize: '0.9rem' }}/> PHP</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-postgresql-plain" style={{ fontSize: '0.9rem' }}/> PostgreSQL</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-mysql-plain" style={{ fontSize: '0.9rem' }}/> MySQL</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-docker-plain" style={{ fontSize: '0.9rem' }}/> Docker</span>
+              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-linux-plain" style={{ fontSize: '0.9rem' }}/> Linux</span>
             </div>
             <div className="hero-cta" style={heroStyles.cta}>
               <button
