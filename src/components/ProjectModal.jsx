@@ -217,14 +217,14 @@ export default function ProjectModal({ project, onClose }) {
 
         <div style={styles.actions}>
           {project.demoUrl && (
-            <button
-              onClick={() => window.location.href = project.demoUrl}
-              style={{ ...styles.linkBtn, border: '1px solid #2563eb', color: '#60a5fa', background: 'transparent' }}
+            <a
+              href={project.demoUrl}
+              style={{ ...styles.linkBtn, border: '1px solid #2563eb', color: '#60a5fa' }}
               onMouseEnter={(e) => { e.target.style.background = '#1e3a5f'; e.target.style.color = '#fff' }}
               onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#60a5fa' }}
             >
               Live Demo &rarr;
-            </button>
+            </a>
           )}
           <a
             href={project.url}
