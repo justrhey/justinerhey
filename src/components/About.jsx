@@ -140,20 +140,22 @@ export default function About() {
               <p style={styles.sectionHeader}>Tech Stack</p>
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                 <IconWrench />
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  <img src="https://img.shields.io/badge/-Java-007396?logo=java&logoColor=white&style=for-the-badge" alt="Java" />
-                  <img src="https://img.shields.io/badge/-Spring%20Boot-6DB33F?logo=springboot&logoColor=white&style=for-the-badge" alt="Spring Boot" />
-                  <img src="https://img.shields.io/badge/-PHP-777BB4?logo=php&logoColor=white&style=for-the-badge" alt="PHP" />
-                  <img src="https://img.shields.io/badge/-PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=for-the-badge" alt="PostgreSQL" />
-                  <img src="https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge" alt="MySQL" />
-                  <img src="https://img.shields.io/badge/-Android-3DDC84?logo=android&logoColor=white&style=for-the-badge" alt="Android" />
-                  <img src="https://img.shields.io/badge/-Kotlin-7F52FF?logo=kotlin&logoColor=white&style=for-the-badge" alt="Kotlin" />
-                  <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge" alt="JavaScript" />
-                  <img src="https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge" alt="Docker" />
-                  <img src="https://img.shields.io/badge/-Linux-FCC624?logo=linux&logoColor=black&style=for-the-badge" alt="Linux" />
-                  <img src="https://img.shields.io/badge/-Laravel-FF2D20?logo=laravel&logoColor=white&style=for-the-badge" alt="Laravel" />
-                  <img src="https://img.shields.io/badge/-.NET-512BD4?logo=dotnet&logoColor=white&style=for-the-badge" alt=".NET" />
-                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }} dangerouslySetInnerHTML={{
+                  __html: [
+                    '<img src="https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&style=for-the-badge" alt="Java" />',
+                    '<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white&style=for-the-badge" alt="Spring Boot" />',
+                    '<img src="https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white&style=for-the-badge" alt="PHP" />',
+                    '<img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=for-the-badge" alt="PostgreSQL" />',
+                    '<img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge" alt="MySQL" />',
+                    '<img src="https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white&style=for-the-badge" alt="Android" />',
+                    '<img src="https://img.shields.io/badge/Kotlin-7F52FF?logo=kotlin&logoColor=white&style=for-the-badge" alt="Kotlin" />',
+                    '<img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge" alt="JavaScript" />',
+                    '<img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge" alt="Docker" />',
+                    '<img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black&style=for-the-badge" alt="Linux" />',
+                    '<img src="https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white&style=for-the-badge" alt="Laravel" />',
+                    '<img src="https://img.shields.io/badge/.NET-512BD4?logo=dotnet&logoColor=white&style=for-the-badge" alt=".NET" />'
+                  ].join(' ')
+                }} />
               </div>
             </div>
           </div>
@@ -197,25 +199,15 @@ export default function About() {
 
         <div style={{ marginTop: 64 }}>
           <p style={styles.sectionHeader}>GitHub Activity</p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
-            <img
-              src="https://github-readme-stats.vercel.app/api?username=justrhey&show_icons=true&count_private=true&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888&icon_color=555"
-              alt="GitHub Stats"
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
-            <img
-              src="https://github-readme-stats.vercel.app/api/top-langs/?username=justrhey&layout=compact&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888"
-              alt="Top Languages"
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
-          </div>
-          <div style={{ marginTop: 16, textAlign: 'center' }}>
-            <img
-              src="https://ghchart.rshah.org/justrhey"
-              alt="GitHub Contribution Chart"
-              style={{ maxWidth: '100%', height: 'auto', border: '1px solid #1a1a1a' }}
-            />
-          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }} dangerouslySetInnerHTML={{
+            __html: [
+              '<img src="https://github-readme-stats.vercel.app/api?username=justrhey&show_icons=true&count_private=true&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888&icon_color=555" alt="GitHub Stats" style="max-width:100%;height:auto" />',
+              '<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=justrhey&layout=compact&hide_title=true&theme=dark&bg_color=000&border_color=1a1a1a&text_color=888" alt="Top Languages" style="max-width:100%;height:auto" />',
+            ].join(' ')
+          }} />
+          <div style={{ marginTop: 16, textAlign: 'center' }} dangerouslySetInnerHTML={{
+            __html: '<img src="https://ghchart.rshah.org/justrhey" alt="GitHub Contribution Chart" style="max-width:100%;height:auto;border:1px solid #1a1a1a" />'
+          }} />
         </div>
       </div>
     </section>
