@@ -83,13 +83,16 @@ export default function Hero() {
               Building small things to learn the craft. Currently exploring Java, Spring Boot, PHP, and backend development.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }}>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-java-plain" style={{ fontSize: '0.9rem' }}/> Java</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-spring-plain" style={{ fontSize: '0.9rem' }}/> Spring Boot</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-php-plain" style={{ fontSize: '0.9rem' }}/> PHP</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-postgresql-plain" style={{ fontSize: '0.9rem' }}/> PostgreSQL</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-mysql-plain" style={{ fontSize: '0.9rem' }}/> MySQL</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-docker-plain" style={{ fontSize: '0.9rem' }}/> Docker</span>
-              <span style={{ padding: '4px 12px', fontSize: '0.75rem', fontWeight: 500, background: '#111', color: '#999', borderRadius: 4, border: '1px solid #222', display: 'inline-flex', alignItems: 'center', gap: 6 }}><i className="devicon-linux-plain" style={{ fontSize: '0.9rem' }}/> Linux</span>
+              <img src="https://img.shields.io/badge/-Java-007396?logo=java&logoColor=white&style=for-the-badge" alt="Java" />
+              <img src="https://img.shields.io/badge/-Spring%20Boot-6DB33F?logo=springboot&logoColor=white&style=for-the-badge" alt="Spring Boot" />
+              <img src="https://img.shields.io/badge/-PHP-777BB4?logo=php&logoColor=white&style=for-the-badge" alt="PHP" />
+              <img src="https://img.shields.io/badge/-PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=for-the-badge" alt="PostgreSQL" />
+              <img src="https://img.shields.io/badge/-MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge" alt="MySQL" />
+              <img src="https://img.shields.io/badge/-JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge" alt="JavaScript" />
+              <img src="https://img.shields.io/badge/-Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge" alt="Docker" />
+              <img src="https://img.shields.io/badge/-Linux-FCC624?logo=linux&logoColor=black&style=for-the-badge" alt="Linux" />
+              <img src="https://img.shields.io/badge/-Laravel-FF2D20?logo=laravel&logoColor=white&style=for-the-badge" alt="Laravel" />
+              <img src="https://img.shields.io/badge/-Android-3DDC84?logo=android&logoColor=white&style=for-the-badge" alt="Android" />
             </div>
             <div className="hero-cta" style={heroStyles.cta}>
               <button
