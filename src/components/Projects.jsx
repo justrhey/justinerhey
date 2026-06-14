@@ -26,7 +26,7 @@ const projects = [
     tech: ['Java', 'Spring Boot', 'REST API', 'DAO', 'Maven'],
     url: 'https://github.com/justrhey/ticket-management-system',
     demoUrl: 'https://ticket-management-system-9wr1.onrender.com',
-    intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management.',
+    intro: 'Spring Boot ticketing system built iteratively with real stakeholder feedback for IT department workflow management. Note: demo may take ~50s to load on first visit (free Render tier).',
     images: ['screenshot1.png', 'screenshot2.png']
   },
   {
