@@ -216,6 +216,18 @@ export default function ProjectModal({ project, onClose }) {
         <p style={styles.story}>{project.intro}</p>
 
         <div style={styles.actions}>
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ ...styles.linkBtn, border: '1px solid #2563eb', color: '#60a5fa' }}
+              onMouseEnter={(e) => { e.target.style.background = '#1e3a5f'; e.target.style.color = '#fff' }}
+              onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#60a5fa' }}
+            >
+              Live Demo &rarr;
+            </a>
+          )}
           <a
             href={project.url}
             target="_blank"
