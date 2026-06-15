@@ -90,9 +90,6 @@ export default function Hero() {
             <p style={heroStyles.subtitle}>
               Building small things to learn the craft. Currently exploring Java, Spring Boot, PHP, and backend development.
             </p>
-            <div style={{ marginBottom: 24 }} dangerouslySetInnerHTML={{
-              __html: '<img src="https://ghchart.rshah.org/justrhey" alt="GitHub Contribution Chart" style="max-width:100%;height:auto;border:1px solid #1a1a1a;border-radius:4px" />'
-            }} />
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }} dangerouslySetInnerHTML={{
               __html: [
                 '<img src="https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&style=for-the-badge" alt="Java" />',
