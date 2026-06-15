@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const heroStyles = {
   section: {
@@ -56,12 +56,20 @@ const heroStyles = {
 
 export default function Hero() {
   const [imgLoaded, setImgLoaded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
 
   return (
     <section id="hero" style={heroStyles.section}>
       <div style={heroStyles.gradient} />
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="hero-wrap">
+        <div className="hero-wrap" style={isMobile ? { flexDirection: 'column', gap: '32px', textAlign: 'center' } : {}}>
           <div className={`hero-avatar${!imgLoaded ? ' skeleton skeleton-circle' : ''}`}>
             <img
               src="./images/new_profike.png"
