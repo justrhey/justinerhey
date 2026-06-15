@@ -83,7 +83,7 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I am a backend developer with an interest in what happens between the server and the wire. I build APIs and services with <strong style={{ color: 'var(--text)' }}>Java</strong> and <strong style={{ color: 'var(--text)' }}>Spring Boot</strong>, and I have spent time learning Linux server basics, remote access, and foundational network security concepts like wireless handshake capture and Nmap reconnaissance.
+          I write backend code using <strong style={{ color: 'var(--text)' }}>Java</strong> and <strong style={{ color: 'var(--text)' }}>Spring Boot</strong>. I also know my way around Linux basics, remote server access, and some network security fundamentals.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
           I am still early in my career, but I tend to dig deeper than I need to. I like understanding how DNS works, what packets actually look like, and how a Linux system behaves when you push it beyond its default setup. I do not have all the answers yet, but I enjoy figuring them out.
