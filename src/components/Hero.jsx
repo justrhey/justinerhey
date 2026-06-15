@@ -19,7 +19,7 @@ const heroStyles = {
   },
   greeting: {
     fontSize: '0.8rem',
-    color: '#666',
+    color: 'var(--text-faint)',
     textTransform: 'uppercase',
     letterSpacing: '3px',
     marginBottom: 14,
@@ -32,17 +32,17 @@ const heroStyles = {
     marginBottom: 4,
   },
   highlight: {
-    color: '#777',
+    color: 'var(--text-dim)',
   },
   tagline: {
     fontSize: '1rem',
-    color: '#555',
+    color: 'var(--text-faint)',
     marginBottom: 20,
     fontWeight: 400,
   },
   subtitle: {
     fontSize: '1rem',
-    color: '#888',
+    color: 'var(--text-muted)',
     maxWidth: 540,
     marginBottom: 36,
     lineHeight: 1.8,

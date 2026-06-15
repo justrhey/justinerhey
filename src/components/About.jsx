@@ -2,34 +2,34 @@ import useScrollReveal from '../hooks/useScrollReveal.js'
 
 const styles = {
   intro: {
-    color: '#aaa',
+    color: 'var(--text-secondary)',
     fontSize: '0.95rem',
     lineHeight: 1.9,
     marginBottom: 36,
     maxWidth: 600,
   },
   text: {
-    color: '#aaa',
+    color: 'var(--text-secondary)',
     fontSize: '0.95rem',
     lineHeight: 1.8,
   },
   highlight: {
-    color: '#fff',
+    color: 'var(--text)',
     fontWeight: 500,
   },
   label: {
-    color: '#666',
+    color: 'var(--text-faint)',
     minWidth: 100,
     fontSize: '0.8rem',
     textTransform: 'uppercase',
     letterSpacing: '1px',
   },
   value: {
-    color: '#bbb',
+    color: 'var(--text-secondary)',
     fontSize: '0.95rem',
   },
   sectionHeader: {
-    color: '#555',
+    color: 'var(--text-faint)',
     fontSize: '0.65rem',
     textTransform: 'uppercase',
     letterSpacing: '1.5px',
@@ -41,7 +41,7 @@ const styles = {
     gap: 6,
   },
   detailItem: {
-    color: '#777',
+    color: 'var(--text-dim)',
     fontSize: '0.85rem',
     lineHeight: 1.6,
     paddingLeft: 0,
@@ -49,7 +49,7 @@ const styles = {
   },
 
   dot: {
-    color: '#555',
+    color: 'var(--text-faint)',
     marginRight: 8,
   },
 }
@@ -83,7 +83,7 @@ export default function About() {
         <h2 className="section-title">About Me</h2>
 
         <p style={styles.intro}>
-          I am a backend developer with an interest in what happens between the server and the wire. I build APIs and services with <strong style={{ color: '#fff' }}>Java</strong> and <strong style={{ color: '#fff' }}>Spring Boot</strong>, and I have spent time learning Linux server basics, remote access, and foundational network security concepts like wireless handshake capture and Nmap reconnaissance.
+          I am a backend developer with an interest in what happens between the server and the wire. I build APIs and services with <strong style={{ color: 'var(--text)' }}>Java</strong> and <strong style={{ color: 'var(--text)' }}>Spring Boot</strong>, and I have spent time learning Linux server basics, remote access, and foundational network security concepts like wireless handshake capture and Nmap reconnaissance.
         </p>
         <p style={{ ...styles.intro, marginBottom: 48 }}>
           I am still early in my career, but I tend to dig deeper than I need to. I like understanding how DNS works, what packets actually look like, and how a Linux system behaves when you push it beyond its default setup. I do not have all the answers yet, but I enjoy figuring them out.
@@ -99,7 +99,7 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>BS Information Technology</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2 }}>Jesus Reigns Christian College</p>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem', marginTop: 2 }}>Jesus Reigns Christian College</p>
                 </div>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>Network and System Engineer Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space</p>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space</p>
                   <div style={styles.detailList}>
                     <p style={styles.detailItem}>• Built a DNS automation SDK with Java Swing for ICMP/TCP monitoring, developing a real-time network monitoring tool that automated DNS health checks across the infrastructure.</p>
                     <p style={styles.detailItem}>• Managed remote servers and Active Directory, handling server administration and user access management to maintain secure and reliable infrastructure operations.</p>
@@ -128,7 +128,7 @@ export default function About() {
                   <p style={styles.text}>
                     <span style={styles.highlight}>Field Support and Desk Support Intern</span>
                   </p>
-                  <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
+                  <p style={{ color: 'var(--text-dim)', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
                   <div style={styles.detailList}>
                     <p style={styles.detailItem}>• Provided enterprise IT support and remote troubleshooting, diagnosing and resolving end-user technical issues to minimize downtime and restore operations quickly.</p>
                     <p style={styles.detailItem}>• Performed QA, setup, and maintenance of POS systems across Caltex fuel stations, ensuring hardware and software functioned correctly for reliable transaction processing.</p>
@@ -189,9 +189,9 @@ export default function About() {
             <div className="info-row">
               <span style={styles.label}>LinkedIn</span>
               <span style={styles.value}>
-                <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'none' }}
-                   onMouseEnter={(e) => e.target.style.color = '#fff'}
-                   onMouseLeave={(e) => e.target.style.color = '#bbb'}>
+                <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}
+                   onMouseEnter={(e) => e.target.style.color = 'var(--text)'}
+                   onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}>
                   linkedin.com/in/justrhey
                 </a>
               </span>

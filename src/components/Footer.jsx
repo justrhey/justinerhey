@@ -5,11 +5,11 @@ const styles = {
     textAlign: 'center',
   },
   text: {
-    color: '#555',
+    color: 'var(--text-faint)',
     fontSize: '0.85rem',
   },
   heart: {
-    color: '#666',
+    color: 'var(--text-faint)',
   },
 }
 

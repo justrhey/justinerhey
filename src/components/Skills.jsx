@@ -38,7 +38,7 @@ const styles = {
     fontSize: '0.75rem',
     textTransform: 'uppercase',
     letterSpacing: '2px',
-    color: '#666',
+    color: 'var(--text-faint)',
     marginBottom: 20,
   },
   list: {
@@ -53,7 +53,7 @@ const styles = {
   },
   certSubtitle: {
     fontSize: '0.8rem',
-    color: '#555',
+    color: 'var(--text-faint)',
     textTransform: 'uppercase',
     letterSpacing: '2px',
     marginTop: 56,
@@ -101,9 +101,9 @@ export default function Skills() {
                 <img src={cert.image} alt={cert.title} draggable={false} onDragStart={(e) => e.preventDefault()} className={certLoaded ? 'modal-image loaded' : 'modal-image'} onLoad={() => setCertLoaded(true)} onError={() => setCertLoaded(true)} />
               </div>
               <div style={{ padding: 24 }}>
-                <p style={{ fontSize: '0.65rem', color: '#555', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8 }}>{cert.type}</p>
+                <p style={{ fontSize: '0.65rem', color: 'var(--text-faint)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 8 }}>{cert.type}</p>
                 <h3 style={{ fontSize: '1rem', fontWeight: 600, marginBottom: 6 }}>{cert.title}</h3>
-                <p style={{ fontSize: '0.85rem', color: '#888' }}>{cert.issuer}</p>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{cert.issuer}</p>
               </div>
             </div>
           ))}

@@ -11,7 +11,7 @@ const styles = {
     gap: 16,
   },
   intro: {
-    color: '#999',
+    color: 'var(--text-dim)',
     fontSize: '0.95rem',
     lineHeight: 1.8,
     marginBottom: 28,
@@ -27,7 +27,7 @@ const styles = {
     flexShrink: 0,
   },
   linkLabel: {
-    color: '#555',
+    color: 'var(--text-faint)',
     fontSize: '0.7rem',
     textTransform: 'uppercase',
     letterSpacing: '1px',
@@ -40,7 +40,7 @@ const styles = {
   },
   label: {
     fontSize: '0.7rem',
-    color: '#555',
+    color: 'var(--text-faint)',
     textTransform: 'uppercase',
     letterSpacing: '1.5px',
   },
@@ -55,7 +55,7 @@ const styles = {
   successBox: {
     padding: 24,
     border: '1px solid #1a3a1a',
-    background: '#0a1a0a',
+    background: 'var(--bg-card)',
     borderRadius: 4,
     marginBottom: 16,
   },
@@ -66,11 +66,11 @@ const styles = {
     marginBottom: 6,
   },
   successSub: {
-    color: '#666',
+    color: 'var(--text-faint)',
     fontSize: '0.85rem',
   },
   fallbackLink: {
-    color: '#888',
+    color: 'var(--text-muted)',
     fontSize: '0.85rem',
     marginTop: 4,
   },
@@ -240,8 +240,8 @@ export default function Contact() {
             {/* Formspree honeypot — must be empty for human submissions */}
             <input type="text" name="_gotcha" style={{ display: 'none' }} />
 
-            <p style={{ color: '#555', fontSize: '0.75rem', marginBottom: 4 }}>
-              Or email me directly: <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+            <p style={{ color: 'var(--text-faint)', fontSize: '0.75rem', marginBottom: 4 }}>
+              Or email me directly: <a href="mailto:justrhey.tambong@gmail.com" style={{ color: 'var(--text-muted)' }}>justrhey.tambong@gmail.com</a>
             </p>
 
             {state.succeeded ? (
@@ -259,7 +259,7 @@ export default function Contact() {
                   <div>
                     <p style={{ color: '#e44', fontSize: '0.85rem' }}>{formErr}</p>
                     <p style={styles.fallbackLink}>
-                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: '#888' }}>justrhey.tambong@gmail.com</a>
+                      <a href="mailto:justrhey.tambong@gmail.com" style={{ color: 'var(--text-muted)' }}>justrhey.tambong@gmail.com</a>
                     </p>
                   </div>
                 ) : null}

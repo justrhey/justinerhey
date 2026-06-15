@@ -64,11 +64,11 @@ const cardStyles = {
     gap: 16,
   },
   card: (role) => ({
-    borderLeft: `3px solid ${roleColors[role] || '#333'}`,
+    borderLeft: `3px solid ${roleColors[role] || 'var(--border-light)'}`,
   }),
   role: {
     fontSize: '0.65rem',
-    color: '#555',
+    color: 'var(--text-faint)',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     marginBottom: 10,
@@ -96,7 +96,7 @@ const cardStyles = {
     fontSize: '0.7rem',
     padding: '3px 10px',
     border: '1px solid #2a2a2a',
-    color: '#777',
+    color: 'var(--text-dim)',
   },
   link: {
     fontSize: '0.8rem',
@@ -125,7 +125,7 @@ export default function Projects() {
               onClick={() => setSelectedProject(project)}
             >
               <p style={cardStyles.role}>
-                <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || '#555' }} />
+                <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || 'var(--text-faint)' }} />
                 {project.role}
               </p>
               <h3 style={cardStyles.title}>{project.title}</h3>

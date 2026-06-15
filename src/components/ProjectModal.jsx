@@ -13,7 +13,7 @@ const styles = {
     backdropFilter: 'blur(4px)',
   },
   modal: {
-    background: '#0d0d0d',
+    background: 'var(--bg)',
     border: '1px solid #222',
     maxWidth: 'min(90vw, 740px)',
     width: '100%',
@@ -26,7 +26,7 @@ const styles = {
     right: 20,
     background: 'none',
     border: 'none',
-    color: '#555',
+    color: 'var(--text-faint)',
     fontSize: '1.3rem',
     cursor: 'pointer',
     fontFamily: 'inherit',
@@ -41,7 +41,7 @@ const styles = {
   },
   role: {
     fontSize: '0.65rem',
-    color: '#555',
+    color: 'var(--text-faint)',
     textTransform: 'uppercase',
     letterSpacing: '1px',
     marginBottom: 10,
@@ -56,22 +56,22 @@ const styles = {
     fontSize: '0.65rem',
     padding: '2px 8px',
     border: '1px solid #2a2a2a',
-    color: '#777',
+    color: 'var(--text-dim)',
   },
   divider: {
     height: '1px',
-    background: '#1a1a1a',
+    background: 'var(--border)',
     marginBottom: 16,
   },
   sectionLabel: {
     fontSize: '0.6rem',
     textTransform: 'uppercase',
     letterSpacing: '2px',
-    color: '#555',
+    color: 'var(--text-faint)',
     marginBottom: 10,
   },
   story: {
-    color: '#999',
+    color: 'var(--text-dim)',
     fontSize: '0.85rem',
     lineHeight: 1.7,
     margin: 0,
@@ -81,7 +81,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: '#080808',
+    background: 'var(--bg-card)',
     border: '1px solid #1a1a1a',
     marginBottom: 16,
     height: 340,
@@ -100,7 +100,7 @@ const styles = {
     width: 56,
     background: 'rgba(0,0,0,0.4)',
     border: 'none',
-    color: '#aaa',
+    color: 'var(--text-secondary)',
     fontSize: '1.4rem',
     cursor: 'pointer',
     display: 'flex',
@@ -115,7 +115,7 @@ const styles = {
     bottom: 10,
     right: 14,
     fontSize: '0.7rem',
-    color: '#666',
+    color: 'var(--text-faint)',
     background: 'rgba(0,0,0,0.6)',
     padding: '2px 10px',
   },
@@ -131,7 +131,7 @@ const styles = {
     gap: 8,
     padding: '8px 20px',
     border: '1px solid #555',
-    color: '#ccc',
+    color: 'var(--text-muted)',
     fontSize: '0.8rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -222,7 +222,7 @@ export default function ProjectModal({ project, onClose }) {
               target="_blank"
               rel="noopener noreferrer"
               style={{ ...styles.linkBtn, border: '1px solid #2563eb', color: '#60a5fa' }}
-              onMouseEnter={(e) => { e.target.style.background = '#1e3a5f'; e.target.style.color = '#fff' }}
+              onMouseEnter={(e) => { e.target.style.background = '#1e3a5f'; e.target.style.color = 'var(--text)' }}
               onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#60a5fa' }}
             >
               Live Demo &rarr;
@@ -233,8 +233,8 @@ export default function ProjectModal({ project, onClose }) {
             target="_blank"
             rel="noopener noreferrer"
             style={styles.linkBtn}
-            onMouseEnter={(e) => { e.target.style.borderColor = '#888'; e.target.style.color = '#fff' }}
-            onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#ccc' }}
+            onMouseEnter={(e) => { e.target.style.borderColor = 'var(--text-muted)'; e.target.style.color = 'var(--text)' }}
+            onMouseLeave={(e) => { e.target.style.borderColor = 'var(--text-faint)'; e.target.style.color = 'var(--text-muted)' }}
           >
             View on GitHub &rarr;
           </a>
