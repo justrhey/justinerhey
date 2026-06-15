@@ -47,17 +47,7 @@ const styles = {
     paddingLeft: 0,
     marginBottom: 12,
   },
-  arrLabel: {
-    color: '#999',
-    fontWeight: 600,
-    fontSize: '0.7rem',
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
-    marginRight: 6,
-  },
-  arrBlock: {
-    marginBottom: 10,
-  },
+
   dot: {
     color: '#555',
     marginRight: 8,
@@ -125,21 +115,9 @@ export default function About() {
                   </p>
                   <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>CallHounds Global and Virspacio Co Working Space</p>
                   <div style={styles.detailList}>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Built DNS automation SDK with Java Swing for ICMP/TCP monitoring</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Developing a DNS automation tool for real-time network monitoring</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Automated DNS health checks with ICMP/TCP monitoring</p>
-                    </div>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Managed remote servers and Active Directory</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Server administration and user access management</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Maintained secure and reliable infrastructure</p>
-                    </div>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Used a Linux CLI application for outbound/inbound call routing</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Managing call flow configurations on Linux-based system</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Efficient outbound/inbound call routing operations</p>
-                    </div>
+                    <p style={styles.detailItem}>• Built a DNS automation SDK with Java Swing for ICMP/TCP monitoring, developing a real-time network monitoring tool that automated DNS health checks across the infrastructure.</p>
+                    <p style={styles.detailItem}>• Managed remote servers and Active Directory, handling server administration and user access management to maintain secure and reliable infrastructure operations.</p>
+                    <p style={styles.detailItem}>• Used a Linux CLI application for outbound/inbound call routing, managing call flow configurations to enable efficient outbound and inbound call routing operations.</p>
                   </div>
                 </div>
               </div>
@@ -152,21 +130,9 @@ export default function About() {
                   </p>
                   <p style={{ color: '#777', fontSize: '0.85rem', marginTop: 2, marginBottom: 10 }}>Deutsche Business Solutions</p>
                   <div style={styles.detailList}>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Enterprise IT support and remote troubleshooting</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Diagnosing and resolving end-user technical issues</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Minimized downtime and restored operations quickly</p>
-                    </div>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Performed QA, setup, and maintenance of POS systems across Caltex fuel stations for reliable transaction processing</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Ensuring POS hardware and software functioned correctly</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Reliable transaction processing across all Caltex stations</p>
-                    </div>
-                    <div style={styles.arrBlock}>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Action</span> Administered daily XML backup routines for critical configuration and transaction data to ensure disaster recovery readiness</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Responsibility</span> Managing automated backup processes for critical data</p>
-                      <p style={styles.detailItem}><span style={styles.arrLabel}>Result</span> Ensured disaster recovery readiness with consistent backups</p>
-                    </div>
+                    <p style={styles.detailItem}>• Provided enterprise IT support and remote troubleshooting, diagnosing and resolving end-user technical issues to minimize downtime and restore operations quickly.</p>
+                    <p style={styles.detailItem}>• Performed QA, setup, and maintenance of POS systems across Caltex fuel stations, ensuring hardware and software functioned correctly for reliable transaction processing.</p>
+                    <p style={styles.detailItem}>• Administered daily XML backup routines for critical configuration and transaction data, managing automated backup processes to ensure disaster recovery readiness with consistent backups.</p>
                   </div>
                 </div>
               </div>
