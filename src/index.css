@@ -483,7 +483,7 @@ section {
     padding: 60px 0;
   }
   .hero-wrap {
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 32px;
     text-align: center;
   }
