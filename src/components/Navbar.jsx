@@ -73,7 +73,7 @@ export default function Navbar() {
     <header style={{ ...navStyles.header, opacity: scrolled ? 0.95 : 1 }}>
       <div style={navStyles.inner}>
         <div style={navStyles.logo}>
-          JR<span style={{ color: '#666' }}>.</span>
+          &#9733;
         </div>
         <button
           className="hamburger"
