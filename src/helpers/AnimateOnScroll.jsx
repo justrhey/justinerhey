@@ -15,7 +15,7 @@ export function AnimateOnScroll({ children, direction = 'up', delay = 0, classNa
   const prefersReducedMotion = useReducedMotion()
 
   if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>
+    return <div className={className} style={{ height: '100%' }}>{children}</div>
   }
 
   return (
@@ -30,6 +30,7 @@ export function AnimateOnScroll({ children, direction = 'up', delay = 0, classNa
       }
       variants={variants[direction]}
       className={className}
+      style={{ height: '100%' }}
     >
       {children}
     </motion.div>

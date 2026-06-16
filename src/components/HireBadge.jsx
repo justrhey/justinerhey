@@ -1,19 +1,40 @@
 import { personal } from '../data/personal'
 
-export function HireBadge({ pulse = true }) {
+export function HireBadge() {
   if (!personal.availability) return null
 
   return (
     <div
       role="status"
       aria-label="Currently available for work opportunities"
-      className="fixed bottom-6 right-6 z-40 hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#333] bg-[#0a0a0a]/80 backdrop-blur-sm transition-all hover:border-[#555]"
+      style={{
+        position: 'fixed', bottom: 24, right: 24, zIndex: 40,
+        display: 'none', alignItems: 'center', gap: 8,
+        padding: '6px 14px', border: '1px solid #333',
+        background: 'rgba(10,10,10,0.8)', borderRadius: 999,
+        backdropFilter: 'blur(8px)', transition: 'border-color 0.2s',
+      }}
+      className="hire-badge"
+      onMouseEnter={(e) => e.currentTarget.style.borderColor = '#555'}
+      onMouseLeave={(e) => e.currentTarget.style.borderColor = '#333'}
     >
       <span
-        className={`w-1.5 h-1.5 rounded-full bg-white ${pulse ? 'animate-pulse' : ''}`}
+        style={{
+          width: 6, height: 6, borderRadius: '50%', background: '#fff',
+          animation: 'pulse 2s ease-in-out infinite',
+        }}
         aria-hidden="true"
       />
-      <span className="text-[#888] text-xs font-mono">Available</span>
+      <span style={{ color: '#888', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
+        Available
+      </span>
+
+      {/* Show on md+ via inline @media */}
+      <style>{`
+        @media (min-width: 768px) {
+          .hire-badge { display: inline-flex !important; }
+        }
+      `}</style>
     </div>
   )
 }

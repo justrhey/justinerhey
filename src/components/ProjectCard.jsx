@@ -1,89 +1,110 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
+import { Code } from '@phosphor-icons/react'
+
+const styles = {
+  card: (hover) => ({
+    display: 'flex', flexDirection: 'column',
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border-card)',
+    transition: 'border-color 0.2s ease, transform 0.2s ease',
+    cursor: 'pointer',
+    height: '100%',
+    borderColor: hover ? 'var(--border-light)' : 'var(--border-card)',
+    transform: hover ? 'translateY(-2px)' : 'none',
+  }),
+  imageWrap: {
+    width: '100%', aspectRatio: '16/10', overflow: 'hidden',
+    position: 'relative',
+    background: '#0a0a0a', borderBottom: '1px solid var(--border)',
+  },
+  placeholder: {
+    width: '100%', aspectRatio: '16/10',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    background: '#0a0a0a', borderBottom: '1px solid var(--border)',
+    color: 'var(--text-faint)',
+  },
+  body: {
+    padding: 20, flex: 1,
+    display: 'flex', flexDirection: 'column',
+  },
+  problem: {
+    fontSize: '0.9rem', fontWeight: 600, lineHeight: 1.4,
+    color: 'var(--text)', marginBottom: 4,
+  },
+  name: {
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: '0.7rem', color: '#555',
+    textTransform: 'uppercase', letterSpacing: '0.5px',
+    marginBottom: 'auto',
+  },
+  tagsWrap: {
+    display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 12,
+  },
+  tag: {
+    padding: '2px 7px', border: '1px solid var(--border-card)',
+    fontSize: '0.6rem', color: '#666',
+    fontFamily: "'JetBrains Mono', monospace",
+  },
+  clickHint: {
+    fontSize: '0.6rem', color: '#444', textTransform: 'uppercase',
+    letterSpacing: '1px', fontFamily: "'JetBrains Mono', monospace",
+    marginTop: 10,
+  },
+}
 
 export function ProjectCard({ project, onClick }) {
-  const [canHover, setCanHover] = useState(true)
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 })
-  const cardRef = useRef(null)
+  const [hover, setHover] = useState(false)
+  const hasImage = project.images && project.images.length > 0 && project.id
+  const imgSrc = hasImage ? `./images/${project.id}/${project.images[0]}` : null
 
-  useEffect(() => {
-    setCanHover(window.matchMedia('(hover: hover)').matches)
-  }, [])
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current || !canHover) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTilt({ rotateX: -y * 12, rotateY: x * 12 })
-  }
-
-  const handleMouseLeave = () => {
-    setTilt({ rotateX: 0, rotateY: 0 })
+  const handleClick = () => {
+    if (onClick) onClick(project)
   }
 
   return (
     <div
-      ref={cardRef}
       role="article"
-      className="cursor-target bg-[#0a0a0a] border border-[#1a1a1a] rounded-2xl p-6 h-full transition-all duration-200 hover:border-[#444] shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] hover:shadow-[0_24px_48px_-12px_rgba(0,0,0,0.4)]"
-      style={{
-        transform: canHover ? `perspective(800px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)` : 'none',
-        transition: 'border-color 0.2s ease',
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
+      className="cursor-target"
+      style={styles.card(hover)}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={handleClick}
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
     >
-      <p className="text-lg font-semibold text-white leading-snug mb-2">
-        {project.problem}
-      </p>
-      <p className="font-mono text-sm text-[#aaa] mb-3">
-        {project.name}
-      </p>
-      <p className="text-sm text-[#888] mb-4 leading-relaxed">
-        {project.description}
-      </p>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {project.tech.map((tech) => (
-          <span
-            key={tech}
-            className="px-2.5 py-1 rounded-md bg-[#111] border border-[#222] font-mono text-xs text-[#888]"
-          >
-            {tech}
-          </span>
-        ))}
-      </div>
-      {project.featured && (
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-white/60 text-[0.6rem] uppercase tracking-wider font-mono">
-          Featured
-        </span>
-      )}
-      {!project.featured && (
-        <div className="flex gap-3">
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`View live demo for ${project.name}`}
-              className="text-sm text-white/70 font-medium hover:text-white transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Live Demo →
-            </a>
-          )}
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View GitHub for ${project.name}`}
-            className="text-sm text-white/70 font-medium hover:text-white transition-colors"
-            onClick={(e) => e.stopPropagation()}
-          >
-            GitHub →
-          </a>
+      {imgSrc ? (
+        <div style={styles.imageWrap}>
+          <img
+            src={imgSrc}
+            alt={`${project.name} screenshot`}
+            loading="lazy"
+            style={{
+              width: '100%', height: '100%',
+              objectFit: 'cover', display: 'block',
+              transition: 'transform 0.4s ease',
+              transform: hover ? 'scale(1.05)' : 'scale(1)',
+            }}
+          />
+        </div>
+      ) : (
+        <div style={styles.placeholder}>
+          <Code size={24} opacity={0.25} />
         </div>
       )}
+
+      <div style={styles.body}>
+        <p style={styles.problem}>{project.problem}</p>
+        <p style={styles.name}>{project.name}</p>
+
+        <div style={styles.tagsWrap}>
+          {project.tech.slice(0, 3).map((t) => (
+            <span key={t} style={styles.tag}>{t}</span>
+          ))}
+          {project.tech.length > 3 && (
+            <span style={styles.tag}>+{project.tech.length - 3}</span>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

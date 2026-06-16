@@ -1,90 +1,80 @@
 import { useState } from 'react'
+import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 
 const styles = {
   backdrop: {
     position: 'fixed',
     inset: 0,
-    background: 'rgba(0,0,0,0.85)',
+    background: 'rgba(0,0,0,0.88)',
     zIndex: 200,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 24,
+    padding: 16,
     backdropFilter: 'blur(4px)',
   },
   modal: {
-    background: 'var(--bg)',
+    background: '#0a0a0a',
     border: '1px solid #222',
-    maxWidth: 'min(90vw, 740px)',
+    maxWidth: 'min(94vw, 720px)',
+    maxHeight: '90vh',
     width: '100%',
-    padding: 32,
+    overflowY: 'auto',
     position: 'relative',
   },
   close: {
-    position: 'absolute',
-    top: 16,
-    right: 20,
-    background: 'none',
-    border: 'none',
-    color: 'var(--text-faint)',
-    fontSize: '1.3rem',
+    position: 'sticky',
+    float: 'right',
+    top: 12,
+    right: 12,
+    background: 'rgba(0,0,0,0.7)',
+    border: '1px solid #333',
+    color: '#888',
+    fontSize: '1rem',
     cursor: 'pointer',
     fontFamily: 'inherit',
     lineHeight: 1,
     zIndex: 10,
+    padding: '6px 12px',
+    transition: 'color 0.2s, border-color 0.2s',
   },
-  title: {
-    fontSize: '1.2rem',
+  body: {
+    padding: '0 28px 28px',
+  },
+  problem: {
+    fontSize: '1.1rem',
     fontWeight: 600,
-    marginBottom: 2,
+    color: 'var(--text)',
+    marginBottom: 4,
     paddingRight: 28,
   },
-  role: {
-    fontSize: '0.65rem',
-    color: 'var(--text-faint)',
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
-    marginBottom: 10,
+  name: {
+    fontFamily: "'JetBrains Mono', monospace",
+    fontSize: '0.75rem',
+    color: '#666',
+    marginBottom: 14,
   },
   techWrap: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: 6,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   tag: {
     fontSize: '0.65rem',
     padding: '2px 8px',
     border: '1px solid #2a2a2a',
-    color: 'var(--text-dim)',
-  },
-  divider: {
-    height: '1px',
-    background: 'var(--border)',
-    marginBottom: 16,
-  },
-  sectionLabel: {
-    fontSize: '0.6rem',
-    textTransform: 'uppercase',
-    letterSpacing: '2px',
-    color: 'var(--text-faint)',
-    marginBottom: 10,
-  },
-  story: {
-    color: 'var(--text-dim)',
-    fontSize: '0.85rem',
-    lineHeight: 1.7,
-    margin: 0,
+    color: '#777',
+    fontFamily: "'JetBrains Mono', monospace",
   },
   viewerWrap: {
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    background: 'var(--bg-card)',
-    border: '1px solid #1a1a1a',
-    marginBottom: 16,
-    height: 340,
+    background: '#050505',
+    borderBottom: '1px solid #1a1a1a',
+    height: 'clamp(200px, 50vw, 400px)',
     overflow: 'hidden',
   },
   image: {
@@ -97,114 +87,123 @@ const styles = {
     position: 'absolute',
     top: 0,
     bottom: 0,
-    width: 56,
-    background: 'rgba(0,0,0,0.4)',
+    width: 48,
+    background: 'rgba(0,0,0,0.5)',
     border: 'none',
-    color: 'var(--text-secondary)',
-    fontSize: '1.4rem',
+    color: '#888',
+    fontSize: '1.1rem',
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    transition: 'background 0.2s',
+    transition: 'background 0.2s, color 0.2s',
     fontFamily: 'inherit',
     lineHeight: 1,
+    zIndex: 2,
   },
   counter: {
     position: 'absolute',
     bottom: 10,
-    right: 14,
-    fontSize: '0.7rem',
-    color: 'var(--text-faint)',
-    background: 'rgba(0,0,0,0.6)',
+    right: 12,
+    fontSize: '0.65rem',
+    color: '#666',
+    background: 'rgba(0,0,0,0.7)',
     padding: '2px 10px',
+    fontFamily: "'JetBrains Mono', monospace",
+  },
+  sectionLabel: {
+    fontSize: '0.6rem',
+    textTransform: 'uppercase',
+    letterSpacing: '2px',
+    color: '#555',
+    marginBottom: 10,
+    fontFamily: "'JetBrains Mono', monospace",
+  },
+  description: {
+    color: '#999',
+    fontSize: '0.85rem',
+    lineHeight: 1.8,
+    margin: 0,
   },
   actions: {
     display: 'flex',
     gap: 12,
     flexWrap: 'wrap',
-    marginTop: 16,
+    marginTop: 20,
   },
   linkBtn: {
     display: 'inline-flex',
     alignItems: 'center',
     gap: 8,
     padding: '8px 20px',
-    border: '1px solid #555',
-    color: 'var(--text-muted)',
+    border: '1px solid #444',
+    color: '#888',
     fontSize: '0.8rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
     textDecoration: 'none',
+    background: 'transparent',
+    fontFamily: 'inherit',
   },
 }
 
 export default function ProjectModal({ project, onClose }) {
   const [imgIndex, setImgIndex] = useState(0)
-  const [imgLoaded, setImgLoaded] = useState(false)
 
   if (!project) return null
 
   const images = project.images || []
   const hasImages = images.length > 0
 
-  const prevImg = () => {
+  const prevImg = (e) => {
+    e.stopPropagation()
     setImgIndex((i) => (i > 0 ? i - 1 : images.length - 1))
-    setImgLoaded(false)
   }
-  const nextImg = () => {
+  const nextImg = (e) => {
+    e.stopPropagation()
     setImgIndex((i) => (i < images.length - 1 ? i + 1 : 0))
-    setImgLoaded(false)
   }
 
   return (
     <div style={styles.backdrop} onClick={onClose}>
-      <div className="modal-enter modal-content" style={styles.modal} onClick={(e) => e.stopPropagation()}>
-        <button style={styles.close} onClick={onClose}>&#10005;</button>
-
-        <h3 style={styles.title}>{project.title}</h3>
-        <p style={styles.role}>{project.role}</p>
-        <div style={styles.techWrap}>
-          {project.tech.map((t) => (
-            <span key={t} style={styles.tag}>{t}</span>
-          ))}
-        </div>
-
-        <div style={styles.divider} />
-
+      <div
+        className="modal-enter"
+        style={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-label={project.name}
+      >
         {hasImages && (
-          <div className="modal-viewer" style={styles.viewerWrap}>
-            <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {!imgLoaded && <div className="skeleton skeleton-image" />}
-              <img
-                key={imgIndex}
-                src={`./images/${project.slug || project.title.toLowerCase()}/${images[imgIndex]}`}
-                alt={`${project.title} screenshot ${imgIndex + 1}`}
-                loading="lazy"
-                draggable={false}
-                onDragStart={(e) => e.preventDefault()}
-                className={imgLoaded ? 'modal-image loaded' : 'modal-image'}
-                onLoad={() => setImgLoaded(true)}
-                onError={() => setImgLoaded(true)}
-              />
-            </div>
+          <div style={styles.viewerWrap}>
+            <img
+              key={imgIndex}
+              src={`./images/${project.id}/${images[imgIndex]}`}
+              alt={`${project.name} screenshot ${imgIndex + 1}`}
+              loading="lazy"
+              draggable={false}
+              onDragStart={(e) => e.preventDefault()}
+              style={{
+                ...styles.image,
+                transition: 'opacity 0.25s ease',
+              }}
+            />
             {images.length > 1 && (
               <>
                 <button
                   style={{ ...styles.navBtn, left: 0 }}
                   onClick={prevImg}
-                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.7)' }}
-                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.4)' }}
+                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.75)'; e.target.style.color = '#fff' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#888' }}
                 >
-                  &#10094;
+                  <CaretLeft size={18} weight="bold" />
                 </button>
                 <button
                   style={{ ...styles.navBtn, right: 0 }}
                   onClick={nextImg}
-                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.7)' }}
-                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.4)' }}
+                  onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.75)'; e.target.style.color = '#fff' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#888' }}
                 >
-                  &#10095;
+                  <CaretRight size={18} weight="bold" />
                 </button>
                 <span style={styles.counter}>{imgIndex + 1} / {images.length}</span>
               </>
@@ -212,32 +211,54 @@ export default function ProjectModal({ project, onClose }) {
           </div>
         )}
 
-        <p style={styles.sectionLabel}>Overview</p>
-        <p style={styles.story}>{project.intro}</p>
-
-        <div style={styles.actions}>
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ ...styles.linkBtn, border: '1px solid #2563eb', color: '#60a5fa' }}
-              onMouseEnter={(e) => { e.target.style.background = '#1e3a5f'; e.target.style.color = 'var(--text)' }}
-              onMouseLeave={(e) => { e.target.style.background = 'transparent'; e.target.style.color = '#60a5fa' }}
-            >
-              Live Demo &rarr;
-            </a>
-          )}
-          <a
-            href={project.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={styles.linkBtn}
-            onMouseEnter={(e) => { e.target.style.borderColor = 'var(--text-muted)'; e.target.style.color = 'var(--text)' }}
-            onMouseLeave={(e) => { e.target.style.borderColor = 'var(--text-faint)'; e.target.style.color = 'var(--text-muted)' }}
+        <div style={styles.body}>
+          <button
+            style={styles.close}
+            onClick={onClose}
+            onMouseEnter={(e) => { e.target.style.color = '#fff'; e.target.style.borderColor = '#666' }}
+            onMouseLeave={(e) => { e.target.style.color = '#888'; e.target.style.borderColor = '#333' }}
           >
-            View on GitHub &rarr;
-          </a>
+            ✕
+          </button>
+
+          <p style={styles.problem}>{project.problem}</p>
+          <p style={styles.name}>{project.name}</p>
+
+          <div style={styles.techWrap}>
+            {project.tech.map((t) => (
+              <span key={t} style={styles.tag}>{t}</span>
+            ))}
+          </div>
+
+          <p style={styles.sectionLabel}>Overview</p>
+          <p style={styles.description}>{project.description}</p>
+
+          <div style={styles.actions}>
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={styles.linkBtn}
+                onMouseEnter={(e) => { e.target.style.borderColor = '#777'; e.target.style.color = '#fff' }}
+                onMouseLeave={(e) => { e.target.style.borderColor = '#444'; e.target.style.color = '#888' }}
+              >
+                GitHub →
+              </a>
+            )}
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ ...styles.linkBtn, borderColor: '#555' }}
+                onMouseEnter={(e) => { e.target.style.borderColor = '#fff'; e.target.style.color = '#fff' }}
+                onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#888' }}
+              >
+                Live Demo →
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </div>
