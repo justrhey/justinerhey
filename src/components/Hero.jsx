@@ -1,60 +1,16 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'motion/react'
+import { personal } from '../data/personal'
+import { useReducedMotion } from '../hooks/useReducedMotion'
+import { ArrowRight, Download } from '@phosphor-icons/react'
 
-const heroStyles = {
-  section: {
-    display: 'flex',
-    alignItems: 'center',
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  gradient: {
-    position: 'absolute',
-    top: '-30%',
-    left: '-10%',
-    width: '60%',
-    height: '80%',
-    background: 'radial-gradient(ellipse at center, rgba(74,158,255,0.18) 0%, rgba(179,136,255,0.08) 50%, transparent 70%)',
-    pointerEvents: 'none',
-    zIndex: 0,
-  },
-  greeting: {
-    fontSize: '0.8rem',
-    color: 'var(--text-faint)',
-    textTransform: 'uppercase',
-    letterSpacing: '3px',
-    marginBottom: 14,
-  },
-  name: {
-    fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-    fontWeight: 800,
-    letterSpacing: '-1.5px',
-    lineHeight: 1.15,
-    marginBottom: 4,
-  },
-  highlight: {
-    color: 'var(--text-dim)',
-  },
-  tagline: {
-    fontSize: '1rem',
-    color: 'var(--text-faint)',
-    marginBottom: 20,
-    fontWeight: 400,
-  },
-  subtitle: {
-    fontSize: '1rem',
-    color: 'var(--text-muted)',
-    maxWidth: 540,
-    marginBottom: 36,
-    lineHeight: 1.8,
-  },
-  cta: {
-    display: 'flex',
-    gap: 14,
-    flexWrap: 'wrap',
-  },
+function Wrap({ anim, children, ...props }) {
+  if (!anim) return <>{children}</>
+  return <motion.div {...props}>{children}</motion.div>
 }
 
 export default function Hero() {
+  const prefersReduced = useReducedMotion()
   const [imgLoaded, setImgLoaded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -65,65 +21,113 @@ export default function Hero() {
     return () => window.removeEventListener('resize', check)
   }, [])
 
+  const anim = !prefersReduced
+  const spring = { type: 'spring', stiffness: 100, damping: 20 }
+
   return (
-    <section id="hero" style={heroStyles.section}>
-      <div style={heroStyles.gradient} />
-      <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-        <div className="hero-wrap" style={isMobile ? { flexDirection: 'column', gap: '32px', textAlign: 'center' } : {}}>
-          <div className={`hero-avatar${!imgLoaded ? ' skeleton skeleton-circle' : ''}`}>
-            <img
-              src="./images/new_profike.png"
-              alt="Justine Rhey M. Tambong"
-              draggable={false}
-              onDragStart={(e) => e.preventDefault()}
-              onLoad={() => setImgLoaded(true)}
-              onError={() => setImgLoaded(true)}
-              style={imgLoaded ? {} : { display: 'none' }}
-            />
-          </div>
-          <div className="hero-text">
-            <p style={heroStyles.greeting}>Shipped production tools before graduation</p>
-            <h1 style={heroStyles.name}>
-              Justine Rhey <span style={heroStyles.highlight}>M. Tambong</span>
-            </h1>
-            <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
-            <p style={heroStyles.subtitle}>
-              Built a DNS monitoring SDK that ran across production infrastructure during my internship. Developed a Spring Boot ticketing system from real stakeholder feedback. Created Android apps from scratch. I ship things that work.
-            </p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }} dangerouslySetInnerHTML={{
-              __html: [
-                '<img src="https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&style=for-the-badge" alt="Java" />',
-                '<img src="https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white&style=for-the-badge" alt="Spring Boot" />',
-                '<img src="https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white&style=for-the-badge" alt="PHP" />',
-                '<img src="https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=for-the-badge" alt="PostgreSQL" />',
-                '<img src="https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&style=for-the-badge" alt="MySQL" />',
-                '<img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge" alt="JavaScript" />',
-                '<img src="https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white&style=for-the-badge" alt="Docker" />',
-                '<img src="https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black&style=for-the-badge" alt="Linux" />',
-                '<img src="https://img.shields.io/badge/Laravel-FF2D20?logo=laravel&logoColor=white&style=for-the-badge" alt="Laravel" />',
-                '<img src="https://img.shields.io/badge/Android-3DDC84?logo=android&logoColor=white&style=for-the-badge" alt="Android" />'
-              ].join(' ')
-            }} />
-            <div className="hero-cta" style={heroStyles.cta}>
-              <button
-                className="btn-primary"
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                See What I've Built
-              </button>
-              <a
-                className="btn-resume"
-                href="./resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume &darr;
-              </a>
+    <section
+      id="hero"
+      className="min-h-screen min-h-dvh flex items-center relative overflow-hidden"
+    >
+      {/* Gradient background */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0"
+        style={{
+          background: 'radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.06) 0%, transparent 60%)',
+        }}
+      />
+
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto px-6 md:px-10">
+        <div className={`flex ${isMobile ? 'flex-col gap-8 text-center items-center' : 'flex-row gap-16 items-start'}`}>
+          {/* Avatar */}
+          <Wrap anim={anim} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ ...spring, delay: 0.1 }} className="flex-shrink-0">
+            <div className={`w-[180px] h-[180px] md:w-[220px] md:h-[220px] rounded-full overflow-hidden border border-[#222] ${!imgLoaded ? 'bg-[#111] animate-pulse' : ''}`}>
+              <img
+                src={personal.photoPath}
+                alt={personal.photoAlt}
+                draggable={false}
+                onLoad={() => setImgLoaded(true)}
+                onError={() => setImgLoaded(true)}
+                className={`w-full h-full object-cover object-center ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
+                style={{ transition: 'opacity 0.3s ease, border-color 0.3s ease' }}
+              />
             </div>
+          </Wrap>
+
+          {/* Text */}
+          <div className="flex-1 min-w-0">
+            {personal.availability && (
+              <Wrap anim={anim} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.15 }}>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#333] bg-[#0a0a0a] mb-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/80 animate-pulse" />
+                  <span className="text-[#888] text-xs font-mono tracking-wide">AVAILABLE FOR WORK</span>
+                </div>
+              </Wrap>
+            )}
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.2 }}>
+              <p className="text-[#666] text-xs uppercase tracking-[3px] mb-3 font-mono">Shipped production tools before graduation</p>
+            </Wrap>
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.25 }}>
+              <h1 className="text-[clamp(1.8rem,4.5vw,3.2rem)] font-bold tracking-[-1px] leading-[1.1] mb-3">
+                {personal.name.split(' ').slice(0, -1).join(' ')} <span className="text-[#666]">{personal.name.split(' ').pop()}</span>
+              </h1>
+            </Wrap>
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.3 }}>
+              <p className="text-[#999] text-base mb-2 font-mono">{personal.tagline}</p>
+            </Wrap>
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.35 }}>
+              <p className="text-[#777] text-sm md:text-base leading-relaxed max-w-[540px] mb-8">
+                {personal.subtitle}
+              </p>
+            </Wrap>
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.4 }}>
+              {/* Tech badges */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {['Java', 'Spring Boot', 'PHP', 'PostgreSQL', 'MySQL', 'JavaScript', 'Docker', 'Linux', 'Laravel', 'Android'].map(
+                  (tech) => (
+                    <span
+                      key={tech}
+                      className="px-2.5 py-0.5 rounded-md border border-[#222] bg-[#0a0a0a] text-[#888] text-[0.65rem] font-mono"
+                    >
+                      {tech}
+                    </span>
+                  )
+                )}
+              </div>
+            </Wrap>
+
+            <Wrap anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.45 }}>
+              <div className={`flex gap-3 flex-wrap ${isMobile ? 'justify-center' : ''}`}>
+                <button
+                  onClick={() => {
+                    const el = document.getElementById('projects')
+                    if (el) {
+                      const top = el.getBoundingClientRect().top + window.scrollY - 80
+                      window.scrollTo({ top, behavior: 'smooth' })
+                    }
+                  }}
+                  className="cursor-target inline-flex items-center gap-2 px-6 py-3 border border-white bg-white text-black text-sm font-semibold transition-all hover:bg-[#ccc] hover:border-[#ccc]"
+                >
+                  See What I've Built <ArrowRight size={16} weight="bold" />
+                </button>
+                <a
+                  href={personal.resumePath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-target inline-flex items-center gap-2 px-6 py-3 border border-[#333] text-[#aaa] text-sm font-semibold transition-all hover:border-[#777] hover:text-white"
+                >
+                  Resume <Download size={16} />
+                </a>
+              </div>
+            </Wrap>
           </div>
         </div>
       </div>
     </section>
   )
 }
-console.log("HERO_SOURCE_READY")
