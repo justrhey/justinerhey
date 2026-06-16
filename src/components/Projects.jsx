@@ -66,6 +66,33 @@ const cardStyles = {
   card: (role) => ({
     borderLeft: `3px solid ${roleColors[role] || 'var(--border-light)'}`,
   }),
+  imageWrap: {
+    width: '100%',
+    height: 160,
+    overflow: 'hidden',
+    background: 'var(--bg-card)',
+    marginBottom: 16,
+    position: 'relative',
+    border: '1px solid var(--border)',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    display: 'block',
+    transition: 'transform 0.4s ease',
+  },
+  imagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: 'var(--text-faint)',
+    fontSize: '0.75rem',
+    border: '1px dashed var(--border-card)',
+    boxSizing: 'border-box',
+  },
   role: {
     fontSize: '0.65rem',
     color: 'var(--text-faint)',
@@ -107,6 +134,56 @@ const cardStyles = {
   },
 }
 
+function ProjectCard({ project, onClick }) {
+  const [imgLoaded, setImgLoaded] = useState(false)
+  const hasImage = project.images && project.images.length > 0 && project.slug
+  const imgSrc = hasImage ? `./images/${project.slug}/${project.images[0]}` : null
+
+  return (
+    <div
+      className="project-card card-hover"
+      style={cardStyles.card(project.role)}
+      onClick={onClick}
+    >
+      {imgSrc ? (
+        <div style={cardStyles.imageWrap}
+          onMouseEnter={(e) => { const img = e.currentTarget.querySelector('img'); if (img) img.style.transform = 'scale(1.05)' }}
+          onMouseLeave={(e) => { const img = e.currentTarget.querySelector('img'); if (img) img.style.transform = 'scale(1)' }}
+        >
+          {!imgLoaded && <div className="skeleton" style={{ position: 'absolute', inset: 0 }} />}
+          <img
+            src={imgSrc}
+            alt={`${project.title} screenshot`}
+            loading="lazy"
+            draggable={false}
+            onDragStart={(e) => e.preventDefault()}
+            style={{
+              ...cardStyles.image,
+              opacity: imgLoaded ? 1 : 0,
+            }}
+            onLoad={() => setImgLoaded(true)}
+          />
+        </div>
+      ) : (
+        <div style={{ ...cardStyles.imageWrap, ...cardStyles.imagePlaceholder }}>
+          No screenshot available
+        </div>
+      )}
+      <p style={cardStyles.role}>
+        <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || 'var(--text-faint)' }} />
+        {project.role}
+      </p>
+      <h3 style={cardStyles.title}>{project.title}</h3>
+      <div style={cardStyles.tags}>
+        {project.tech.map((tag) => (
+          <span key={tag} style={cardStyles.tag}>{tag}</span>
+        ))}
+      </div>
+      <span className="card-link" style={cardStyles.link}>Read the story &rarr;</span>
+    </div>
+  )
+}
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
   const ref = useScrollReveal()
@@ -118,24 +195,11 @@ export default function Projects() {
         <h2 className="section-title">Things I've Built</h2>
           <div className="project-grid" style={cardStyles.grid}>
           {projects.map((project) => (
-            <div
+            <ProjectCard
               key={project.slug || project.title}
-              className="project-card card-hover"
-              style={cardStyles.card(project.role)}
+              project={project}
               onClick={() => setSelectedProject(project)}
-            >
-              <p style={cardStyles.role}>
-                <span style={{ ...cardStyles.roleDot, background: roleColors[project.role] || 'var(--text-faint)' }} />
-                {project.role}
-              </p>
-              <h3 style={cardStyles.title}>{project.title}</h3>
-              <div style={cardStyles.tags}>
-                {project.tech.map((tag) => (
-                  <span key={tag} style={cardStyles.tag}>{tag}</span>
-                ))}
-              </div>
-              <span className="card-link" style={cardStyles.link}>Read the story &rarr;</span>
-            </div>
+            />
           ))}
         </div>
         {selectedProject && (

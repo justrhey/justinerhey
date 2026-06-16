@@ -13,7 +13,7 @@ const heroStyles = {
     left: '-10%',
     width: '60%',
     height: '80%',
-    background: 'radial-gradient(ellipse at center, rgba(74,158,255,0.08) 0%, rgba(179,136,255,0.04) 50%, transparent 70%)',
+    background: 'radial-gradient(ellipse at center, rgba(74,158,255,0.18) 0%, rgba(179,136,255,0.08) 50%, transparent 70%)',
     pointerEvents: 'none',
     zIndex: 0,
   },
@@ -82,13 +82,13 @@ export default function Hero() {
             />
           </div>
           <div className="hero-text">
-            <p style={heroStyles.greeting}>Learning Java, one project at a time</p>
+            <p style={heroStyles.greeting}>Shipped production tools before graduation</p>
             <h1 style={heroStyles.name}>
               Justine Rhey <span style={heroStyles.highlight}>M. Tambong</span>
             </h1>
             <p style={heroStyles.tagline}>IT Graduate &middot; Java Developer &middot; Problem Solver</p>
             <p style={heroStyles.subtitle}>
-              Building small things to learn the craft. Currently exploring Java, Spring Boot, PHP, and backend development.
+              Built a DNS monitoring SDK that ran across production infrastructure during my internship. Developed a Spring Boot ticketing system from real stakeholder feedback. Created Android apps from scratch. I ship things that work.
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }} dangerouslySetInnerHTML={{
               __html: [

@@ -18,6 +18,8 @@
   --border: #1a1a1a;
   --border-light: #333;
   --border-card: #2a2a2a;
+  --accent: #4a9eff;
+  --accent-dim: rgba(74,158,255,0.15);
 }
 [data-theme="light"] {
   --bg: #f8f8f8;
@@ -122,7 +124,7 @@ section {
   display: block;
   width: 36px;
   height: 2px;
-  background: var(--border-light);
+  background: var(--accent);
   margin-top: 10px;
 }
 
@@ -216,6 +218,10 @@ section {
   box-shadow: 0 8px 30px rgba(0,0,0,0.4);
 }
 
+.project-card.card-hover:hover {
+  border-color: var(--accent-dim);
+}
+
 /* ---- Card link underline animation ---- */
 .card-link {
   position: relative;
@@ -294,8 +300,8 @@ section {
 }
 
 .hero-avatar:hover {
-  border-color: #888;
-  box-shadow: 0 0 40px rgba(74,158,255,0.15), 0 0 80px rgba(74,158,255,0.05);
+  border-color: var(--accent);
+  box-shadow: 0 0 40px var(--accent-dim), 0 0 80px rgba(74,158,255,0.08);
 }
 
 .hero-text {
