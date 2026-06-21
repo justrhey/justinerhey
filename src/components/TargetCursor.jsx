@@ -25,6 +25,7 @@ export function TargetCursor({
     if (!dot || !ring) return
 
     const originalCursor = document.body.style.cursor
+    document.documentElement.classList.add('custom-cursor')
     if (hideDefaultCursor) document.body.style.cursor = 'none'
 
     let mouseX = 0, mouseY = 0
@@ -90,6 +91,7 @@ export function TargetCursor({
       window.removeEventListener('mouseup', mouseup)
       if (rafId) cancelAnimationFrame(rafId)
       if (activeTarget) activeTarget.classList.remove('cursor-illuminated')
+      document.documentElement.classList.remove('custom-cursor')
       document.body.style.cursor = originalCursor
     }
   }, [targetSelector, hideDefaultCursor, isMobile])

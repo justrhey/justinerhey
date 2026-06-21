@@ -23,8 +23,7 @@ const styles = {
     position: 'relative',
   },
   close: {
-    position: 'sticky',
-    float: 'right',
+    position: 'absolute',
     top: 12,
     right: 12,
     background: 'rgba(0,0,0,0.7)',
@@ -34,7 +33,7 @@ const styles = {
     cursor: 'pointer',
     fontFamily: 'inherit',
     lineHeight: 1,
-    zIndex: 10,
+    zIndex: 20,
     padding: '6px 12px',
     transition: 'color 0.2s, border-color 0.2s',
   },
@@ -145,10 +144,19 @@ const styles = {
     background: 'transparent',
     fontFamily: 'inherit',
   },
+  loader: {
+    position: 'absolute',
+    inset: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: '#555',
+  },
 }
 
 export default function ProjectModal({ project, onClose }) {
   const [imgIndex, setImgIndex] = useState(0)
+  const [imgLoading, setImgLoading] = useState(true)
 
   if (!project) return null
 
@@ -157,10 +165,12 @@ export default function ProjectModal({ project, onClose }) {
 
   const prevImg = (e) => {
     e.stopPropagation()
+    setImgLoading(true)
     setImgIndex((i) => (i > 0 ? i - 1 : images.length - 1))
   }
   const nextImg = (e) => {
     e.stopPropagation()
+    setImgLoading(true)
     setImgIndex((i) => (i < images.length - 1 ? i + 1 : 0))
   }
 
@@ -175,15 +185,28 @@ export default function ProjectModal({ project, onClose }) {
       >
         {hasImages && (
           <div style={styles.viewerWrap}>
+            {imgLoading && (
+              <div style={styles.loader}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" opacity="0.2" />
+                  <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite" />
+                  </path>
+                </svg>
+              </div>
+            )}
             <img
               key={imgIndex}
               src={`./images/${project.id}/${images[imgIndex]}`}
               alt={`${project.name} screenshot ${imgIndex + 1}`}
               loading="lazy"
               draggable={false}
+              onLoad={() => setImgLoading(false)}
+              onError={() => setImgLoading(false)}
               onDragStart={(e) => e.preventDefault()}
               style={{
                 ...styles.image,
+                opacity: imgLoading ? 0 : 1,
                 transition: 'opacity 0.25s ease',
               }}
             />
@@ -210,8 +233,6 @@ export default function ProjectModal({ project, onClose }) {
             )}
           </div>
         )}
-
-        <div style={styles.body}>
           <button
             style={styles.close}
             onClick={onClose}
@@ -220,6 +241,8 @@ export default function ProjectModal({ project, onClose }) {
           >
             ✕
           </button>
+
+        <div style={styles.body}>
 
           <p style={styles.problem}>{project.problem}</p>
           <p style={styles.name}>{project.name}</p>

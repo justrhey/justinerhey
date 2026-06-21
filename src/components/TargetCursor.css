@@ -1,3 +1,11 @@
+/* ── Force hidden default cursor when custom cursor is active ── */
+html.custom-cursor,
+html.custom-cursor *,
+html.custom-cursor *::before,
+html.custom-cursor *::after {
+  cursor: none !important;
+}
+
 /* ── Cursor elements ── */
 .cursor-dot,
 .cursor-ring {
