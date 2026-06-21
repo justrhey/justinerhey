@@ -43,7 +43,9 @@ export function TargetCursor({
       rafId = null
       ringX += (mouseX - ringX) * 0.12
       ringY += (mouseY - ringY) * 0.12
-      ring.style.transform = `translate(${ringX}px, ${ringY}px)`
+      const clampedX = Math.max(0, Math.min(window.innerWidth - 16, ringX))
+      const clampedY = Math.max(0, Math.min(window.innerHeight - 16, ringY))
+      ring.style.transform = `translate(${clampedX}px, ${clampedY}px)`
     }
 
     window.addEventListener('mousemove', follow, { passive: true })
