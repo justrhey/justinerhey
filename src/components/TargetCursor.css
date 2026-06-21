@@ -51,6 +51,24 @@ html.custom-cursor *::after {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Text hover — dot becomes I-beam, ring shrinks */
+.cursor-dot.cursor-text {
+  width: 2px;
+  height: 18px;
+  margin: -9px 0 0 -1px;
+  border-radius: 1px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: width 0.15s ease, height 0.15s ease, margin 0.15s ease, border-radius 0.15s ease;
+}
+.cursor-ring.cursor-text {
+  width: 12px;
+  height: 26px;
+  margin: -13px 0 0 -6px;
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+}
+
 /* ── Hover: cursor disappears, element illuminates ── */
 
 .cursor-hidden {

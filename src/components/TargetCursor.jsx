@@ -72,8 +72,23 @@ export function TargetCursor({
 
     const handleOver = (e) => {
       const t = e.target.closest(targetSelector)
-      if (t) enterTarget(t)
-      else leaveTarget()
+      if (t) {
+        enterTarget(t)
+        dot.classList.remove('cursor-text')
+        ring.classList.remove('cursor-text')
+        return
+      }
+      // Check if hovering over text
+      const tag = e.target.tagName?.toLowerCase()
+      const isText = ['p','h1','h2','h3','h4','h5','h6','li','a','span','label','em','strong','code','pre','blockquote','td','th','small','figcaption','q'].includes(tag)
+      if (isText) {
+        dot.classList.add('cursor-text')
+        ring.classList.add('cursor-text')
+      } else {
+        dot.classList.remove('cursor-text')
+        ring.classList.remove('cursor-text')
+      }
+      leaveTarget()
     }
 
     window.addEventListener('mouseover', handleOver, { passive: true })
@@ -91,6 +106,8 @@ export function TargetCursor({
       window.removeEventListener('mouseup', mouseup)
       if (rafId) cancelAnimationFrame(rafId)
       if (activeTarget) activeTarget.classList.remove('cursor-illuminated')
+      dot.classList.remove('cursor-text')
+      ring.classList.remove('cursor-text')
       document.documentElement.classList.remove('custom-cursor')
       document.body.style.cursor = originalCursor
     }
