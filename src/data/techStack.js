@@ -11,4 +11,9 @@ export const techStack = [
   { name: 'Kotlin', color: '#cccccc' },
   { name: 'Docker', color: '#aaaaaa' },
   { name: 'Linux', color: '#dddddd' },
+  { name: 'Rust', color: '#ffffff' },
+  { name: 'React', color: '#e0e0e0' },
+  { name: 'Stellar Soroban', color: '#cccccc' },
+  { name: 'Actix-web', color: '#bbbbbb' },
+  { name: 'AES-256-GCM', color: '#999999' },
 ]

@@ -54,4 +54,15 @@ export const projects = [
     featured: false,
     images: null,
   },
+  {
+    id: 'ehr-blockchain',
+    name: 'EHR Blockchain System',
+    problem: 'Medical records needed tamper-proof verification',
+    description: 'Blockchain-notarized Electronic Health Records system built in Rust with Actix-web, React frontend, and Stellar Soroban smart contracts. Features AES-256-GCM field encryption, SHA-256 content hashing anchored on-chain, JWT auth with bcrypt, role-based access control (doctor/nurse/patient/admin), PostgreSQL with 21 tables, and idempotency guards preventing duplicate blockchain submissions.',
+    tech: ['Rust', 'React', 'PostgreSQL', 'Stellar Soroban', 'Actix-web', 'AES-256-GCM'],
+    githubUrl: null,
+    demoUrl: null,
+    featured: true,
+    images: null,
+  },
 ]
