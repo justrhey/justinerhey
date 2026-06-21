@@ -29,7 +29,7 @@ const styles = {
     right: 12,
     background: 'rgba(0,0,0,0.7)',
     border: '1px solid #333',
-    color: '#888',
+    color: '#bbb',
     fontSize: '1rem',
     cursor: 'pointer',
     fontFamily: 'inherit',
@@ -51,7 +51,7 @@ const styles = {
   name: {
     fontFamily: "'JetBrains Mono', monospace",
     fontSize: '0.75rem',
-    color: '#666',
+    color: '#bbb',
     marginBottom: 14,
   },
   techWrap: {
@@ -64,7 +64,7 @@ const styles = {
     fontSize: '0.65rem',
     padding: '2px 8px',
     border: '1px solid #2a2a2a',
-    color: '#777',
+    color: '#bbb',
     fontFamily: "'JetBrains Mono', monospace",
   },
   viewerWrap: {
@@ -90,7 +90,7 @@ const styles = {
     width: 48,
     background: 'rgba(0,0,0,0.5)',
     border: 'none',
-    color: '#888',
+    color: '#bbb',
     fontSize: '1.1rem',
     cursor: 'pointer',
     display: 'flex',
@@ -106,7 +106,7 @@ const styles = {
     bottom: 10,
     right: 12,
     fontSize: '0.65rem',
-    color: '#666',
+    color: '#999',
     background: 'rgba(0,0,0,0.7)',
     padding: '2px 10px',
     fontFamily: "'JetBrains Mono', monospace",
@@ -115,12 +115,12 @@ const styles = {
     fontSize: '0.6rem',
     textTransform: 'uppercase',
     letterSpacing: '2px',
-    color: '#555',
+    color: '#999',
     marginBottom: 10,
     fontFamily: "'JetBrains Mono', monospace",
   },
   description: {
-    color: '#999',
+    color: '#ccc',
     fontSize: '0.85rem',
     lineHeight: 1.8,
     margin: 0,
@@ -136,8 +136,8 @@ const styles = {
     alignItems: 'center',
     gap: 8,
     padding: '8px 20px',
-    border: '1px solid #444',
-    color: '#888',
+    border: '1px solid #555',
+    color: '#bbb',
     fontSize: '0.8rem',
     cursor: 'pointer',
     transition: 'all 0.2s',
@@ -193,7 +193,7 @@ export default function ProjectModal({ project, onClose }) {
                   style={{ ...styles.navBtn, left: 0 }}
                   onClick={prevImg}
                   onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.75)'; e.target.style.color = '#fff' }}
-                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#888' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#bbb' }}
                 >
                   <CaretLeft size={18} weight="bold" />
                 </button>
@@ -201,7 +201,7 @@ export default function ProjectModal({ project, onClose }) {
                   style={{ ...styles.navBtn, right: 0 }}
                   onClick={nextImg}
                   onMouseEnter={(e) => { e.target.style.background = 'rgba(0,0,0,0.75)'; e.target.style.color = '#fff' }}
-                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#888' }}
+                  onMouseLeave={(e) => { e.target.style.background = 'rgba(0,0,0,0.5)'; e.target.style.color = '#bbb' }}
                 >
                   <CaretRight size={18} weight="bold" />
                 </button>
@@ -216,7 +216,7 @@ export default function ProjectModal({ project, onClose }) {
             style={styles.close}
             onClick={onClose}
             onMouseEnter={(e) => { e.target.style.color = '#fff'; e.target.style.borderColor = '#666' }}
-            onMouseLeave={(e) => { e.target.style.color = '#888'; e.target.style.borderColor = '#333' }}
+            onMouseLeave={(e) => { e.target.style.color = '#bbb'; e.target.style.borderColor = '#333' }}
           >
             ✕
           </button>
@@ -241,7 +241,7 @@ export default function ProjectModal({ project, onClose }) {
                 rel="noopener noreferrer"
                 style={styles.linkBtn}
                 onMouseEnter={(e) => { e.target.style.borderColor = '#777'; e.target.style.color = '#fff' }}
-                onMouseLeave={(e) => { e.target.style.borderColor = '#444'; e.target.style.color = '#888' }}
+                onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#bbb' }}
               >
                 GitHub →
               </a>
@@ -253,7 +253,7 @@ export default function ProjectModal({ project, onClose }) {
                 rel="noopener noreferrer"
                 style={{ ...styles.linkBtn, borderColor: '#555' }}
                 onMouseEnter={(e) => { e.target.style.borderColor = '#fff'; e.target.style.color = '#fff' }}
-                onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#888' }}
+                onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#bbb' }}
               >
                 Live Demo →
               </a>

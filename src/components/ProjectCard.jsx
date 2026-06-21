@@ -33,7 +33,7 @@ const styles = {
   },
   name: {
     fontFamily: "'JetBrains Mono', monospace",
-    fontSize: '0.7rem', color: '#555',
+    fontSize: '0.7rem', color: '#aaa',
     textTransform: 'uppercase', letterSpacing: '0.5px',
     marginBottom: 'auto',
   },
@@ -42,11 +42,11 @@ const styles = {
   },
   tag: {
     padding: '2px 7px', border: '1px solid var(--border-card)',
-    fontSize: '0.6rem', color: '#666',
+    fontSize: '0.6rem', color: '#999',
     fontFamily: "'JetBrains Mono', monospace",
   },
   clickHint: {
-    fontSize: '0.6rem', color: '#444', textTransform: 'uppercase',
+    fontSize: '0.6rem', color: '#777', textTransform: 'uppercase',
     letterSpacing: '1px', fontFamily: "'JetBrains Mono', monospace",
     marginTop: 10,
   },
