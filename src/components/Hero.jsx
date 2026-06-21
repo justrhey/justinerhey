@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { personal } from '../data/personal'
+import { skills } from '../data/skills'
 
 const heroStyles = {
   section: { display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' },
@@ -81,17 +82,17 @@ export default function Hero() {
             </Wrapper>
             <Wrapper anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.4 }}>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 36 }}>
-                {['Java', 'Spring Boot', 'PHP', 'PostgreSQL', 'MySQL', 'JavaScript', 'Docker', 'Linux', 'Laravel', 'Android'].map(t => (
-                  <span key={t} style={{ padding: '3px 10px', border: '1px solid #222', fontSize: '0.65rem', color: 'var(--text-dim)', fontFamily: "'JetBrains Mono', monospace" }}>{t}</span>
+                {skills.map(s => (
+                  <span key={s.name} className="cursor-target hero-tag" style={{ padding: '3px 10px', border: '1px solid #222', fontSize: '0.65rem', color: 'var(--text-dim)', fontFamily: "'JetBrains Mono', monospace" }}>{s.name}</span>
                 ))}
               </div>
             </Wrapper>
             <Wrapper anim={anim} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ ...spring, delay: 0.45 }}>
               <div className="hero-cta" style={heroStyles.cta}>
-                <button className="btn-primary" onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
+                <button className="btn-primary cursor-target" onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>
                   See What I've Built
                 </button>
-                <a className="btn-resume" href={personal.resumePath} target="_blank" rel="noopener noreferrer">
+                <a className="btn-resume cursor-target" href={personal.resumePath} target="_blank" rel="noopener noreferrer">
                   Resume &darr;
                 </a>
               </div>

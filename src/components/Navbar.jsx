@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const sections = ['About', 'Skills', 'Projects', 'Contact']
+const sections = ['About', 'Projects', 'Contact']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -31,7 +31,7 @@ export default function Navbar() {
         <div style={{
           fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.5px',
           cursor: 'pointer', background: 'none', border: 'none', color: 'var(--text)',
-        }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        }} className="cursor-target" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           &#9733;
         </div>
         <button
@@ -49,7 +49,7 @@ export default function Navbar() {
           <ul style={{ display: 'flex', gap: 32, listStyle: 'none' }}>
             {sections.map((s) => (
               <li key={s}>
-                <button className="nav-link" onClick={() => scrollTo(s)}>{s}</button>
+                <button className="nav-link cursor-target" onClick={() => scrollTo(s)}>{s}</button>
               </li>
             ))}
           </ul>

@@ -100,7 +100,7 @@ export default function About() {
                 <p style={styles.sectionHeader}>Working Style</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {personal.workingStyle.map((s) => (
-                    <span key={s} style={{ padding: '6px 14px', border: '1px solid var(--border-light)', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{s}</span>
+                    <span key={s} className="cursor-target" style={{ padding: '6px 14px', border: '1px solid var(--border-light)', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{s}</span>
                   ))}
                 </div>
               </div>

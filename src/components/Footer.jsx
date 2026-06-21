@@ -16,6 +16,7 @@ export default function Footer() {
               href={s.url}
               target="_blank"
               rel="noopener noreferrer"
+              className="cursor-target"
               style={{ color: 'var(--text-muted)', fontSize: '0.85rem', transition: 'color 0.2s' }}
               onMouseEnter={(e) => e.target.style.color = '#fff'}
               onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
