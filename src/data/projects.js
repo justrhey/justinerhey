@@ -1,5 +1,16 @@
 export const projects = [
   {
+    id: 'co-map',
+    name: 'Co-Map',
+    problem: 'Community-powered complaint mapping platform',
+    description: 'A full-stack platform where residents pin complaints on a map — report potholes, broken streetlights, graffiti, and more. Features an interactive Leaflet.js map with marker clustering, 10 complaint categories, filter pills, moderation panel, voting/gamification, rate limiting, and email + Google/GitHub SSO auth. Built with Django 6.0 + DRF on the backend and React 19 + Vite on the frontend, deployed on Vercel with Supabase Postgres.',
+    tech: ['Django 6.0', 'DRF', 'React 19', 'Leaflet.js', 'PostgreSQL', 'PostGIS', 'Docker', 'Vite'],
+    githubUrl: 'https://github.com/justrhey/Co-map',
+    demoUrl: 'https://co-map.vercel.app',
+    featured: true,
+    images: null,
+  },
+  {
     id: 'ehr-blockchain',
     name: 'EHR Blockchain',
     problem: 'EHR Blockchain — Tamper-Proof Medical Records',
