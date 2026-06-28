@@ -7,18 +7,19 @@ import { IntersectSquare, ArrowsClockwise } from '@phosphor-icons/react'
 
 /* ══════════════════════════════════════════════════════════════
    3D TECH GLOBE — skills arranged on a rotating sphere surface
+   Items behind the sphere fade to near-invisible so the globe
+   stays clean — no text bleeding through the back.
    ══════════════════════════════════════════════════════════════ */
 
 function SkillGlobe() {
-  const ref = useRef(null)
   const rafRef = useRef(null)
   const [rotation, setRotation] = useState({ x: 0.3, y: 0 })
   const [isDragging, setIsDragging] = useState(false)
   const [lastMouse, setLastMouse] = useState({ x: 0, y: 0 })
-  const [mouseFactor, setMouseFactor] = useState({ x: 0, y: 0 })
+  const [mouseAccum, setMouseAccum] = useState({ x: 0, y: 0 })
   const [hoveredSkill, setHoveredSkill] = useState(null)
 
-  // Collect top skills per category for the globe
+  // Collect top skills per category
   const globeSkills = useMemo(() =>
     skillCategories.flatMap(cat =>
       cat.skills.slice(0, 4).map(s => ({ ...s, accent: cat.accent }))
@@ -26,21 +27,21 @@ function SkillGlobe() {
     []
   )
 
-  // Fibonacci sphere distribution
+  const RADIUS = 150
+  const DIAMETER = RADIUS * 2
+
+  // Fibonacci sphere — even distribution
   const spherePositions = useMemo(() => {
     const n = globeSkills.length
-    const radius = 170
     return globeSkills.map((skill, i) => {
       const phi = Math.acos(-1 + (2 * i + 1) / n)
       const theta = Math.PI * (1 + Math.sqrt(5)) * i
       return {
         ...skill,
-        x: radius * Math.sin(phi) * Math.cos(theta),
-        y: radius * Math.cos(phi),
-        z: radius * Math.sin(phi) * Math.sin(theta),
-        phi,
-        theta,
-        radius,
+        x: RADIUS * Math.sin(phi) * Math.cos(theta),
+        y: RADIUS * Math.cos(phi),
+        z: RADIUS * Math.sin(phi) * Math.sin(theta),
+        radius: RADIUS,
       }
     })
   }, [globeSkills])
@@ -48,132 +49,136 @@ function SkillGlobe() {
   // Auto-rotation
   useEffect(() => {
     if (isDragging) return
-
-    const animate = () => {
-      setRotation(prev => ({
-        x: prev.x + 0.004,
-        y: prev.y + 0.006,
-      }))
-      rafRef.current = requestAnimationFrame(animate)
+    let raf
+    const tick = () => {
+      setRotation(prev => ({ x: prev.x + 0.003, y: prev.y + 0.005 }))
+      raf = requestAnimationFrame(tick)
     }
-    rafRef.current = requestAnimationFrame(animate)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+    raf = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(raf)
   }, [isDragging])
 
-  // Mouse interactivity
+  // Drag
   const handlePointerDown = useCallback((e) => {
     setIsDragging(true)
     setLastMouse({ x: e.clientX, y: e.clientY })
   }, [])
 
   const handlePointerMove = useCallback((e) => {
-    if (isDragging) {
-      const dx = e.clientX - lastMouse.x
-      const dy = e.clientY - lastMouse.y
-      setMouseFactor(prev => ({ x: prev.x + dy * 0.005, y: prev.y + dx * 0.005 }))
-      setLastMouse({ x: e.clientX, y: e.clientY })
-    }
+    if (!isDragging) return
+    const dx = e.clientX - lastMouse.x
+    const dy = e.clientY - lastMouse.y
+    setMouseAccum(prev => ({ x: prev.x + dy * 0.006, y: prev.y + dx * 0.006 }))
+    setLastMouse({ x: e.clientX, y: e.clientY })
   }, [isDragging, lastMouse])
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false)
-    setMouseFactor({ x: 0, y: 0 })
+    setMouseAccum({ x: 0, y: 0 })
   }, [])
 
-  // Keyboard rotation
+  // Keyboard
   const handleKeyDown = useCallback((e) => {
-    if (e.key === 'ArrowLeft') setRotation(prev => ({ ...prev, y: prev.y - 0.15 }))
-    if (e.key === 'ArrowRight') setRotation(prev => ({ ...prev, y: prev.y + 0.15 }))
-    if (e.key === 'ArrowUp') setRotation(prev => ({ ...prev, x: prev.x + 0.15 }))
-    if (e.key === 'ArrowDown') setRotation(prev => ({ ...prev, x: prev.x - 0.15 }))
+    const step = 0.2
+    if (e.key === 'ArrowLeft') setRotation(p => ({ ...p, y: p.y - step }))
+    if (e.key === 'ArrowRight') setRotation(p => ({ ...p, y: p.y + step }))
+    if (e.key === 'ArrowUp') setRotation(p => ({ ...p, x: p.x + step }))
+    if (e.key === 'ArrowDown') setRotation(p => ({ ...p, x: p.x - step }))
   }, [])
 
-  const combinedRotation = {
-    x: rotation.x + mouseFactor.x,
-    y: rotation.y + mouseFactor.y,
+  const rot = {
+    x: rotation.x + mouseAccum.x,
+    y: rotation.y + mouseAccum.y,
   }
 
-  // Compute which items are "visible" (in front) for depth shading
-  const visibleItems = spherePositions.map(item => {
-    // Apply rotation to position to get effective z-depth
-    const cosX = Math.cos(combinedRotation.x)
-    const sinX = Math.sin(combinedRotation.x)
-    const cosY = Math.cos(combinedRotation.y)
-    const sinY = Math.sin(combinedRotation.y)
-    // Rotated position (simplified — apply Y rotation then X rotation)
-    const y1 = item.y * cosX - item.z * sinX
-    const z1 = item.y * sinX + item.z * cosX
-    const x1 = item.x * cosY + z1 * sinY
-    const z2 = -item.x * sinY + z1 * cosY
-    // z2 is the depth coordinate (positive = toward viewer)
-    const depthFactor = (z2 + item.radius) / (2 * item.radius)
-    return { ...item, depthFactor, x1, y1, z2 }
-  })
+  // Compute rotated positions and depth
+  const cosX = Math.cos(rot.x), sinX = Math.sin(rot.x)
+  const cosY = Math.cos(rot.y), sinY = Math.sin(rot.y)
 
-  // Sort by depth so items in front render on top
-  visibleItems.sort((a, b) => b.z2 - a.z2)
+  const items = spherePositions.map(item => {
+      const z1 = item.y * sinX + item.z * cosX
+      const x1 = item.x * cosY + z1 * sinY
+      const y1 = item.y * cosX - item.z * sinX
+      const z2 = -item.x * sinY + z1 * cosY
+      const depth = (z2 + RADIUS) / (2 * RADIUS) // 0 = back, 1 = front
+      return { ...item, x1, y1, z2, depth }
+    })
+
+  // Sort: items in front render on top
+  const sorted = [...items].sort((a, b) => b.z2 - a.z2)
 
   return (
-    <div
-      ref={ref}
-      className="globe-container"
-      tabIndex={0}
-      role="application"
-      aria-label="3D skill globe — drag or use arrow keys to rotate"
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-      onKeyDown={handleKeyDown}
-    >
-      {/* Glow ring behind globe */}
-      <div className="globe-ring" />
+    <div className="globe-wrapper">
+      <div
+        className="globe-container"
+        tabIndex={0}
+        role="application"
+        aria-label="3D skill globe — drag or use arrow keys to rotate"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        onKeyDown={handleKeyDown}
+      >
+        {/* Decorative rings — inside overflow:hidden but positioned centrally */}
+        <div className="globe-ring" />
+        <div className="globe-orbit" style={{ transform: 'rotateX(60deg)' }} />
+        <div className="globe-orbit" style={{ transform: 'rotateX(0deg)' }} />
+        <div className="globe-orbit" style={{ transform: 'rotateX(-60deg)' }} />
+        <div className="globe-core" />
 
-      {/* Orbital ring lines */}
-      <div className="globe-orbit" style={{ transform: 'rotateX(60deg)' }} />
-      <div className="globe-orbit" style={{ transform: 'rotateX(0deg)' }} />
-      <div className="globe-orbit" style={{ transform: 'rotateX(-60deg)' }} />
+        {/* Skill items */}
+        {sorted.map((item) => {
+          const isHovered = hoveredSkill === item.name
+          const accent = item.accent === 'accent-2' ? 'var(--accent-2)' : 'var(--accent)'
 
-      {/* Skill items on sphere surface */}
-      {visibleItems.map((item) => {
-        const isHovered = hoveredSkill === item.name
-        const accent = item.accent === 'accent-2' ? 'var(--accent-2)' : 'var(--accent)'
+          // Front face vs back face
+          const isFront = item.depth > 0.5
 
-        return (
-          <div
-            key={item.name}
-            className={`globe-item ${isHovered ? 'globe-item-hovered' : ''}`}
-            onMouseEnter={() => setHoveredSkill(item.name)}
-            onMouseLeave={() => setHoveredSkill(null)}
-            style={{
-              transform: `translate3d(${item.x1}px, ${item.y1}px, ${item.z2}px) translate(-50%, -50%)`,
-              opacity: Math.max(0.25, item.depthFactor),
-              zIndex: Math.round(item.z2 + item.radius),
-              borderColor: isHovered ? accent : 'var(--border-light)',
-              color: isHovered ? 'var(--text-primary)' : 'var(--text-secondary)',
-              background: isHovered
-                ? `rgba(94,106,210,0.12)`
-                : `rgba(10,10,12,${0.2 + 0.3 * item.depthFactor})`,
-              transformOrigin: 'center center',
-            }}
-          >
-            {item.name}
-          </div>
-        )
-      })}
+          // Opacity: front items 0.6→1, back items 0→0.25
+          const opacity = isFront
+            ? 0.55 + 0.45 * ((item.depth - 0.5) * 2) // 0.55→1.0
+            : 0.05 + 0.2 * (item.depth * 2)            // 0.05→0.25
 
-      {/* Center core glow */}
-      <div className="globe-core" />
+          // Scale: front items normal, back items slightly smaller for depth
+          const scale = isFront ? 1 : 0.75 + 0.25 * (item.depth * 2)
 
-      {/* Drag hint */}
+          return (
+            <div
+              key={item.name}
+              className={`globe-item ${isHovered ? 'globe-item-hovered' : ''}`}
+              onMouseEnter={() => setHoveredSkill(item.name)}
+              onMouseLeave={() => setHoveredSkill(null)}
+              style={{
+                transform: `translate3d(${item.x1}px, ${item.y1}px, ${item.z2}px) translate(-50%, -50%) scale(${isHovered ? 1.15 : scale})`,
+                opacity,
+                zIndex: isHovered ? 999 : Math.round(item.z2 + RADIUS),
+                borderColor: isHovered ? accent : 'var(--border-light)',
+                color: isHovered ? 'var(--text-primary)' : isFront ? 'var(--text-secondary)' : 'var(--text-faint)',
+                background: isHovered
+                  ? `rgba(94,106,210,0.15)`
+                  : `rgba(10,10,12,${isFront ? 0.25 + 0.3 * ((item.depth - 0.5) * 2) : 0.08})`,
+                pointerEvents: isFront ? 'auto' : 'none',
+                transition: isHovered
+                  ? 'opacity 0.2s ease, color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.2s ease'
+                  : 'opacity 0.4s ease, color 0.4s ease, background 0.4s ease, border-color 0.4s ease, transform 0.4s ease',
+              }}
+            >
+              {item.name}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Drag hint — below the container */}
       {!isDragging && (
         <motion.div
           className="globe-hint"
           initial={{ opacity: 1 }}
-          animate={{ opacity: [1, 0.4, 1] }}
-          transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ opacity: [1, 0.35, 1] }}
+          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
         >
-          <ArrowsClockwise size={14} weight="bold" />
+          <ArrowsClockwise size={13} weight="bold" />
           <span>Drag to explore</span>
         </motion.div>
       )}
@@ -198,13 +203,6 @@ function CategoryCard3D({ cat, index }) {
   const visibleSkills = expanded ? cat.skills : cat.skills.slice(0, displayCount)
   const hasMore = cat.skills.length > displayCount
 
-  // Skill proficiency bars (circular rings placed below each skill tag)
-  const skillMap = useMemo(() => {
-    const map = {}
-    cat.skills.forEach(s => { map[s.name] = s.level })
-    return map
-  }, [cat.skills])
-
   const handleMouseMove = (e) => {
     if (!cardRef.current) return
     const rect = cardRef.current.getBoundingClientRect()
@@ -217,7 +215,9 @@ function CategoryCard3D({ cat, index }) {
   const handleMouseLeave = () => { setIsHover(false); setTilt({ x: 0, y: 0 }) }
 
   const cardStyle = {
-    transform: isHover ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-6px)` : 'perspective(1000px) rotateX(0) rotateY(0)',
+    transform: isHover
+      ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-6px)`
+      : 'perspective(1000px) rotateX(0) rotateY(0)',
     transition: isHover ? 'transform 0.12s ease, box-shadow 0.3s ease' : 'transform 0.4s ease, box-shadow 0.4s ease',
     padding: 28,
     border: '1px solid var(--border-card)',
@@ -241,7 +241,7 @@ function CategoryCard3D({ cat, index }) {
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* 3D accent bar — floats with depth */}
+        {/* 3D accent bar */}
         <div
           className="card-accent-bar"
           style={{
@@ -250,7 +250,7 @@ function CategoryCard3D({ cat, index }) {
           }}
         />
 
-        {/* Header with 3D depth effect */}
+        {/* Header */}
         <div style={{
           display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24,
           transform: isHover ? 'translateZ(8px)' : 'translateZ(0)',
@@ -264,12 +264,10 @@ function CategoryCard3D({ cat, index }) {
             }}
           />
           <h3 className="card-category-title">{cat.name}</h3>
-
-          {/* Skill count badge */}
           <span className="card-count-badge">{cat.skills.length}</span>
         </div>
 
-        {/* Skills cloud — 3D floating tags */}
+        {/* Skills cloud */}
         <motion.div layout style={{
           display: 'flex', flexWrap: 'wrap', gap: 8,
           justifyContent: 'flex-start',
@@ -283,9 +281,7 @@ function CategoryCard3D({ cat, index }) {
                 exit={{ opacity: 0, scale: 0.8, y: 10 }}
                 transition={{ duration: 0.22, delay: i * 0.025 }}
                 className={`card-skill-tag ${cat.accent === 'accent-2' ? 'tag-cyan' : ''}`}
-                style={{
-                  fontSize: '0.72rem', padding: '5px 14px',
-                }}
+                style={{ fontSize: '0.72rem', padding: '5px 14px' }}
               >
                 {skill.name}
               </motion.span>
@@ -293,7 +289,7 @@ function CategoryCard3D({ cat, index }) {
           </AnimatePresence>
         </motion.div>
 
-        {/* Show more / less */}
+        {/* Show more */}
         {hasMore && (
           <button
             onClick={() => setExpanded(!expanded)}
@@ -316,7 +312,7 @@ function CategoryCard3D({ cat, index }) {
    ══════════════════════════════════════════════════════════════ */
 
 export default function Skills() {
-  const [view, setView] = useState('globe') // 'globe' | 'grid'
+  const [view, setView] = useState('globe')
 
   return (
     <SectionWrapper id="skills">
@@ -344,7 +340,6 @@ export default function Skills() {
         </div>
       </AnimateOnScroll>
 
-      {/* Content area with animated switch */}
       <AnimatePresence mode="wait">
         {view === 'globe' ? (
           <motion.div
@@ -356,7 +351,7 @@ export default function Skills() {
           >
             <SkillGlobe />
 
-            {/* Quick stats under globe */}
+            {/* Stats */}
             <div className="globe-stats">
               <div className="globe-stat">
                 <span className="globe-stat-value">
@@ -370,7 +365,10 @@ export default function Skills() {
               </div>
               <div className="globe-stat">
                 <span className="globe-stat-value">
-                  {Math.round(skillCategories.reduce((a, c) => a + c.skills.reduce((s, sk) => s + sk.level, 0), 0) / skillCategories.reduce((a, c) => a + c.skills.length, 0))}%
+                  {Math.round(
+                    skillCategories.reduce((a, c) => a + c.skills.reduce((s, sk) => s + sk.level, 0), 0) /
+                    skillCategories.reduce((a, c) => a + c.skills.length, 0)
+                  )}%
                 </span>
                 <span className="globe-stat-label">Avg. Proficiency</span>
               </div>
@@ -384,7 +382,6 @@ export default function Skills() {
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: 'easeOut' }}
           >
-            {/* Category cards — 3D style */}
             <div className="skills-grid-3d">
               {skillCategories.map((cat, i) => (
                 <CategoryCard3D key={cat.name} cat={cat} index={i} />

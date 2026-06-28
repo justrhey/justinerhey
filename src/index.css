@@ -353,55 +353,54 @@ section {
 }
 
 /* ─── 3D Skill Globe ─── */
+.globe-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
 .globe-container {
   position: relative;
-  width: 400px;
-  height: 400px;
-  margin: 0 auto 32px;
+  width: 460px;
+  height: 460px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform-style: preserve-3d;
-  perspective: 800px;
+  overflow: hidden;
   cursor: grab;
   touch-action: none;
   outline: none;
+  user-select: none;
 }
 
 .globe-container:active { cursor: grabbing; }
 
 .globe-core {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(94,106,210,0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(94,106,210,0.12) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .globe-ring {
   position: absolute;
-  width: 360px;
-  height: 360px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
-  border: 1px solid rgba(94,106,210,0.08);
+  border: 1px solid rgba(94,106,210,0.1);
   pointer-events: none;
-  animation: globe-pulse 4s ease-in-out infinite;
-}
-
-@keyframes globe-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.05); opacity: 0.3; }
 }
 
 .globe-orbit {
   position: absolute;
-  width: 340px;
-  height: 340px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   border: 1px solid rgba(94,106,210,0.06);
   pointer-events: none;
-  transform-style: preserve-3d;
 }
 
 .globe-item {
@@ -409,37 +408,33 @@ section {
   top: 50%;
   left: 50%;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  padding: 4px 12px;
-  border-radius: 20px;
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  border-radius: 999px;
   border: 1px solid var(--border-light);
   white-space: nowrap;
   pointer-events: auto;
-  transition: border-color 0.3s ease, color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-  transform-style: preserve-3d;
-  backface-visibility: visible;
   user-select: none;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  line-height: 1.4;
 }
 
 .globe-item-hovered {
-  box-shadow: 0 0 20px rgba(94,106,210,0.25);
-  transform: translate3d(0, 0, 0) translate(-50%, -50%) scale(1.12) !important;
-  z-index: 999 !important;
+  box-shadow: 0 0 24px rgba(94,106,210,0.35), 0 0 48px rgba(94,106,210,0.1) !important;
+  border-color: var(--accent) !important;
 }
 
 .globe-hint {
-  position: absolute;
-  bottom: -32px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
+  margin-top: 8px;
   color: var(--text-faint);
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   pointer-events: none;
-  white-space: nowrap;
 }
 
 /* Globe stats bar */
