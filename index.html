@@ -221,6 +221,8 @@ section { padding: 100px 40px; }
   overflow: hidden;
 }
 .project-card:hover { background: #111; border-color: #333; }
+.project-card-link { display: block; text-decoration: none; cursor: none; }
+.project-card-link:hover { cursor: none; }
 .project-card-img { width: 100%; height: 180px; overflow: hidden; background: #080808; position: relative; }
 .project-card-img.big { height: 240px; }
 .project-card-img img {
@@ -562,7 +564,7 @@ const PROJECTS = [
     tags: ['Rust', 'Actix-web', 'React', 'PostgreSQL', 'Stellar Soroban', 'JWT'],
     year: '2024',
     img: 'images/ehr-blockchain/patient.jpeg',
-    github: 'https://github.com/justrhey/ehr-blockchain'
+    github: 'https://github.com/justrhey/capstone'
   },
   {
     id: 'co-map',
@@ -571,7 +573,8 @@ const PROJECTS = [
     tags: ['Django REST', 'React 19', 'MapLibre GL', 'PostgreSQL', 'PostGIS'],
     year: '2025',
     img: 'images/co-map/co-map.jpeg',
-    github: 'https://github.com/justrhey/co-map'
+    live: 'https://co-map.vercel.app/',
+    github: 'https://github.com/justrhey/capstone'
   },
   {
     id: 'fresh-phones-ph',
@@ -580,6 +583,7 @@ const PROJECTS = [
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4'],
     year: '2025',
     img: 'images/fresh-phones-ph/home.png',
+    live: 'https://freshphonesph.vercel.app/',
     github: 'https://github.com/justrhey/fresh-phones-ph'
   },
   {
@@ -589,7 +593,8 @@ const PROJECTS = [
     tags: ['Django', 'Python', 'PostgreSQL', 'Chart.js', 'Linux'],
     year: '2024',
     img: 'images/dmarc/home-dmarc.jpeg',
-    github: 'https://github.com/justrhey/dmarc-dashboard'
+    live: 'https://dmarc-construction.vercel.app/',
+    github: 'https://github.com/justrhey/capstone'
   },
   {
     id: 'cassie',
@@ -598,7 +603,8 @@ const PROJECTS = [
     tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Spotify API'],
     year: '2024',
     img: 'images/cassie/home.jpeg',
-    github: 'https://github.com/justrhey/cassie'
+    live: 'https://github.com/justinebacurin1927/Cassie',
+    github: 'https://github.com/justinebacurin1927/Cassie'
   },
   {
     id: 'ticketing-system',
@@ -607,7 +613,8 @@ const PROJECTS = [
     tags: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'JWT'],
     year: '2023',
     img: 'images/ticketing-system/screenshot1.png',
-    github: 'https://github.com/justrhey/ticketing-system'
+    live: 'https://github.com/justrhey/capstone',
+    github: 'https://github.com/justrhey/capstone'
   }
 ];
 
@@ -734,9 +741,11 @@ buildProjects();
 function projectCardHTML(p, idx, isBig) {
   return `
     <div class="project-card" data-index="${idx}">
-      <div class="project-card-img ${isBig ? 'big' : ''}">
-        <img src="${p.img}" alt="${p.name}" loading="lazy">
-      </div>
+      <a href="${p.live || p.github || '#'}" target="_blank" rel="noopener" class="project-card-link">
+        <div class="project-card-img ${isBig ? 'big' : ''}">
+          <img src="${p.img}" alt="${p.name}" loading="lazy">
+        </div>
+      </a>
       <div class="project-card-body">
         <div class="project-num">00${idx + 1}</div>
         <h3 class="project-name">${p.name}</h3>
@@ -747,8 +756,8 @@ function projectCardHTML(p, idx, isBig) {
         <div class="project-meta">
           <span class="project-year">${p.year}</span>
           <div class="project-links">
-            ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="project-link" title="GitHub">GH</a>` : ''}
-            ${p.live ? `<a href="${p.live}" target="_blank" rel="noopener" class="project-link" title="Live Demo">Live</a>` : ''}
+            ${p.live ? `<a href="${p.live}" target="_blank" rel="noopener" class="project-link" title="Live Demo">Live ↗</a>` : ''}
+            ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="project-link" title="GitHub">GH ↗</a>` : ''}
           </div>
         </div>
       </div>
