@@ -250,8 +250,12 @@ section { padding: 100px 40px; }
   padding-top: 12px; border-top: 1px solid #1c1c1c;
 }
 .project-year { font-size: 11px; font-weight: 500; color: #444; }
-.project-arrow { font-size: 18px; color: #444; transition: transform 0.25s ease; }
-.project-card:hover .project-arrow { transform: translate(4px, -4px); color: #f0f0f0; }
+.project-links { display: flex; gap: 10px; }
+.project-link {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: #444; text-decoration: none; transition: color 0.2s;
+}
+.project-link:hover { color: #f0f0f0; }
 
 /* ═══════════════════════════════
    SKILLS (3D Tech Stack)
@@ -557,7 +561,8 @@ const PROJECTS = [
     desc: 'Blockchain-notarized Electronic Health Records system built in Rust with Actix-web. Features AES-256-GCM field-level encryption, SHA-256 content hashing anchored on-chain with full version history.',
     tags: ['Rust', 'Actix-web', 'React', 'PostgreSQL', 'Stellar Soroban', 'JWT'],
     year: '2024',
-    img: 'images/ehr-blockchain/patient.jpeg'
+    img: 'images/ehr-blockchain/patient.jpeg',
+    github: 'https://github.com/justrhey/ehr-blockchain'
   },
   {
     id: 'co-map',
@@ -565,7 +570,8 @@ const PROJECTS = [
     desc: 'Community-powered complaint mapping platform. Residents pin issues like potholes and broken streetlights on a map with MapLibre GL, 3D building extrusions, and gamified scoring.',
     tags: ['Django REST', 'React 19', 'MapLibre GL', 'PostgreSQL', 'PostGIS'],
     year: '2025',
-    img: 'images/co-map/co-map.jpeg'
+    img: 'images/co-map/co-map.jpeg',
+    github: 'https://github.com/justrhey/co-map'
   },
   {
     id: 'fresh-phones-ph',
@@ -573,7 +579,8 @@ const PROJECTS = [
     desc: 'Landing page for an iPhone reseller\'s "paluwagan" installment program. Y2K-inspired glassy-blue theme with 3D cloud art, trust badges, and animated hero section.',
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4'],
     year: '2025',
-    img: 'images/fresh-phones-ph/home.png'
+    img: 'images/fresh-phones-ph/home.png',
+    github: 'https://github.com/justrhey/fresh-phones-ph'
   },
   {
     id: 'dmarc',
@@ -581,7 +588,8 @@ const PROJECTS = [
     desc: 'Email authentication monitoring dashboard that aggregates and visualizes DMARC, SPF, and DKIM reports. Helps domain owners detect spoofing and improve email deliverability.',
     tags: ['Django', 'Python', 'PostgreSQL', 'Chart.js', 'Linux'],
     year: '2024',
-    img: 'images/dmarc/home-dmarc.jpeg'
+    img: 'images/dmarc/home-dmarc.jpeg',
+    github: 'https://github.com/justrhey/dmarc-dashboard'
   },
   {
     id: 'cassie',
@@ -589,7 +597,8 @@ const PROJECTS = [
     desc: 'Music discovery and streaming app with curated playlists, artist albums, and a Top 50 chart. Features album art browsing, playlist management, and seamless audio playback.',
     tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Spotify API'],
     year: '2024',
-    img: 'images/cassie/home.jpeg'
+    img: 'images/cassie/home.jpeg',
+    github: 'https://github.com/justrhey/cassie'
   },
   {
     id: 'ticketing-system',
@@ -597,7 +606,8 @@ const PROJECTS = [
     desc: 'Full-featured support ticket management system with role-based access, ticket lifecycle workflows, priority queues, attachment handling, and real-time status updates.',
     tags: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'JWT'],
     year: '2023',
-    img: 'images/ticketing-system/screenshot1.png'
+    img: 'images/ticketing-system/screenshot1.png',
+    github: 'https://github.com/justrhey/ticketing-system'
   }
 ];
 
@@ -736,7 +746,10 @@ function projectCardHTML(p, idx, isBig) {
         </div>
         <div class="project-meta">
           <span class="project-year">${p.year}</span>
-          <span class="project-arrow">↗</span>
+          <div class="project-links">
+            ${p.github ? `<a href="${p.github}" target="_blank" rel="noopener" class="project-link" title="GitHub">GH</a>` : ''}
+            ${p.live ? `<a href="${p.live}" target="_blank" rel="noopener" class="project-link" title="Live Demo">Live</a>` : ''}
+          </div>
         </div>
       </div>
     </div>
