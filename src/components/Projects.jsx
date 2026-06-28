@@ -14,6 +14,33 @@ const CATEGORIES = [
   { id: 'ai', label: 'AI / Automation' },
 ]
 
+/* ─── Dashboard filter pill ─── */
+function FilterPill({ cat, activeCategory, setActiveCategory }) {
+  const isActive = activeCategory === cat.id
+  return (
+    <button
+      onClick={() => setActiveCategory(cat.id)}
+      style={{
+        fontFamily: 'var(--font-body)',
+        fontSize: '0.6rem', letterSpacing: '2px',
+        textTransform: 'uppercase',
+        padding: '6px 14px',
+        cursor: 'pointer',
+        background: isActive ? 'var(--green-mid)' : 'var(--bg-deep)',
+        color: isActive ? '#080808' : 'var(--text-muted)',
+        fontWeight: isActive ? 700 : 400,
+        borderTop: `2px solid ${isActive ? 'var(--green-bright)' : 'var(--border-light)'}`,
+        borderBottom: `2px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-dark)'}`,
+        borderLeft: `1px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-left)'}`,
+        borderRight: `1px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-right)'}`,
+        transition: 'none',
+      }}
+    >
+      {cat.label}
+    </button>
+  )
+}
+
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
@@ -27,7 +54,7 @@ export default function Projects() {
   const featured = allFeatured.slice(0, 3)
   const rest = [...allFeatured.slice(3), ...filtered.filter(p => !p.featured)]
 
-  // Keyboard navigation
+  // Keyboard
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape') setSelectedProject(null)
@@ -44,46 +71,19 @@ export default function Projects() {
 
       {/* Filter pills */}
       <AnimateOnScroll direction="up" delay={0.08}>
-        <div style={{
-          display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 36,
-        }}>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 36 }}>
           {CATEGORIES.map(cat => (
-            <button
+            <FilterPill
               key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.72rem',
-                padding: '7px 18px',
-                borderRadius: 20,
-                border: '1px solid',
-                borderColor: activeCategory === cat.id ? 'var(--accent)' : 'var(--border-light)',
-                background: activeCategory === cat.id ? 'var(--accent-dim)' : 'transparent',
-                color: activeCategory === cat.id ? 'var(--accent)' : 'var(--text-muted)',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.3px',
-              }}
-              onMouseEnter={(e) => {
-                if (activeCategory !== cat.id) {
-                  e.target.style.borderColor = 'var(--text-dim)'
-                  e.target.style.color = 'var(--text-secondary)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (activeCategory !== cat.id) {
-                  e.target.style.borderColor = 'var(--border-light)'
-                  e.target.style.color = 'var(--text-muted)'
-                }
-              }}
-            >
-              {cat.label}
-            </button>
+              cat={cat}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
           ))}
         </div>
       </AnimateOnScroll>
 
-      {/* Bento grid: featured projects */}
+      {/* Bento grid */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeCategory}
@@ -92,20 +92,12 @@ export default function Projects() {
           exit={{ opacity: 0, y: -16 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
         >
-          {/* Featured — 2-col bento layout */}
           {featured.length > 0 && (
             <div className="bento-grid" style={{ marginBottom: 20 }}>
               {featured.map((p, i) => {
-                // First card spans full width; rest in 2-col
                 const isWide = i === 0
                 return (
-                  <div
-                    key={p.id}
-                    className={isWide ? 'bento-wide' : ''}
-                    style={{
-                      height: '100%',
-                    }}
-                  >
+                  <div key={p.id} className={isWide ? 'bento-wide' : ''} style={{ height: '100%' }}>
                     <ProjectCard
                       project={p}
                       onClick={setSelectedProject}
@@ -120,7 +112,6 @@ export default function Projects() {
             </div>
           )}
 
-          {/* Rest — compact grid */}
           {rest.length > 0 && (
             <div style={{
               display: 'grid',
@@ -143,7 +134,6 @@ export default function Projects() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Modal */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal

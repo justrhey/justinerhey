@@ -1,50 +1,6 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
-import { Code, GithubLogo, Globe } from '@phosphor-icons/react'
-
-/* ─── Interactive 3D Tilt Card ─── */
-function TiltCard({ children, className, style, onHover, isHovered }) {
-  const ref = useRef(null)
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 768)
-    check()
-    window.addEventListener('resize', check)
-    return () => window.removeEventListener('resize', check)
-  }, [])
-
-  const handleMouseMove = (e) => {
-    if (isMobile || !ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    setTilt({ x: y * -8, y: x * 8 })
-  }
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 })
-    if (onHover) onHover(null)
-  }
-
-  return (
-    <div
-      ref={ref}
-      className={className}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => onHover && onHover(true)}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        ...style,
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: isHovered ? 'transform 0.1s ease' : 'transform 0.4s ease, box-shadow 0.4s ease',
-      }}
-    >
-      {children}
-    </div>
-  )
-}
+import { GithubLogo, Globe } from '@phosphor-icons/react'
 
 /* ─── Project Card ─── */
 export function ProjectCard({ project, onClick, featured = false, isHovered, onHover, index = 0 }) {
@@ -61,29 +17,23 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
-      className="glow-card"
+      className="project-card"
       style={{
         display: 'flex',
         flexDirection: featured ? 'row' : 'column',
-        background: 'var(--bg-card)',
-        border: '1px solid var(--border-card)',
-        borderRadius: 'var(--radius-lg)',
-        overflow: 'hidden',
-        cursor: 'pointer',
         height: '100%',
-        transition: 'all 0.3s var(--ease-out)',
       }}
     >
-      {/* Image / placeholder section */}
+      {/* Image / placeholder */}
       {imgSrc ? (
         <div style={{
           width: featured ? '40%' : '100%',
-          minHeight: featured ? 240 : 180,
+          minHeight: featured ? 240 : 160,
           aspectRatio: featured ? 'auto' : '16/9',
           overflow: 'hidden', position: 'relative',
           background: 'var(--bg-deep)',
-          borderRight: featured ? '1px solid var(--border)' : 'none',
-          borderBottom: featured ? 'none' : '1px solid var(--border)',
+          borderRight: featured ? '1px solid var(--border-mid)' : 'none',
+          borderBottom: featured ? 'none' : '1px solid var(--border-mid)',
           flexShrink: 0,
         }}>
           {!imgLoaded && <div className="skeleton" style={{ position: 'absolute', inset: 0 }} />}
@@ -101,72 +51,52 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
               transform: isHovered ? 'scale(1.06)' : 'scale(1)',
             }}
           />
-          {/* Overlay gradient */}
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(180deg, transparent 50%, rgba(2,2,3,0.4) 100%)',
-            pointerEvents: 'none',
-          }} />
         </div>
       ) : (
         <div style={{
           width: featured ? '40%' : '100%',
-          minHeight: featured ? 240 : 150,
+          minHeight: featured ? 240 : 130,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'var(--bg-elevated)',
-          borderRight: featured ? '1px solid var(--border)' : 'none',
-          borderBottom: featured ? 'none' : '1px solid var(--border)',
+          background: 'var(--bg-deep)',
+          borderRight: featured ? '1px solid var(--border-mid)' : 'none',
+          borderBottom: featured ? 'none' : '1px solid var(--border-mid)',
           flexShrink: 0,
         }}>
-          <Code size={36} color="var(--text-faint)" opacity={0.3} weight="light" />
+          <GithubLogo size={28} weight="light" opacity={0.2} />
         </div>
       )}
 
       {/* Body */}
       <div style={{
-        padding: 22, flex: 1,
+        padding: 20, flex: 1,
         display: 'flex', flexDirection: 'column',
       }}>
         {/* Category badge */}
         {project.category && (
-          <div style={{
-            display: 'inline-flex', alignSelf: 'flex-start',
-            marginBottom: 10,
-            fontFamily: 'var(--font-mono)', fontSize: '0.58rem',
-            letterSpacing: '1px', textTransform: 'uppercase',
-            padding: '2px 10px', borderRadius: 20,
-            background: project.category === 'ai'
-              ? 'var(--accent-2-dim)'
-              : 'var(--accent-dim)',
-            color: project.category === 'ai'
-              ? 'var(--accent-2)'
-              : 'var(--accent)',
-          }}>
+          <span className="project-category-badge" style={{ alignSelf: 'flex-start', marginBottom: 10 }}>
             {project.category === 'fullstack' ? 'Full-Stack' :
              project.category === 'backend' ? 'Backend' :
              project.category === 'frontend' ? 'Frontend' :
              project.category === 'ai' ? 'AI / Automation' : project.category}
-          </div>
+          </span>
         )}
 
         {/* Name */}
         <h3 style={{
           fontFamily: 'var(--font-heading)',
-          fontSize: '1.05rem', fontWeight: 600,
-          color: 'var(--text-primary)',
-          letterSpacing: '-0.01em',
+          fontSize: '0.85rem', letterSpacing: '2px',
           marginBottom: 4,
         }}>
           {project.name}
         </h3>
 
-        {/* Problem statement */}
+        {/* Problem */}
         <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.7rem',
+          fontFamily: 'var(--font-body)',
+          fontSize: '0.65rem', letterSpacing: '0.5px',
           color: 'var(--text-muted)',
           lineHeight: 1.5,
-          marginBottom: 12,
+          marginBottom: 10,
         }}>
           {project.problem}
         </p>
@@ -174,51 +104,48 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
         {/* Description (featured only) */}
         {featured && (
           <p style={{
-            fontSize: '0.82rem',
+            fontFamily: 'var(--font-body)',
+            fontSize: '0.7rem', letterSpacing: '0.5px',
             color: 'var(--text-secondary)',
             lineHeight: 1.7,
-            marginBottom: 14,
+            marginBottom: 12,
             flex: 1,
           }}>
-            {project.description.length > 200
-              ? project.description.slice(0, 200) + '...'
+            {project.description.length > 180
+              ? project.description.slice(0, 180) + '...'
               : project.description}
           </p>
         )}
 
-        {/* Spacer + Tags at bottom */}
+        {/* Tags + Links */}
         <div style={{ marginTop: 'auto' }}>
-          <div style={{
-            display: 'flex', flexWrap: 'wrap', gap: 5, marginBottom: 14,
-          }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
             {project.tech.slice(0, maxTags).map((t) => (
-              <span key={t} className="tag" style={{ fontSize: '0.58rem', padding: '2px 8px' }}>{t}</span>
+              <span key={t} className="project-tech-tag">{t}</span>
             ))}
             {project.tech.length > maxTags && (
-              <span className="tag" style={{ fontSize: '0.58rem', padding: '2px 8px' }}>
-                +{project.tech.length - maxTags}
-              </span>
+              <span className="project-tech-tag">+{project.tech.length - maxTags}</span>
             )}
           </div>
 
-          {/* Links */}
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: 'flex', gap: 14 }}>
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
+                className="dash-icon"
                 style={{
                   display: 'flex', alignItems: 'center', gap: 5,
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
-                  color: 'var(--text-dim)',
-                  transition: 'color 0.2s',
+                  fontFamily: 'var(--font-body)', fontSize: '0.55rem',
+                  letterSpacing: '2px', textTransform: 'uppercase',
+                  textDecoration: 'none',
                 }}
-                onMouseEnter={(e) => e.target.style.color = 'var(--text-secondary)'}
-                onMouseLeave={(e) => e.target.style.color = 'var(--text-dim)'}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
               >
-                <GithubLogo size={14} weight="duotone" />
+                <GithubLogo size={12} weight="duotone" />
                 Code
               </a>
             )}
@@ -228,16 +155,17 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
+                className="dash-icon"
                 style={{
                   display: 'flex', alignItems: 'center', gap: 5,
-                  fontFamily: 'var(--font-mono)', fontSize: '0.65rem',
-                  color: 'var(--text-dim)',
-                  transition: 'color 0.2s',
+                  fontFamily: 'var(--font-body)', fontSize: '0.55rem',
+                  letterSpacing: '2px', textTransform: 'uppercase',
+                  textDecoration: 'none',
                 }}
-                onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-                onMouseLeave={(e) => e.target.style.color = 'var(--text-dim)'}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
               >
-                <Globe size={14} weight="duotone" />
+                <Globe size={12} weight="duotone" />
                 Demo
               </a>
             )}
@@ -247,25 +175,31 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
     </div>
   )
 
-  // Wrap in tilt for non-featured cards only (tilt on big wide cards feels odd)
-  if (!featured) {
+  if (featured) {
     return (
-      <TiltCard
-        onHover={(entering) => onHover && onHover(entering ? project.id : null)}
-        isHovered={isHovered}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ type: 'spring', stiffness: 80, damping: 18, delay: index * 0.06 }}
+        style={{ height: '100%' }}
+        onMouseEnter={() => onHover && onHover(project.id)}
+        onMouseLeave={() => onHover && onHover(null)}
       >
         {cardContent}
-      </TiltCard>
+      </motion.div>
     )
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
-      transition={{ type: 'spring', stiffness: 80, damping: 18, delay: index * 0.06 }}
+      transition={{ duration: 0.3, delay: index * 0.04 }}
       style={{ height: '100%' }}
+      onMouseEnter={() => onHover && onHover(project.id)}
+      onMouseLeave={() => onHover && onHover(null)}
     >
       {cardContent}
     </motion.div>
