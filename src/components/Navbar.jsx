@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useScrollSpy } from '../hooks/useScrollSpy'
 import { motion, AnimatePresence } from 'motion/react'
+import { Code } from '@phosphor-icons/react'
 
 const sections = ['Experience', 'Skills', 'Projects', 'Contact']
 
@@ -20,103 +21,62 @@ export default function Navbar() {
     setMenuOpen(false)
   }
 
+  // Nav button component
+  function NavBtn({ s }) {
+    const isActive = activeId === s.toLowerCase()
+    return (
+      <button
+        onClick={() => scrollTo(s)}
+        className={`nav-btn ${isActive ? 'nav-btn-active' : ''}`}
+      >
+        {isActive && (
+          <motion.span
+            layoutId="nav-indicator"
+            className="nav-indicator"
+          />
+        )}
+        <span className={`nav-btn-text ${isActive ? 'nav-btn-text-active' : ''}`}>
+          {isActive && <span className="nav-arrow">&gt;</span>}
+          {s}
+        </span>
+      </button>
+    )
+  }
+
   return (
-    <header style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      background: scrolled ? 'rgba(2,2,3,0.82)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(16px) saturate(1.5)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(1.5)' : 'none',
-      borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
-      transition: 'background 0.4s ease, border-color 0.4s ease',
-    }}>
-      <div style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '0 24px', maxWidth: 1200, margin: '0 auto',
-        height: 'var(--nav-height)',
-      }}>
+    <header className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
+      {/* Background layers */}
+      <div className="navbar-bg" />
+      <div className={`navbar-glow ${scrolled ? 'navbar-glow-visible' : ''}`} />
+
+      <div className="navbar-inner">
         {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.1rem', fontWeight: 700, letterSpacing: '-0.02em',
-            cursor: 'pointer', background: 'none', border: 'none', color: 'var(--text-primary)',
-            display: 'flex', alignItems: 'center', gap: 8,
-          }}
+          className="navbar-logo"
         >
-          <span style={{
-            width: 8, height: 8, borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
-            display: 'inline-block',
-          }} />
-          justrhey
-          <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>.dev</span>
+          <span className="navbar-logo-dot" />
+          <span className="navbar-logo-text">justrhey</span>
+          <span className="navbar-logo-suffix">.dev</span>
         </button>
 
         {/* Desktop nav */}
-        <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          {sections.map((s) => {
-            const isActive = activeId === s.toLowerCase()
-            return (
-              <button
-                key={s}
-                onClick={() => scrollTo(s)}
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.8rem',
-                  padding: '6px 16px',
-                  borderRadius: 'var(--radius-sm)',
-                  cursor: 'pointer',
-                  background: isActive ? 'var(--accent-dim)' : 'transparent',
-                  border: 'none',
-                  color: isActive ? 'var(--accent)' : 'var(--text-muted)',
-                  transition: 'all 0.2s ease',
-                  position: 'relative',
-                }}
-                onMouseEnter={(e) => { if (!isActive) e.target.style.color = 'var(--text-primary)' }}
-                onMouseLeave={(e) => { if (!isActive) e.target.style.color = 'var(--text-muted)' }}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-indicator"
-                    style={{
-                      position: 'absolute', bottom: 2, left: '50%', transform: 'translateX(-50%)',
-                      width: 16, height: 2, borderRadius: 1,
-                      background: 'var(--accent)',
-                    }}
-                  />
-                )}
-                {s}
-              </button>
-            )
-          })}
+        <nav className="desktop-nav">
+          {sections.map((s) => (
+            <NavBtn key={s} s={s} />
+          ))}
         </nav>
 
         {/* Hamburger */}
         <button
           className="hamburger"
-          style={{
-            background: 'none', border: '1px solid var(--border-light)',
-            borderRadius: 'var(--radius-sm)', color: 'var(--text-primary)',
-            fontSize: '1.1rem', cursor: 'pointer', padding: '8px 10px',
-            fontFamily: 'inherit', lineHeight: 1, display: 'none',
-          }}
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {menuOpen ? (
-              <>
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </>
-            ) : (
-              <>
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </>
-            )}
-          </svg>
+          <div className={`hamburger-box ${menuOpen ? 'hamburger-open' : ''}`}>
+            <span className="hamburger-line" />
+            <span className="hamburger-line" />
+            <span className="hamburger-line" />
+          </div>
         </button>
       </div>
 
@@ -124,27 +84,27 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            style={{ overflow: 'hidden', borderTop: '1px solid var(--border)' }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="mobile-menu"
           >
-            <div style={{ padding: '8px 24px 16px', background: 'rgba(2,2,3,0.95)' }}>
-              {sections.map((s) => (
-                <button
-                  key={s}
-                  style={{
-                    display: 'block', width: '100%', textAlign: 'left',
-                    padding: '10px 0', background: 'none', border: 'none',
-                    fontFamily: 'var(--font-mono)', fontSize: '0.9rem',
-                    color: activeId === s.toLowerCase() ? 'var(--accent)' : 'var(--text-muted)',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => scrollTo(s)}
-                >
-                  {s}
-                </button>
-              ))}
+            <div className="mobile-menu-inner">
+              {sections.map((s) => {
+                const isActive = activeId === s.toLowerCase()
+                return (
+                  <button
+                    key={s}
+                    onClick={() => scrollTo(s)}
+                    className={`mobile-nav-btn ${isActive ? 'mobile-nav-btn-active' : ''}`}
+                  >
+                    <span className={`mobile-nav-dot ${isActive ? 'mobile-nav-dot-active' : ''}`} />
+                    {s}
+                    {isActive && <span className="mobile-nav-active-tag">current</span>}
+                  </button>
+                )
+              })}
             </div>
           </motion.div>
         )}

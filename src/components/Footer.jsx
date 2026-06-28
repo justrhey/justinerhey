@@ -1,44 +1,65 @@
-import { socials } from '../data/socials'
+import { GithubLogo, LinkedinLogo, At } from '@phosphor-icons/react'
 
 export default function Footer() {
+  const year = new Date().getFullYear()
+
   return (
-    <footer style={{
-      padding: '48px 0',
-      borderTop: '1px solid var(--border)',
-      textAlign: 'center',
-    }}>
+    <footer className="footer">
       <div className="container">
-        <div style={{
-          display: 'flex', justifyContent: 'center', gap: 32, marginBottom: 20,
-        }}>
-          {socials.map((s) => (
+        {/* Top section */}
+        <div className="footer-top">
+          {/* Left */}
+          <div className="footer-brand">
+            <span className="footer-logo-dot" />
+            <div>
+              <p className="footer-name">justrhey</p>
+              <p className="footer-tagline">Backend Developer &amp; AI Full-Stack Engineer</p>
+            </div>
+          </div>
+
+          {/* Right */}
+          <div className="footer-socials">
             <a
-              key={s.name}
-              href={s.url}
+              href="mailto:justrhey.tambong@gmail.com"
+              className="footer-social-link"
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.82rem',
-                color: 'var(--text-muted)',
-                transition: 'color 0.2s ease',
-              }}
-              onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
-              onMouseLeave={(e) => e.target.style.color = 'var(--text-muted)'}
+              aria-label="Email"
             >
-              {s.name}
+              <At size={16} weight="duotone" />
             </a>
-          ))}
+            <a
+              href="https://github.com/justrhey"
+              className="footer-social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <GithubLogo size={16} weight="duotone" />
+            </a>
+            <a
+              href="https://linkedin.com/in/justrhey"
+              className="footer-social-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <LinkedinLogo size={16} weight="duotone" />
+            </a>
+          </div>
         </div>
-        <p style={{
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          color: 'var(--text-faint)',
-        }}>
-          <span style={{ color: 'var(--accent)' }}>$</span> built by{' '}
-          <span style={{ color: 'var(--text-muted)' }}>justrhey</span>
-          {' · '} {new Date().getFullYear()}
-        </p>
+
+        {/* Divider */}
+        <div className="footer-divider" />
+
+        {/* Bottom bar */}
+        <div className="footer-bottom">
+          <p className="footer-copy">
+            <span className="footer-prompt">$</span> built by{' '}
+            <span className="footer-author">justrhey</span>
+          </p>
+          <p className="footer-year">&copy; {year}</p>
+        </div>
       </div>
     </footer>
   )
