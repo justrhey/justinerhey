@@ -28,7 +28,6 @@ body {
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 
-/* ─── Scrollbar ─── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #080808; }
 ::-webkit-scrollbar-thumb { background: #1c1c1c; }
@@ -116,12 +115,10 @@ section { padding: 100px 40px; }
   section { padding: 60px 16px; }
 }
 
-/* scroll reveal */
 .scroll-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
 .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 .scroll-stagger { transition-delay: calc(var(--i,0) * 80ms); }
 
-/* Outline text */
 .txt-outline {
   color: transparent;
   -webkit-text-stroke: 1.5px #f0f0f0;
@@ -193,6 +190,31 @@ section { padding: 100px 40px; }
 }
 
 /* ═══════════════════════════════
+   ABOUT
+   ═══════════════════════════════ */
+.about-section { padding-top: 80px; }
+.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.about-heading h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 0.85;
+  text-transform: uppercase;
+  margin: 0;
+}
+.about-text p { color: #888; margin-bottom: 16px; line-height: 1.75; font-size: 14px; }
+.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 24px; }
+.stat-box { padding: 20px 0; border-top: 1px solid #1c1c1c; }
+.stat-box:nth-child(1),
+.stat-box:nth-child(2) { padding-top: 0; border-top: none; }
+.stat-box:nth-child(odd) { padding-right: 20px; }
+.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; margin-bottom: 4px; }
+.stat-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #444; }
+
+@media (max-width: 768px) {
+  .about-layout { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ═══════════════════════════════
    PROJECTS
    ═══════════════════════════════ */
 .projects-section { padding-top: 80px; }
@@ -217,11 +239,21 @@ section { padding: 100px 40px; }
   cursor: none;
   overflow: hidden;
 }
-.project-card:hover { background: #111; }
-.project-card.canvas-hover:hover { border-color: #f0f0f0; }
-.project-card-canvas { width: 100%; height: 180px; background: #080808; position: relative; overflow: hidden; }
-.project-card-canvas.big { height: 240px; }
-.project-card-canvas canvas { display: block; width: 100% !important; height: 100% !important; }
+.project-card:hover { background: #111; border-color: #333; }
+.project-card-img { width: 100%; height: 180px; overflow: hidden; background: #080808; position: relative; }
+.project-card-img.big { height: 240px; }
+.project-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.7;
+  filter: grayscale(1);
+  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
+}
+.project-card:hover .project-card-img img {
+  opacity: 1;
+  filter: grayscale(0);
+  transform: scale(1.03);
+}
 .project-card-body { padding: 20px 24px 24px; }
 .project-num { font-family: 'Bebas Neue', sans-serif; font-size: 14px; color: #333; letter-spacing: 2px; margin-bottom: 4px; }
 .project-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 4vw, 44px); line-height: 1; text-transform: uppercase; margin-bottom: 8px; }
@@ -241,90 +273,27 @@ section { padding: 100px 40px; }
 .project-card:hover .project-arrow { transform: translate(4px, -4px); color: #f0f0f0; }
 
 /* ═══════════════════════════════
-   SKILLS
+   SKILLS (3D Tech Stack)
    ═══════════════════════════════ */
-.skills-section { padding-top: 80px; }
-.skills-layout { display: flex; gap: 48px; }
-.skills-label {
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
+.skills-section { position: relative; overflow: hidden; }
+.skills-canvas-wrap { width: 100%; height: 400px; position: relative; }
+.skills-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
+.skills-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.skills-overlay h2 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  letter-spacing: 4px;
-  color: #333;
+  font-size: clamp(48px, 8vw, 80px);
   text-transform: uppercase;
-  flex-shrink: 0;
-  white-space: nowrap;
-  line-height: 1;
-}
-.skills-content { flex: 1; display: flex; flex-direction: column; gap: 24px; }
-.skill-row { cursor: none; padding: 8px 0; }
-.skill-header {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 8px;
-}
-.skill-name {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
-  color: #444;
-  transition: color 0.2s;
-  letter-spacing: 1px;
-}
-.skill-row:hover .skill-name { color: #f0f0f0; }
-.skill-pct {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 14px;
-  color: #444;
-  letter-spacing: 1px;
-}
-.skill-bar-track {
-  width: 100%; height: 2px;
-  background: #1c1c1c;
-  position: relative;
-}
-.skill-bar-fill {
-  height: 100%;
-  background: #f0f0f0;
-  width: 0;
-  transition: width 0.5s ease-out;
-}
-
-@media (max-width: 768px) {
-  .skills-layout { flex-direction: column; gap: 24px; }
-  .skills-label {
-    writing-mode: horizontal-tb;
-    transform: none;
-    font-size: 36px;
-  }
-  .skill-name { font-size: 22px; }
-}
-
-/* ═══════════════════════════════
-   ABOUT
-   ═══════════════════════════════ */
-.about-section { padding-top: 80px; }
-.about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
-.about-heading h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(48px, 8vw, 96px);
+  text-align: center;
   line-height: 0.85;
-  text-transform: uppercase;
   margin: 0;
-}
-.about-text p { color: #888; margin-bottom: 16px; line-height: 1.75; font-size: 14px; }
-.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 24px; }
-.stat-box { padding: 20px 0; border-top: 1px solid #1c1c1c; }
-.stat-box:nth-child(1),
-.stat-box:nth-child(2) {
-  padding-top: 0;
-  border-top: none;
-}
-.stat-box:nth-child(odd) { padding-right: 20px; }
-.stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 36px; line-height: 1; margin-bottom: 4px; }
-.stat-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #444; }
-
-@media (max-width: 768px) {
-  .about-layout { grid-template-columns: 1fr; gap: 24px; }
 }
 
 /* ═══════════════════════════════
@@ -367,8 +336,73 @@ section { padding: 100px 40px; }
 .contact-social::after { content: " ↗"; }
 
 /* ═══════════════════════════════
-   FOOTER
+   FOOTER FORM
    ═══════════════════════════════ */
+.footer-form-section { border-top: 1px solid #1c1c1c; padding: 60px 40px 40px; }
+.footer-form-section .section-inner { max-width: 600px; }
+.footer-form-section h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.footer-form { display: flex; flex-direction: column; gap: 20px; }
+.form-group { position: relative; }
+.form-group label {
+  display: block;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: #444; margin-bottom: 8px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #1c1c1c;
+  padding: 14px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #f0f0f0;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 0;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #f0f0f0;
+}
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: #333; }
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #f0f0f0;
+  color: #f0f0f0;
+  padding: 16px 24px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: none;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 8px;
+}
+.form-submit:hover { background: #f0f0f0; color: #080808; }
+.form-submit .arrow { font-size: 22px; font-family: 'Inter', sans-serif; }
+.form-status {
+  font-size: 12px;
+  color: #666;
+  margin-top: 12px;
+  text-align: center;
+  min-height: 20px;
+}
+.form-status.success { color: #888; }
+
 footer {
   border-top: 1px solid #1c1c1c;
   padding: 24px 40px;
@@ -378,6 +412,7 @@ footer {
 }
 @media (max-width: 768px) {
   footer { padding: 16px; flex-direction: column; gap: 8px; text-align: center; }
+  .footer-form-section { padding: 40px 16px 24px; }
 }
 
 /* ═══════════════════════════════
@@ -385,8 +420,7 @@ footer {
    ═══════════════════════════════ */
 @media (max-width: 480px) {
   .hero-canvas-wrap { height: 260px; }
-  .project-card-canvas { height: 140px !important; }
-  .project-card-canvas.big { height: 180px !important; }
+  .skills-canvas-wrap { height: 300px; }
   .contact-canvas-wrap { height: 160px; }
 }
 </style>
@@ -400,9 +434,9 @@ footer {
 <nav class="nav" id="navbar">
   <button class="nav-logo" onclick="window.scrollTo({top:0,behavior:'smooth'})">Justine Rhey</button>
   <div class="nav-links">
-    <button class="nav-link" data-section="work" onclick="scrollToSection('projects')">Work</button>
-    <button class="nav-link" data-section="skills" onclick="scrollToSection('skills')">Skills</button>
     <button class="nav-link" data-section="about" onclick="scrollToSection('about')">About</button>
+    <button class="nav-link" data-section="projects" onclick="scrollToSection('projects')">Work</button>
+    <button class="nav-link" data-section="techstack" onclick="scrollToSection('techstack')">Stack</button>
     <button class="nav-link" data-section="contact" onclick="scrollToSection('contact')">Contact</button>
   </div>
   <span class="nav-pill">Available for work</span>
@@ -411,9 +445,9 @@ footer {
   </button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <button class="mobile-link" onclick="scrollToSection('projects');toggleMobile()">Work</button>
-  <button class="mobile-link" onclick="scrollToSection('skills');toggleMobile()">Skills</button>
   <button class="mobile-link" onclick="scrollToSection('about');toggleMobile()">About</button>
+  <button class="mobile-link" onclick="scrollToSection('projects');toggleMobile()">Work</button>
+  <button class="mobile-link" onclick="scrollToSection('techstack');toggleMobile()">Stack</button>
   <button class="mobile-link" onclick="scrollToSection('contact');toggleMobile()">Contact</button>
 </div>
 
@@ -440,35 +474,12 @@ footer {
 <!-- ─── Marquee ─── -->
 <section class="marquee-section">
   <div class="marquee-track" id="marqueeTrack">
-    <!-- First set — populated by JS -->
     <div id="marqueeSet1" style="display:flex"></div>
     <div id="marqueeSet2" style="display:flex"></div>
   </div>
   <div class="marquee-track" aria-hidden="true" id="marqueeTrackClone">
     <div id="marqueeSet3" style="display:flex"></div>
     <div id="marqueeSet4" style="display:flex"></div>
-  </div>
-</section>
-
-<!-- ─── Projects ─── -->
-<section class="projects-section" id="projects">
-  <div class="section-inner">
-    <div class="projects-title scroll-reveal">
-      <h2><span class="txt-fill">Selected</span></h2>
-      <h2><span class="txt-outline">Work.</span></h2>
-    </div>
-    <div class="project-grid project-row-1" id="projectGrid1"></div>
-    <div class="project-grid project-row-2" id="projectGrid2" style="margin-top:20px"></div>
-  </div>
-</section>
-
-<!-- ─── Skills ─── -->
-<section class="skills-section" id="skills">
-  <div class="section-inner scroll-reveal">
-    <div class="skills-layout">
-      <div class="skills-label">Skills</div>
-      <div class="skills-content" id="skillsContent"></div>
-    </div>
   </div>
 </section>
 
@@ -497,6 +508,30 @@ footer {
   </div>
 </section>
 
+<!-- ─── Projects ─── -->
+<section class="projects-section" id="projects">
+  <div class="section-inner">
+    <div class="projects-title scroll-reveal">
+      <h2><span class="txt-fill">Selected</span></h2>
+      <h2><span class="txt-outline">Work.</span></h2>
+    </div>
+    <div class="project-grid project-row-1" id="projectGrid1"></div>
+    <div class="project-grid project-row-2" id="projectGrid2" style="margin-top:20px"></div>
+  </div>
+</section>
+
+<!-- ─── Skills (3D Tech Stack) ─── -->
+<section class="skills-section" id="techstack">
+  <div class="skills-canvas-wrap" id="techCanvasWrap">
+    <div class="skills-overlay">
+      <h2>
+        <span class="txt-fill">Tech</span><br>
+        <span class="txt-outline">Stack.</span>
+      </h2>
+    </div>
+  </div>
+</section>
+
 <!-- ─── Contact ─── -->
 <section class="contact-section" id="contact">
   <div class="contact-canvas-wrap" id="contactCanvasWrap">
@@ -516,6 +551,32 @@ footer {
         <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener" class="contact-social">LinkedIn</a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ─── Footer Form ─── -->
+<section class="footer-form-section" id="form">
+  <div class="section-inner">
+    <h3><span class="txt-fill">Send</span> <span class="txt-outline">a message</span></h3>
+    <form class="footer-form" id="contactForm">
+      <div class="form-group">
+        <label for="formName">Name</label>
+        <input type="text" id="formName" placeholder="Your name" required>
+      </div>
+      <div class="form-group">
+        <label for="formEmail">Email</label>
+        <input type="email" id="formEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="form-group">
+        <label for="formMessage">Message</label>
+        <textarea id="formMessage" placeholder="What would you like to say?" required></textarea>
+      </div>
+      <button type="submit" class="form-submit">
+        <span>Send Message</span>
+        <span class="arrow">→</span>
+      </button>
+      <div class="form-status" id="formStatus"></div>
+    </form>
   </div>
 </section>
 
@@ -543,7 +604,7 @@ const PROJECTS = [
     desc: 'Blockchain-notarized Electronic Health Records system built in Rust with Actix-web. Features AES-256-GCM field-level encryption, SHA-256 content hashing anchored on-chain with full version history.',
     tags: ['Rust', 'Actix-web', 'React', 'PostgreSQL', 'Stellar Soroban', 'JWT'],
     year: '2024',
-    canvasType: 'icosahedron'
+    img: 'images/ehr-blockchain/patient.jpeg'
   },
   {
     id: 'co-map',
@@ -551,7 +612,7 @@ const PROJECTS = [
     desc: 'Community-powered complaint mapping platform. Residents pin issues like potholes and broken streetlights on a map with MapLibre GL, 3D building extrusions, and gamified scoring.',
     tags: ['Django REST', 'React 19', 'MapLibre GL', 'PostgreSQL', 'PostGIS'],
     year: '2025',
-    canvasType: 'torus'
+    img: 'images/co-map/co-map.jpeg'
   },
   {
     id: 'fresh-phones-ph',
@@ -559,22 +620,21 @@ const PROJECTS = [
     desc: 'Landing page for an iPhone reseller\'s "paluwagan" installment program. Y2K-inspired glassy-blue theme with 3D cloud art, trust badges, and animated hero section.',
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4'],
     year: '2025',
-    canvasType: 'particles'
+    img: 'images/fresh-phones-ph/home.png'
   }
 ];
 
-const SKILLS = [
-  { name: 'React', pct: 85 },
-  { name: 'Three.js / WebGL', pct: 68 },
-  { name: 'TypeScript', pct: 75 },
-  { name: 'Node.js', pct: 72 },
-  { name: 'Next.js', pct: 70 },
-  { name: 'CSS / Animation', pct: 80 }
-];
-
 const MARQUEE_WORDS = ['React', 'Three.js', 'WebGL', 'TypeScript', 'Node.js', 'Next.js', 'GSAP', 'Canvas API'];
-
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
+
+const TECH_SHAPES = [
+  { name: 'React',    geo: new THREE.TorusKnotGeometry(0.55, 0.18, 48, 6), pct: 85, speed: 0.4 },
+  { name: 'Three.js', geo: new THREE.IcosahedronGeometry(0.5, 0),           pct: 68, speed: 0.5 },
+  { name: 'TypeScript', geo: new THREE.TorusGeometry(0.5, 0.18, 16, 32),    pct: 75, speed: 0.3 },
+  { name: 'Node.js',  geo: new THREE.OctahedronGeometry(0.48, 0),           pct: 72, speed: 0.6 },
+  { name: 'Next.js',  geo: new THREE.DodecahedronGeometry(0.45, 0),         pct: 70, speed: 0.35 },
+  { name: 'CSS',      geo: new THREE.SphereGeometry(0.35, 8, 6),            pct: 80, speed: 0.25 }
+];
 
 /* ═══════════════════════════════════════════════
    CURSOR
@@ -586,7 +646,7 @@ document.addEventListener('mousemove', e => { mX = e.clientX; mY = e.clientY; })
 document.addEventListener('mouseleave', () => { cursor.style.opacity = '0'; });
 document.addEventListener('mouseenter', () => { cursor.style.opacity = '1'; });
 
-document.querySelectorAll('a, button, .project-card, .skill-row, [onclick]').forEach(el => {
+document.querySelectorAll('a, button, .project-card, [onclick]').forEach(el => {
   el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
   el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
 });
@@ -610,9 +670,8 @@ function toggleMobile() {
   document.getElementById('mobileMenu').classList.toggle('open');
 }
 
-// Active nav link on scroll
 const navLinks = document.querySelectorAll('.nav-link');
-const sections = ['projects', 'skills', 'about', 'contact'];
+const sections = ['about', 'projects', 'techstack', 'contact'];
 const navObs = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -636,10 +695,9 @@ function buildMarquee() {
   const set2 = document.getElementById('marqueeSet2');
   const set3 = document.getElementById('marqueeSet3');
   const set4 = document.getElementById('marqueeSet4');
-  const words = [...MARQUEE_WORDS];
 
   function renderInto(container, startFilled) {
-    container.innerHTML = words.map((w, i) => {
+    container.innerHTML = MARQUEE_WORDS.map((w, i) => {
       const cls = (i % 2 === (startFilled ? 0 : 1)) ? 'txt-fill' : 'txt-outline';
       return `<span class="marquee-word ${cls}">${w}</span>`;
     }).join('');
@@ -659,11 +717,9 @@ const cycleEl = document.getElementById('cycleWord');
 let cycleIndex = 0;
 
 function cycleHeroText() {
-  const current = cycleEl.textContent;
   const next = CYCLE_WORDS[(cycleIndex + 1) % CYCLE_WORDS.length];
   cycleIndex = (cycleIndex + 1) % CYCLE_WORDS.length;
 
-  // Fade out
   cycleEl.style.opacity = '0';
   cycleEl.style.transform = 'translateY(-8px)';
 
@@ -676,39 +732,6 @@ function cycleHeroText() {
 setInterval(cycleHeroText, 3500);
 
 /* ═══════════════════════════════════════════════
-   SKILL BARS
-   ═══════════════════════════════════════════════ */
-function buildSkills() {
-  const container = document.getElementById('skillsContent');
-  container.innerHTML = SKILLS.map((s, i) => `
-    <div class="skill-row scroll-reveal scroll-stagger" style="--i:${i}" data-pct="${s.pct}">
-      <div class="skill-header">
-        <span class="skill-name">${s.name}</span>
-        <span class="skill-pct">${s.pct}%</span>
-      </div>
-      <div class="skill-bar-track">
-        <div class="skill-bar-fill" data-target="${s.pct}"></div>
-      </div>
-    </div>
-  `).join('');
-
-  // Animate on hover
-  document.querySelectorAll('.skill-row').forEach(row => {
-    row.addEventListener('mouseenter', () => {
-      const fill = row.querySelector('.skill-bar-fill');
-      const target = fill.dataset.target;
-      fill.style.transition = 'none';
-      fill.style.width = '0';
-      // Force reflow
-      fill.offsetHeight;
-      fill.style.transition = 'width 0.5s ease-out';
-      fill.style.width = target + '%';
-    });
-  });
-}
-buildSkills();
-
-/* ═══════════════════════════════════════════════
    SCROLL REVEAL
    ═══════════════════════════════════════════════ */
 const revealObs = new IntersectionObserver(entries => {
@@ -718,29 +741,27 @@ const revealObs = new IntersectionObserver(entries => {
     }
   });
 }, { threshold: 0.08 });
-
 document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
 
 /* ═══════════════════════════════════════════════
-   PROJECT CARDS (render + 3D)
+   PROJECT CARDS (with real images)
    ═══════════════════════════════════════════════ */
 function buildProjects() {
   const grid1 = document.getElementById('projectGrid1');
   const grid2 = document.getElementById('projectGrid2');
 
-  // First project: big card
   const p0 = PROJECTS[0];
   grid1.innerHTML = projectCardHTML(p0, 0, true);
-
-  // Next two: side by side
   grid2.innerHTML = [1, 2].map(i => projectCardHTML(PROJECTS[i], i, false)).join('');
 }
 buildProjects();
 
 function projectCardHTML(p, idx, isBig) {
   return `
-    <div class="project-card" data-index="${idx}" data-canvas="${p.canvasType}">
-      <div class="project-card-canvas ${isBig ? 'big' : ''}" id="projectCanvas${idx}"></div>
+    <div class="project-card" data-index="${idx}">
+      <div class="project-card-img ${isBig ? 'big' : ''}">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+      </div>
       <div class="project-card-body">
         <div class="project-num">00${idx + 1}</div>
         <h3 class="project-name">${p.name}</h3>
@@ -758,6 +779,37 @@ function projectCardHTML(p, idx, isBig) {
 }
 
 /* ═══════════════════════════════════════════════
+   CONTACT FORM
+   ═══════════════════════════════════════════════ */
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+contactForm.addEventListener('submit', e => {
+  e.preventDefault();
+  const name = document.getElementById('formName').value.trim();
+  const email = document.getElementById('formEmail').value.trim();
+  const message = document.getElementById('formMessage').value.trim();
+
+  if (!name || !email || !message) {
+    formStatus.textContent = 'Please fill in all fields.';
+    formStatus.className = 'form-status';
+    return;
+  }
+
+  const mailto = `mailto:justrhey.tambong@gmail.com?subject=Portfolio%20-%20${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0A--%20${encodeURIComponent(email)}`;
+
+  formStatus.textContent = 'Opening your mail client...';
+  formStatus.className = 'form-status';
+
+  window.location.href = mailto;
+  setTimeout(() => {
+    contactForm.reset();
+    formStatus.textContent = 'Message ready to send. Thanks!';
+    formStatus.className = 'form-status success';
+  }, 1000);
+});
+
+/* ═══════════════════════════════════════════════
    THREE.JS — Scene Manager
    ═══════════════════════════════════════════════ */
 class SceneManager {
@@ -768,10 +820,9 @@ class SceneManager {
   }
 
   add(renderer, scene, camera, tickFn, container) {
-    const entry = { renderer, scene, camera, tick: tickFn, container, visible: true, paused: false };
+    const entry = { renderer, scene, camera, tick: tickFn, container, visible: true };
     this.scenes.push(entry);
 
-    // IntersectionObserver for visibility
     if (container) {
       const obs = new IntersectionObserver(entries => {
         entry.visible = entries[0].isIntersecting;
@@ -841,18 +892,14 @@ function initHeroScene() {
   const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 50);
   camera.position.set(0, 0, 12);
 
-  // Lights
   const ambient = new THREE.AmbientLight(0xffffff, 0.3);
   scene.add(ambient);
-
   const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
   dirLight.position.set(5, 8, 6);
   scene.add(dirLight);
-
   const pointLight = new THREE.PointLight(0xffffff, 0.8, 20);
   scene.add(pointLight);
 
-  // Shapes
   const shapes = [];
   const configs = [
     { geo: new THREE.TorusKnotGeometry(0.6, 0.2, 64, 8), pos: [-3, 1.5, -2], rotSpeed: [0.3, 0.5, 0.1], driftSpeed: 0.15 },
@@ -866,25 +913,14 @@ function initHeroScene() {
   ];
 
   configs.forEach(cfg => {
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0xf0f0f0,
-      wireframe: false,
-      roughness: 0.3,
-      metalness: 0.1
-    });
+    const mat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.3, metalness: 0.1 });
     const mesh = new THREE.Mesh(cfg.geo, mat);
     mesh.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
-    mesh.userData = {
-      rotSpeed: cfg.rotSpeed,
-      driftSpeed: cfg.driftSpeed,
-      startY: cfg.pos[1],
-      phase: Math.random() * Math.PI * 2
-    };
+    mesh.userData = { rotSpeed: cfg.rotSpeed, driftSpeed: cfg.driftSpeed, startY: cfg.pos[1], phase: Math.random() * Math.PI * 2 };
     scene.add(mesh);
     shapes.push(mesh);
   });
 
-  // Mouse parallax
   let mouseX = 0, mouseY = 0;
   container.addEventListener('mousemove', e => {
     const rect = container.getBoundingClientRect();
@@ -892,19 +928,14 @@ function initHeroScene() {
     mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
   });
 
-  let targetCameraX = 0, targetCameraY = 0;
-
   let orbitAngle = 0;
 
   sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
-    // Shape rotation and drift
     shapes.forEach((mesh) => {
       const ud = mesh.userData;
       mesh.rotation.x += ud.rotSpeed[0] * delta;
       mesh.rotation.y += ud.rotSpeed[1] * delta;
       mesh.rotation.z += ud.rotSpeed[2] * delta;
-
-      // Drift up and reset
       mesh.position.y += ud.driftSpeed * delta;
       if (mesh.position.y > 5) {
         mesh.position.y = -4;
@@ -913,107 +944,97 @@ function initHeroScene() {
       }
     });
 
-    // Orbit point light
     orbitAngle += delta * 0.4;
     pointLight.position.x = Math.sin(orbitAngle) * 5;
     pointLight.position.z = Math.cos(orbitAngle) * 5;
     pointLight.position.y = Math.sin(orbitAngle * 0.7) * 3;
 
-    // Camera tilt follow mouse
-    targetCameraX = -mouseX * 0.8;
-    targetCameraY = -mouseY * 0.4;
-    camera.position.x += (targetCameraX - camera.position.x) * 0.04;
-    camera.position.y += (targetCameraY - camera.position.y) * 0.04;
+    camera.position.x += ((-mouseX * 0.8) - camera.position.x) * 0.04;
+    camera.position.y += ((-mouseY * 0.4) - camera.position.y) * 0.04;
     camera.lookAt(scene.position);
-
   }, container);
 }
 
 /* ═══════════════════════════════════════════════
-   PROJECT 3D SCENES
+   TECH STACK 3D SCENE
    ═══════════════════════════════════════════════ */
-let projectScenes = [];
+let techMeshes = [];
 
-function initProjectScenes() {
-  const cardEls = document.querySelectorAll('.project-card');
+function initTechScene() {
+  const container = document.getElementById('techCanvasWrap');
+  const w = container.clientWidth;
+  const h = container.clientHeight || 400;
 
-  cardEls.forEach((card, idx) => {
-    const canvasContainer = document.getElementById(`projectCanvas${idx}`);
-    if (!canvasContainer) return;
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(w, h);
+  renderer.setClearColor(0x080808, 1);
+  container.prepend(renderer.domElement);
 
-    const type = card.dataset.canvas;
-    const w = canvasContainer.clientWidth || 280;
-    const h = canvasContainer.clientHeight || 180;
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x080808, 10, 22);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(w, h);
-    renderer.setClearColor(0x080808, 1);
-    canvasContainer.appendChild(renderer.domElement);
+  const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 30);
+  camera.position.set(0, 1, 10);
+  camera.lookAt(0, 0, 0);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 20);
-    camera.position.z = 3.5;
+  const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+  scene.add(ambient);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
+  dirLight.position.set(4, 6, 5);
+  scene.add(dirLight);
+  const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
+  backLight.position.set(-4, -2, -5);
+  scene.add(backLight);
 
-    const ambient = new THREE.AmbientLight(0xffffff, 0.4);
-    scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    dirLight.position.set(3, 4, 5);
-    scene.add(dirLight);
+  // Grid layout: 3 columns × 2 rows
+  const cols = 3;
+  const spacingX = 3.0;
+  const spacingZ = 2.0;
 
-    let mesh, baseSpeed = 1;
+  TECH_SHAPES.forEach((tech, i) => {
+    const col = i % cols;
+    const row = Math.floor(i / cols);
+    const x = (col - (cols - 1) / 2) * spacingX;
+    const z = (row - 0.5) * spacingZ;
 
-    if (type === 'icosahedron') {
-      const geo = new THREE.IcosahedronGeometry(0.9, 0);
-      const wireGeo = new THREE.WireframeGeometry(geo);
-      mesh = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({ color: 0xf0f0f0 }));
-      scene.add(mesh);
-      baseSpeed = 0.5;
-    } else if (type === 'torus') {
-      const geo = new THREE.TorusKnotGeometry(0.7, 0.25, 64, 8);
-      const mat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.3, metalness: 0.1 });
-      mesh = new THREE.Mesh(geo, mat);
-      scene.add(mesh);
-      baseSpeed = 0.6;
-    } else if (type === 'particles') {
-      const count = 300;
-      const positions = new Float32Array(count * 3);
-      for (let i = 0; i < count; i++) {
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-        const r = 1.2 * Math.cbrt(Math.random());
-        positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-        positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-        positions[i * 3 + 2] = r * Math.cos(phi);
-      }
-      const ptGeo = new THREE.BufferGeometry();
-      ptGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-      const ptMat = new THREE.PointsMaterial({ color: 0xf0f0f0, size: 0.04 });
-      mesh = new THREE.Points(ptGeo, ptMat);
-      scene.add(mesh);
-      baseSpeed = 0.3;
-    }
-
-    // Hover speed boost
-    let speedMultiplier = 1;
-    card.addEventListener('mouseenter', () => { speedMultiplier = 2.5; card.classList.add('canvas-hover'); });
-    card.addEventListener('mouseleave', () => { speedMultiplier = 1; card.classList.remove('canvas-hover'); });
-
-    sceneManager.add(renderer, scene, camera, (delta) => {
-      if (mesh) {
-        mesh.rotation.x += delta * baseSpeed * speedMultiplier;
-        mesh.rotation.y += delta * baseSpeed * speedMultiplier * 0.8;
-        mesh.rotation.z += delta * baseSpeed * speedMultiplier * 0.3;
-      }
-    }, canvasContainer);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0xf0f0f0,
+      roughness: 0.3,
+      metalness: 0.1,
+      wireframe: false
+    });
+    const mesh = new THREE.Mesh(tech.geo, mat);
+    mesh.position.set(x, 0, z);
+    mesh.userData = {
+      baseY: 0,
+      phase: Math.random() * Math.PI * 2,
+      speed: tech.speed,
+      name: tech.name,
+      pct: tech.pct
+    };
+    scene.add(mesh);
+    techMeshes.push(mesh);
   });
+
+  sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
+    techMeshes.forEach((mesh, i) => {
+      const ud = mesh.userData;
+      mesh.rotation.x += delta * ud.speed * 0.6;
+      mesh.rotation.y += delta * ud.speed * 0.8;
+      mesh.rotation.z += delta * ud.speed * 0.2;
+      // Gentle bobbing
+      mesh.position.y = Math.sin(elapsed * 0.6 + ud.phase) * 0.2;
+      // Subtle scale pulse
+      const pulse = 1 + Math.sin(elapsed * 0.5 + ud.phase) * 0.04;
+      mesh.scale.set(pulse, pulse, pulse);
+    });
+  }, container);
 }
 
 /* ═══════════════════════════════════════════════
    CONTACT 3D SCENE
    ═══════════════════════════════════════════════ */
-let contactSceneEntry = null;
 let contactScale = 0.1;
-let contactTargetScale = 1.0;
 let contactHasAnimated = false;
 
 function initContactScene() {
@@ -1036,18 +1057,23 @@ function initContactScene() {
   dirLight.position.set(3, 4, 5);
   scene.add(dirLight);
 
-  // Large wireframe sphere
   const sphereGeo = new THREE.SphereGeometry(2.2, 20, 20);
   const wireGeo = new THREE.WireframeGeometry(sphereGeo);
   const sphere = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({ color: 0x1c1c1c }));
   sphere.scale.set(0.1, 0.1, 0.1);
   scene.add(sphere);
 
-  // Scroll into view → scale from 0.1 to 1.0 over 800ms
+  // Inner glow — smaller concentric wireframe sphere
+  const innerGeo = new THREE.SphereGeometry(1.5, 12, 12);
+  const innerWire = new THREE.WireframeGeometry(innerGeo);
+  const innerSphere = new THREE.LineSegments(innerWire, new THREE.LineBasicMaterial({ color: 0x333333 }));
+  innerSphere.scale.set(0.1, 0.1, 0.1);
+  innerSphere.position.z = -0.3;
+  scene.add(innerSphere);
+
   const obs = new IntersectionObserver(entries => {
     if (entries[0].isIntersecting && !contactHasAnimated) {
       contactHasAnimated = true;
-      contactTargetScale = 1.0;
       const startTime = performance.now();
       const startScale = 0.1;
 
@@ -1059,6 +1085,7 @@ function initContactScene() {
         const eased = easeOutCubic(t);
         const s = startScale + (1.0 - startScale) * eased;
         sphere.scale.set(s, s, s);
+        innerSphere.scale.set(s, s, s);
         contactScale = s;
         if (t < 1) requestAnimationFrame(animateScale);
       }
@@ -1070,12 +1097,14 @@ function initContactScene() {
   sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
     sphere.rotation.x += delta * 0.15;
     sphere.rotation.y += delta * 0.25;
-    sphere.rotation.z += delta * 0.05;
+    innerSphere.rotation.x += delta * -0.2;
+    innerSphere.rotation.y += delta * 0.35;
 
-    // After animation, slight pulse
     if (contactHasAnimated && contactScale >= 0.99) {
       const pulse = 1 + Math.sin(elapsed * 0.6) * 0.02;
       sphere.scale.set(pulse, pulse, pulse);
+      const innerPulse = 1 + Math.sin(elapsed * 0.6 + 1) * 0.02;
+      innerSphere.scale.set(innerPulse, innerPulse, innerPulse);
     }
   }, container);
 }
@@ -1096,7 +1125,6 @@ function handleResize() {
     entry.renderer.setSize(w, h);
   });
 }
-
 window.addEventListener('resize', handleResize);
 
 /* ═══════════════════════════════════════════════
@@ -1104,13 +1132,12 @@ window.addEventListener('resize', handleResize);
    ═══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initHeroScene();
-  initProjectScenes();
+  initTechScene();
   initContactScene();
   sceneManager.start();
   handleResize();
 });
 
-// Dispose on page unload
 window.addEventListener('beforeunload', () => {
   sceneManager.dispose();
 });
