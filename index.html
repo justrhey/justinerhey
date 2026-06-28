@@ -166,30 +166,6 @@ section { padding: 100px 40px; }
 }
 
 /* ═══════════════════════════════
-   MARQUEE
-   ═══════════════════════════════ */
-.marquee-section { padding: 40px 0; overflow: hidden; border-top: 1px solid #1c1c1c; border-bottom: 1px solid #1c1c1c; }
-.marquee-track {
-  display: flex;
-  white-space: nowrap;
-  animation: marquee-scroll 20s linear infinite;
-  width: fit-content;
-}
-.marquee-section:hover .marquee-track { animation-play-state: paused; }
-@keyframes marquee-scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-.marquee-word {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
-  padding: 0 24px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  flex-shrink: 0;
-}
-
-/* ═══════════════════════════════
    ABOUT
    ═══════════════════════════════ */
 .about-section { padding-top: 80px; }
@@ -276,7 +252,7 @@ section { padding: 100px 40px; }
    SKILLS (3D Tech Stack)
    ═══════════════════════════════ */
 .skills-section { position: relative; overflow: hidden; }
-.skills-canvas-wrap { width: 100%; height: 400px; position: relative; }
+.skills-canvas-wrap { width: 100%; height: 460px; position: relative; }
 .skills-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
 .skills-overlay {
   position: absolute;
@@ -420,7 +396,7 @@ footer {
    ═══════════════════════════════ */
 @media (max-width: 480px) {
   .hero-canvas-wrap { height: 260px; }
-  .skills-canvas-wrap { height: 300px; }
+  .skills-canvas-wrap { height: 360px; }
   .contact-canvas-wrap { height: 160px; }
 }
 </style>
@@ -471,18 +447,6 @@ footer {
   </div>
 </section>
 
-<!-- ─── Marquee ─── -->
-<section class="marquee-section">
-  <div class="marquee-track" id="marqueeTrack">
-    <div id="marqueeSet1" style="display:flex"></div>
-    <div id="marqueeSet2" style="display:flex"></div>
-  </div>
-  <div class="marquee-track" aria-hidden="true" id="marqueeTrackClone">
-    <div id="marqueeSet3" style="display:flex"></div>
-    <div id="marqueeSet4" style="display:flex"></div>
-  </div>
-</section>
-
 <!-- ─── About ─── -->
 <section class="about-section" id="about">
   <div class="section-inner">
@@ -499,7 +463,7 @@ footer {
         </div>
         <div class="about-stats">
           <div class="stat-box"><div class="stat-num">06</div><div class="stat-label">Projects Shipped</div></div>
-          <div class="stat-box"><div class="stat-num">08</div><div class="stat-label">Technologies</div></div>
+          <div class="stat-box"><div class="stat-num">12</div><div class="stat-label">Skill Areas</div></div>
           <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Skill Areas</div></div>
           <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Coffee Consumed</div></div>
         </div>
@@ -650,16 +614,21 @@ const PROJECTS = [
   }
 ];
 
-const MARQUEE_WORDS = ['Backend', 'Frontend', 'Database', 'AI/ML', 'DevOps', 'Linux', 'Blockchain', 'Automation'];
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
 
 const TECH_SHAPES = [
-  { name: 'Backend',   geo: new THREE.TorusKnotGeometry(0.55, 0.18, 48, 6), speed: 0.4 },
-  { name: 'Frontend',  geo: new THREE.IcosahedronGeometry(0.5, 0),           speed: 0.5 },
-  { name: 'Database',  geo: new THREE.TorusGeometry(0.5, 0.18, 16, 32),     speed: 0.3 },
-  { name: 'AI / ML',   geo: new THREE.OctahedronGeometry(0.48, 0),           speed: 0.6 },
-  { name: 'DevOps',    geo: new THREE.DodecahedronGeometry(0.45, 0),         speed: 0.35 },
-  { name: 'Linux',     geo: new THREE.SphereGeometry(0.35, 8, 6),            speed: 0.25 }
+  { name: 'Backend',     geo: new THREE.TorusKnotGeometry(0.48, 0.15, 40, 6),   speed: 0.4 },
+  { name: 'Frontend',    geo: new THREE.IcosahedronGeometry(0.42, 0),            speed: 0.5 },
+  { name: 'Database',    geo: new THREE.TorusGeometry(0.44, 0.16, 14, 28),      speed: 0.3 },
+  { name: 'AI / ML',     geo: new THREE.OctahedronGeometry(0.42, 0),            speed: 0.6 },
+  { name: 'DevOps',      geo: new THREE.DodecahedronGeometry(0.4, 0),           speed: 0.35 },
+  { name: 'Linux',       geo: new THREE.SphereGeometry(0.32, 8, 6),             speed: 0.25 },
+  { name: 'Blockchain',  geo: new THREE.TorusKnotGeometry(0.4, 0.12, 32, 4),    speed: 0.45 },
+  { name: 'Automation',  geo: new THREE.ConeGeometry(0.4, 0.55, 8),             speed: 0.55 },
+  { name: 'Security',    geo: new THREE.IcosahedronGeometry(0.38, 1),           speed: 0.3 },
+  { name: 'Cloud',       geo: new THREE.CylinderGeometry(0.3, 0.4, 0.5, 8),     speed: 0.38 },
+  { name: 'API Design',  geo: new THREE.TorusGeometry(0.38, 0.12, 10, 24),      speed: 0.48 },
+  { name: 'Testing',     geo: new THREE.TetrahedronGeometry(0.45, 0),           speed: 0.42 }
 ];
 
 /* ═══════════════════════════════════════════════
@@ -716,26 +685,6 @@ sections.forEach(id => {
 /* ═══════════════════════════════════════════════
    MARQUEE
    ═══════════════════════════════════════════════ */
-function buildMarquee() {
-  const set1 = document.getElementById('marqueeSet1');
-  const set2 = document.getElementById('marqueeSet2');
-  const set3 = document.getElementById('marqueeSet3');
-  const set4 = document.getElementById('marqueeSet4');
-
-  function renderInto(container, startFilled) {
-    container.innerHTML = MARQUEE_WORDS.map((w, i) => {
-      const cls = (i % 2 === (startFilled ? 0 : 1)) ? 'txt-fill' : 'txt-outline';
-      return `<span class="marquee-word ${cls}">${w}</span>`;
-    }).join('');
-  }
-
-  renderInto(set1, true);
-  renderInto(set2, false);
-  renderInto(set3, true);
-  renderInto(set4, false);
-}
-buildMarquee();
-
 /* ═══════════════════════════════════════════════
    HERO TEXT CYCLE
    ═══════════════════════════════════════════════ */
@@ -1053,7 +1002,7 @@ function initTechScene() {
 
   TECH_SHAPES.forEach((tech, i) => {
     const angleOffset = (i / TECH_SHAPES.length) * Math.PI * 2;
-    const verticalOffset = (i - (TECH_SHAPES.length - 1) / 2) * 0.6;
+    const verticalOffset = (i - (TECH_SHAPES.length - 1) / 2) * 0.35;
 
     const mat = new THREE.MeshStandardMaterial({
       color: 0xf0f0f0,
