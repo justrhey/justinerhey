@@ -694,62 +694,6 @@ section {
   color: var(--text-muted);
 }
 
-/* Desktop nav buttons */
-.nav-btn {
-  position: relative;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  padding: 6px 14px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  transition: all 0.2s ease;
-}
-
-.nav-btn:hover {
-  background: rgba(255,255,255,0.04);
-  color: var(--text-secondary);
-}
-
-.nav-btn-active {
-  color: var(--accent) !important;
-  background: rgba(94,106,210,0.08) !important;
-}
-
-.nav-btn-text {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  transition: transform 0.2s ease;
-}
-
-.nav-btn:hover .nav-btn-text {
-  transform: translateY(-1px);
-}
-
-.nav-btn-active .nav-btn-text {
-  transform: translateY(0) !important;
-}
-
-.nav-arrow {
-  color: var(--accent-2);
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.nav-indicator {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 2px;
-  border-radius: 1px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-}
-
 /* Hamburger */
 .hamburger {
   background: none;
@@ -1053,6 +997,63 @@ section {
 .desktop-nav { display: flex; align-items: center; gap: 4px; }
 .hamburger { display: none !important; }
 
+/* ─── Pill nav ─── */
+.nav-pill {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-light);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.nav-btn {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 7px 16px;
+  border-radius: 999px; /* pill inner buttons */
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  color: var(--text-primary);
+}
+
+.nav-btn-active {
+  background: var(--accent-dim) !important;
+  color: var(--accent) !important;
+}
+
+.nav-btn-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.nav-arrow {
+  color: var(--accent-2);
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.nav-indicator {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--accent-dim);
+}
+
 /* ─── Mobile ─── */
 @media (max-width: 768px) {
   section { padding: 72px 0; }
@@ -1062,7 +1063,7 @@ section {
   .bento-grid { grid-template-columns: 1fr; }
   .bento-wide { grid-column: 1; }
   .bento-tall { grid-row: auto; }
-  .desktop-nav { display: none !important; }
+  .nav-pill { display: none !important; }
   .hamburger { display: block !important; }
 }
 

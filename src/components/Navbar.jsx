@@ -60,8 +60,8 @@ export default function Navbar() {
           <span className="navbar-logo-suffix">.dev</span>
         </button>
 
-        {/* Desktop nav */}
-        <nav className="desktop-nav">
+        {/* Desktop nav pill */}
+        <nav className="nav-pill">
           {sections.map((s) => (
             <NavBtn key={s} s={s} />
           ))}

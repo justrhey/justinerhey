@@ -4,27 +4,28 @@ export function useScrollSpy(sectionIds, offset = 100) {
   const [activeId, setActiveId] = useState(sectionIds[0])
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        if (visible.length > 0) {
-          setActiveId(visible[0].target.id)
+    const handleScroll = () => {
+      let current = sectionIds[0]
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id)
+        if (!el) continue
+        const rect = el.getBoundingClientRect()
+
+        // Section is active when its top has passed the navbar offset
+        // or is very close to it. Walk top-to-bottom so the last
+        // section whose top is at/above the threshold wins.
+        if (rect.top <= offset + 2) {
+          current = id
         }
-      },
-      {
-        rootMargin: `-${offset}px 0px -40% 0px`,
-        threshold: 0,
       }
-    )
 
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
+      setActiveId(current)
+    }
 
-    return () => observer.disconnect()
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [sectionIds, offset])
 
   return activeId
