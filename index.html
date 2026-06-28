@@ -498,8 +498,8 @@ footer {
           <p>Currently at TambayanPH, shipping AI-powered business solutions with n8n and Claude Code. I work across the stack: Java/Spring Boot on the backend, React on the frontend, Linux/CLI in between.</p>
         </div>
         <div class="about-stats">
-          <div class="stat-box"><div class="stat-num">07</div><div class="stat-label">Projects Shipped</div></div>
-          <div class="stat-box"><div class="stat-num">06</div><div class="stat-label">Technologies</div></div>
+          <div class="stat-box"><div class="stat-num">06</div><div class="stat-label">Projects Shipped</div></div>
+          <div class="stat-box"><div class="stat-num">08</div><div class="stat-label">Technologies</div></div>
           <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">Skill Areas</div></div>
           <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Coffee Consumed</div></div>
         </div>
@@ -517,6 +517,8 @@ footer {
     </div>
     <div class="project-grid project-row-1" id="projectGrid1"></div>
     <div class="project-grid project-row-2" id="projectGrid2" style="margin-top:20px"></div>
+    <div class="project-grid project-row-1" id="projectGrid3" style="margin-top:20px"></div>
+    <div class="project-grid project-row-2" id="projectGrid4" style="margin-top:20px"></div>
   </div>
 </section>
 
@@ -621,6 +623,30 @@ const PROJECTS = [
     tags: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4'],
     year: '2025',
     img: 'images/fresh-phones-ph/home.png'
+  },
+  {
+    id: 'dmarc',
+    name: 'DMARC Dashboard',
+    desc: 'Email authentication monitoring dashboard that aggregates and visualizes DMARC, SPF, and DKIM reports. Helps domain owners detect spoofing and improve email deliverability.',
+    tags: ['Django', 'Python', 'PostgreSQL', 'Chart.js', 'Linux'],
+    year: '2024',
+    img: 'images/dmarc/home-dmarc.jpeg'
+  },
+  {
+    id: 'cassie',
+    name: 'Cassie',
+    desc: 'Music discovery and streaming app with curated playlists, artist albums, and a Top 50 chart. Features album art browsing, playlist management, and seamless audio playback.',
+    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Spotify API'],
+    year: '2024',
+    img: 'images/cassie/home.jpeg'
+  },
+  {
+    id: 'ticketing-system',
+    name: 'Ticketing System',
+    desc: 'Full-featured support ticket management system with role-based access, ticket lifecycle workflows, priority queues, attachment handling, and real-time status updates.',
+    tags: ['Java', 'Spring Boot', 'React', 'PostgreSQL', 'JWT'],
+    year: '2023',
+    img: 'images/ticketing-system/screenshot1.png'
   }
 ];
 
@@ -747,12 +773,21 @@ document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el))
    PROJECT CARDS (with real images)
    ═══════════════════════════════════════════════ */
 function buildProjects() {
-  const grid1 = document.getElementById('projectGrid1');
-  const grid2 = document.getElementById('projectGrid2');
+  const grids = [
+    document.getElementById('projectGrid1'),
+    document.getElementById('projectGrid2'),
+    document.getElementById('projectGrid3'),
+    document.getElementById('projectGrid4')
+  ];
 
-  const p0 = PROJECTS[0];
-  grid1.innerHTML = projectCardHTML(p0, 0, true);
-  grid2.innerHTML = [1, 2].map(i => projectCardHTML(PROJECTS[i], i, false)).join('');
+  // Row 1: big card
+  grids[0].innerHTML = projectCardHTML(PROJECTS[0], 0, true);
+  // Row 2: 2 standard
+  grids[1].innerHTML = projectCardHTML(PROJECTS[1], 1, false) + projectCardHTML(PROJECTS[2], 2, false);
+  // Row 3: big card
+  grids[2].innerHTML = projectCardHTML(PROJECTS[3], 3, true);
+  // Row 4: 2 standard
+  grids[3].innerHTML = projectCardHTML(PROJECTS[4], 4, false) + projectCardHTML(PROJECTS[5], 5, false);
 }
 buildProjects();
 
