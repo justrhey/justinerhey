@@ -624,16 +624,16 @@ const PROJECTS = [
   }
 ];
 
-const MARQUEE_WORDS = ['React', 'Three.js', 'WebGL', 'TypeScript', 'Node.js', 'Next.js', 'GSAP', 'Canvas API'];
+const MARQUEE_WORDS = ['Java', 'React', 'Rust', 'Python', 'PostgreSQL', 'Docker', 'TypeScript', 'Linux'];
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
 
 const TECH_SHAPES = [
-  { name: 'React',    geo: new THREE.TorusKnotGeometry(0.55, 0.18, 48, 6), pct: 85, speed: 0.4 },
-  { name: 'Three.js', geo: new THREE.IcosahedronGeometry(0.5, 0),           pct: 68, speed: 0.5 },
-  { name: 'TypeScript', geo: new THREE.TorusGeometry(0.5, 0.18, 16, 32),    pct: 75, speed: 0.3 },
-  { name: 'Node.js',  geo: new THREE.OctahedronGeometry(0.48, 0),           pct: 72, speed: 0.6 },
-  { name: 'Next.js',  geo: new THREE.DodecahedronGeometry(0.45, 0),         pct: 70, speed: 0.35 },
-  { name: 'CSS',      geo: new THREE.SphereGeometry(0.35, 8, 6),            pct: 80, speed: 0.25 }
+  { name: 'Java',     geo: new THREE.TorusKnotGeometry(0.55, 0.18, 48, 6), speed: 0.4, bobbing: 0.25 },
+  { name: 'React',    geo: new THREE.IcosahedronGeometry(0.5, 0),           speed: 0.5, bobbing: 0.20 },
+  { name: 'Rust',     geo: new THREE.TorusGeometry(0.5, 0.18, 16, 32),     speed: 0.3, bobbing: 0.22 },
+  { name: 'Python',   geo: new THREE.OctahedronGeometry(0.48, 0),           speed: 0.6, bobbing: 0.18 },
+  { name: 'PostgreSQL', geo: new THREE.DodecahedronGeometry(0.45, 0),       speed: 0.35, bobbing: 0.28 },
+  { name: 'Docker',   geo: new THREE.SphereGeometry(0.35, 8, 6),            speed: 0.25, bobbing: 0.30 }
 ];
 
 /* ═══════════════════════════════════════════════
@@ -1009,8 +1009,8 @@ function initTechScene() {
       baseY: 0,
       phase: Math.random() * Math.PI * 2,
       speed: tech.speed,
-      name: tech.name,
-      pct: tech.pct
+      bobbing: tech.bobbing,
+      name: tech.name
     };
     scene.add(mesh);
     techMeshes.push(mesh);
@@ -1023,7 +1023,7 @@ function initTechScene() {
       mesh.rotation.y += delta * ud.speed * 0.8;
       mesh.rotation.z += delta * ud.speed * 0.2;
       // Gentle bobbing
-      mesh.position.y = Math.sin(elapsed * 0.6 + ud.phase) * 0.2;
+      mesh.position.y = Math.sin(elapsed * 0.6 + ud.phase) * ud.bobbing;
       // Subtle scale pulse
       const pulse = 1 + Math.sin(elapsed * 0.5 + ud.phase) * 0.04;
       mesh.scale.set(pulse, pulse, pulse);
