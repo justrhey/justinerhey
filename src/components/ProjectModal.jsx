@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'motion/react'
 import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 
 const styles = {
@@ -175,9 +176,17 @@ export default function ProjectModal({ project, onClose }) {
   }
 
   return (
-    <div style={styles.backdrop} onClick={onClose}>
-      <div
-        className="modal-enter"
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      style={styles.backdrop} onClick={onClose}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.93, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.93, y: 20 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
         style={styles.modal}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
@@ -283,7 +292,7 @@ export default function ProjectModal({ project, onClose }) {
             )}
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }

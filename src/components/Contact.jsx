@@ -111,15 +111,16 @@ export default function Contact() {
   return (
     <SectionWrapper id="contact">
       <AnimateOnScroll direction="up">
-        <p className="section-label">Contact</p>
+        <p className="section-label">contact</p>
         <h2 className="section-title">Let's Work Together</h2>
       </AnimateOnScroll>
 
       <div className="grid-2">
         <AnimateOnScroll direction="left">
           <p style={styles.intro}>
-            I'm ready to build and ship. If you're hiring a junior developer
-            who delivers — Java, Spring Boot, Android, or backend — let's talk.
+            I'm always open to interesting work — whether it's a full-stack role,
+            AI automation project, or something that needs a backend engineer who can
+            figure things out from scratch. Let's talk.
           </p>
           <div style={styles.links}>
             <a href="mailto:justrhey.tambong@gmail.com" className="contact-link cursor-target">

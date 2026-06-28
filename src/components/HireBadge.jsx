@@ -10,22 +10,23 @@ export function HireBadge() {
       style={{
         position: 'fixed', bottom: 24, right: 24, zIndex: 40,
         display: 'none', alignItems: 'center', gap: 8,
-        padding: '6px 14px', border: '1px solid #333',
-        background: 'rgba(10,10,10,0.8)', borderRadius: 999,
+        padding: '7px 14px', border: '1px solid var(--accent-dim)',
+        background: 'rgba(14,18,23,0.85)', borderRadius: 999,
         backdropFilter: 'blur(8px)', transition: 'border-color 0.2s',
       }}
       className="hire-badge"
-      onMouseEnter={(e) => e.currentTarget.style.borderColor = '#555'}
-      onMouseLeave={(e) => e.currentTarget.style.borderColor = '#333'}
+      onMouseEnter={(e) => e.currentTarget.style.borderColor = 'var(--accent)'}
+      onMouseLeave={(e) => e.currentTarget.style.borderColor = 'var(--accent-dim)'}
     >
       <span
         style={{
-          width: 6, height: 6, borderRadius: '50%', background: '#fff',
+          width: 7, height: 7, borderRadius: '50%', background: 'var(--accent)',
+          boxShadow: '0 0 8px var(--accent-glow)',
           animation: 'pulse 2s ease-in-out infinite',
         }}
         aria-hidden="true"
       />
-      <span style={{ color: '#888', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
+      <span style={{ color: 'var(--accent)', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
         Available
       </span>
 
