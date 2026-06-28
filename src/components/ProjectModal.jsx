@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'motion/react'
-import { CaretLeft, CaretRight } from '@phosphor-icons/react'
+import { CaretLeft, CaretRight, X, ArrowUpRight } from '@phosphor-icons/react'
 
 const styles = {
   backdrop: {
@@ -245,10 +245,11 @@ export default function ProjectModal({ project, onClose }) {
           <button
             style={styles.close}
             onClick={onClose}
+            aria-label="Close modal"
             onMouseEnter={(e) => { e.target.style.color = '#fff'; e.target.style.borderColor = '#666' }}
             onMouseLeave={(e) => { e.target.style.color = '#bbb'; e.target.style.borderColor = '#333' }}
           >
-            ✕
+            <X size={16} weight="bold" />
           </button>
 
         <div style={styles.body}>
@@ -275,7 +276,8 @@ export default function ProjectModal({ project, onClose }) {
                 onMouseEnter={(e) => { e.target.style.borderColor = '#777'; e.target.style.color = '#fff' }}
                 onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#bbb' }}
               >
-                GitHub →
+                <ArrowUpRight size={16} weight="bold" />
+                GitHub
               </a>
             )}
             {project.demoUrl && (
@@ -285,9 +287,10 @@ export default function ProjectModal({ project, onClose }) {
                 rel="noopener noreferrer"
                 style={{ ...styles.linkBtn, borderColor: '#555' }}
                 onMouseEnter={(e) => { e.target.style.borderColor = '#fff'; e.target.style.color = '#fff' }}
-                onMouseLeave={(e) => { e.target.style.borderColor = '#555'; e.target.style.color = '#bbb' }}
+                onMouseLeave={(e) => { e.target.style.color = '#bbb' }}
               >
-                Live Demo →
+                <ArrowUpRight size={16} weight="bold" />
+                Live Demo
               </a>
             )}
           </div>

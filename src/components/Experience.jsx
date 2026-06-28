@@ -129,9 +129,11 @@ function TimelineItem({ exp, index }) {
                 }}
               >
                 <span style={{
-                  color: 'var(--accent-2)', marginTop: 4, flexShrink: 0,
-                  fontSize: '0.65rem',
-                }}>▹</span>
+                  display: 'inline-block',
+                  width: 5, height: 5, borderRadius: '50%',
+                  background: 'var(--accent-2)', flexShrink: 0,
+                  marginTop: 9, opacity: 0.7,
+                }} />
                 {h}
               </motion.li>
             ))}

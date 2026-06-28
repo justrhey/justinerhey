@@ -111,7 +111,6 @@ export default function Contact() {
   return (
     <SectionWrapper id="contact">
       <AnimateOnScroll direction="up">
-        <p className="section-label">contact</p>
         <h2 className="section-title">Let's Work Together</h2>
       </AnimateOnScroll>
 

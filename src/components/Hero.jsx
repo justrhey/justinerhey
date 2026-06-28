@@ -258,19 +258,9 @@ export default function Hero() {
               <span className="text-gradient">{personal.name.split(' ').pop()}</span>
             </motion.h1>
 
-            {/* Tagline with icon */}
+            {/* Tagline + subtext merged into one subtext element */}
             <motion.p variants={itemVariants} style={{
-              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-              color: 'var(--text-secondary)',
-              marginBottom: 8,
-              fontWeight: 500,
-            }}>
-              <span style={{ color: 'var(--accent)' }}>✦</span> {personal.tagline}
-            </motion.p>
-
-            {/* Subtitle */}
-            <motion.p variants={itemVariants} style={{
-              fontSize: '0.92rem',
+              fontSize: 'clamp(0.92rem, 1.5vw, 1.05rem)',
               color: 'var(--text-muted)',
               maxWidth: 520,
               lineHeight: 1.7,
@@ -278,7 +268,8 @@ export default function Hero() {
               marginLeft: isMobile ? 'auto' : undefined,
               marginRight: isMobile ? 'auto' : undefined,
             }}>
-              {personal.subtitle}
+              <span style={{ color: 'var(--accent-2)', fontFamily: 'var(--font-mono)', fontSize: '0.78rem' }}>&gt;</span>{' '}
+              {personal.tagline}. {personal.subtitle}
             </motion.p>
 
             {/* CTAs */}

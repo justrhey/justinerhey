@@ -38,7 +38,6 @@ export default function Projects() {
   return (
     <SectionWrapper id="projects">
       <AnimateOnScroll direction="up">
-        <p className="section-label">projects</p>
         <h2 className="section-title">Things I've Built</h2>
       </AnimateOnScroll>
 

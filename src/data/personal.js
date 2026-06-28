@@ -1,7 +1,7 @@
 export const personal = {
   name: 'Justine Rhey M. Tambong',
-  tagline: 'Backend Developer · AI Full-Stack Engineer',
-  subtitle: 'I build production-grade backend systems, AI automation tools, and full-stack applications. Ships real client work — not just tutorials.',
+  tagline: 'Backend Developer & AI Full-Stack Engineer',
+  subtitle: 'Builds production-grade backend systems, AI automation, and full-stack applications. Ships real work.',
   resumePath: './resume.pdf',
   calLink: null,
   availability: true,

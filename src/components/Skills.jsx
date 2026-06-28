@@ -157,7 +157,6 @@ export default function Skills() {
   return (
     <SectionWrapper id="skills">
       <AnimateOnScroll direction="up">
-        <p className="section-label">skills</p>
         <h2 className="section-title">Tech Stack</h2>
       </AnimateOnScroll>
 
