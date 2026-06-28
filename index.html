@@ -616,19 +616,9 @@ const PROJECTS = [
 
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
 
-const TECH_SHAPES = [
-  { name: 'Backend',     geo: new THREE.TorusKnotGeometry(0.48, 0.15, 40, 6),   speed: 0.4 },
-  { name: 'Frontend',    geo: new THREE.IcosahedronGeometry(0.42, 0),            speed: 0.5 },
-  { name: 'Database',    geo: new THREE.TorusGeometry(0.44, 0.16, 14, 28),      speed: 0.3 },
-  { name: 'AI / ML',     geo: new THREE.OctahedronGeometry(0.42, 0),            speed: 0.6 },
-  { name: 'DevOps',      geo: new THREE.DodecahedronGeometry(0.4, 0),           speed: 0.35 },
-  { name: 'Linux',       geo: new THREE.SphereGeometry(0.32, 8, 6),             speed: 0.25 },
-  { name: 'Blockchain',  geo: new THREE.TorusKnotGeometry(0.4, 0.12, 32, 4),    speed: 0.45 },
-  { name: 'Automation',  geo: new THREE.ConeGeometry(0.4, 0.55, 8),             speed: 0.55 },
-  { name: 'Security',    geo: new THREE.IcosahedronGeometry(0.38, 1),           speed: 0.3 },
-  { name: 'Cloud',       geo: new THREE.CylinderGeometry(0.3, 0.4, 0.5, 8),     speed: 0.38 },
-  { name: 'API Design',  geo: new THREE.TorusGeometry(0.38, 0.12, 10, 24),      speed: 0.48 },
-  { name: 'Testing',     geo: new THREE.TetrahedronGeometry(0.45, 0),           speed: 0.42 }
+const TECH_NAMES = [
+  'Java', 'React', 'Rust', 'Python', 'PostgreSQL', 'Docker',
+  'Spring Boot', 'Next.js', 'TypeScript', 'Django', 'Linux', 'Three.js'
 ];
 
 /* ═══════════════════════════════════════════════
@@ -997,37 +987,64 @@ function initTechScene() {
   makeRing(3.2, 48, -0.5, 0.6, 0x333333);
   makeRing(3.2, 48, 0.8, -0.3, 0x222222);
 
-  // === Orbiting tech objects ===
-  const orbitRadius = 3.8;
+  // === Orbiting text sprites ===
+  const orbitRadius = 4.0;
 
-  TECH_SHAPES.forEach((tech, i) => {
-    const angleOffset = (i / TECH_SHAPES.length) * Math.PI * 2;
-    const verticalOffset = (i - (TECH_SHAPES.length - 1) / 2) * 0.35;
+  function makeTextSprite(text) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 512;
+    canvas.height = 128;
 
-    const mat = new THREE.MeshStandardMaterial({
-      color: 0xf0f0f0,
-      roughness: 0.25,
-      metalness: 0.15,
-      wireframe: false
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.font = 'Bold 48px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Outline stroke
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 3;
+    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
+
+    // Fill
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+
+    const mat = new THREE.SpriteMaterial({
+      map: texture,
+      transparent: true,
+      depthTest: true,
+      depthWrite: false
     });
-    const mesh = new THREE.Mesh(tech.geo, mat);
-    mesh.position.set(
+    const sprite = new THREE.Sprite(mat);
+    // Scale sprite so text is sized relative to scene
+    sprite.scale.set(3.0, 0.75, 1);
+    return sprite;
+  }
+
+  TECH_NAMES.forEach((name, i) => {
+    const angleOffset = (i / TECH_NAMES.length) * Math.PI * 2;
+    const verticalOffset = (i - (TECH_NAMES.length - 1) / 2) * 0.35;
+
+    const sprite = makeTextSprite(name);
+    sprite.position.set(
       Math.cos(angleOffset) * orbitRadius,
       verticalOffset,
       Math.sin(angleOffset) * orbitRadius
     );
-    mesh.userData = {
+    sprite.userData = {
       angleOffset,
       orbitRadius,
       verticalOffset,
-      speed: tech.speed,
-      orbitSpeed: 0.15 + tech.speed * 0.2,
-      rotSpeed: tech.speed * 0.6,
-      name: tech.name,
+      orbitSpeed: 0.12 + (i % 6) * 0.04,
       phase: Math.random() * Math.PI * 2
     };
-    scene.add(mesh);
-    techOrbiters.push(mesh);
+    scene.add(sprite);
+    techOrbiters.push(sprite);
   });
 
   // === Mouse interaction ===
@@ -1045,21 +1062,14 @@ function initTechScene() {
     innerGlobe.rotation.x -= delta * 0.05;
     innerGlobe.rotation.y += delta * 0.08;
 
-    // Orbit tech objects around the globe
-    techOrbiters.forEach((mesh) => {
-      const ud = mesh.userData;
+    // Orbit text sprites around the globe
+    techOrbiters.forEach((sprite) => {
+      const ud = sprite.userData;
       ud.angleOffset += delta * ud.orbitSpeed;
 
-      mesh.position.x = Math.cos(ud.angleOffset) * ud.orbitRadius;
-      mesh.position.z = Math.sin(ud.angleOffset) * ud.orbitRadius;
-      mesh.position.y = ud.verticalOffset + Math.sin(elapsed * 0.5 + ud.phase) * 0.3;
-
-      mesh.rotation.x += delta * ud.rotSpeed;
-      mesh.rotation.y += delta * ud.rotSpeed * 0.7;
-      mesh.rotation.z += delta * ud.rotSpeed * 0.2;
-
-      const pulse = 1 + Math.sin(elapsed * 0.8 + ud.phase) * 0.05;
-      mesh.scale.set(pulse, pulse, pulse);
+      sprite.position.x = Math.cos(ud.angleOffset) * ud.orbitRadius;
+      sprite.position.z = Math.sin(ud.angleOffset) * ud.orbitRadius;
+      sprite.position.y = ud.verticalOffset + Math.sin(elapsed * 0.5 + ud.phase) * 0.3;
     });
 
     // Mouse-follow rotation of the whole scene
