@@ -249,82 +249,73 @@ section { padding: 100px 40px; }
 .project-card:hover .project-arrow { transform: translate(4px, -4px); color: #f0f0f0; }
 
 /* ═══════════════════════════════
-   SKILLS (3D Tech Stack)
+   SKILLS
    ═══════════════════════════════ */
-.skills-section { position: relative; overflow: hidden; }
-.skills-canvas-wrap { width: 100%; height: 460px; position: relative; }
-.skills-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
-.skills-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-.skills-overlay h2 {
+.skills-section { padding: 80px 40px; border-top: 1px solid #1c1c1c; }
+.skills-title { margin-bottom: 48px; }
+.skills-title h2 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(48px, 8vw, 80px);
   text-transform: uppercase;
-  text-align: center;
   line-height: 0.85;
   margin: 0;
 }
+.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.skill-cat { break-inside: avoid; }
+.skill-cat h4 {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: #f0f0f0; margin: 0 0 12px; padding-bottom: 8px;
+  border-bottom: 1px solid #1c1c1c;
+}
+.skill-cat p {
+  font-size: 13px; line-height: 1.75; color: #444; margin: 0;
+}
+@media (max-width: 640px) {
+  .skills-grid { grid-template-columns: 1fr; gap: 28px; }
+  .skills-section { padding: 48px 24px; }
+}
 
 /* ═══════════════════════════════
-   CONTACT
+   FOOTER (Contact + Form)
    ═══════════════════════════════ */
-.contact-section { position: relative; overflow: hidden; }
-.contact-canvas-wrap { width: 100%; height: 200px; position: relative; }
-.contact-canvas-wrap canvas { display: block; width: 100% !important; height: 100% !important; }
-.contact-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  z-index: 2;
-  pointer-events: none;
-}
-.contact-overlay h2 {
+.footer-main { border-top: 1px solid #1c1c1c; padding: 60px 40px; }
+.footer-main .section-inner { max-width: 1000px; }
+.footer-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+
+.footer-contact h2 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(40px, 8vw, 80px);
+  font-size: clamp(40px, 6vw, 64px);
   line-height: 0.85;
   text-transform: uppercase;
-  margin: 0;
-  text-align: center;
+  margin: 0 0 28px;
 }
-.contact-links {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 24px 0 0;
-  gap: 16px; flex-wrap: wrap;
-}
-.contact-email {
+.footer-email {
+  display: block;
   font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-  color: #444; transition: color 0.2s; white-space: nowrap;
+  color: #444; transition: color 0.2s; margin-bottom: 16px;
 }
-.contact-email:hover { color: #f0f0f0; }
-.contact-socials { display: flex; gap: 20px; }
-.contact-social {
+.footer-email:hover { color: #f0f0f0; }
+.footer-socials { display: flex; gap: 20px; }
+.footer-social {
   font-size: 12px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-  color: #444; transition: color 0.2s; white-space: nowrap;
+  color: #444; transition: color 0.2s;
 }
-.contact-social:hover { color: #f0f0f0; }
-.contact-social::after { content: " ↗"; }
+.footer-social:hover { color: #f0f0f0; }
+.footer-social::after { content: " ↗"; }
 
-/* ═══════════════════════════════
-   FOOTER FORM
-   ═══════════════════════════════ */
-.footer-form-section { border-top: 1px solid #1c1c1c; padding: 60px 40px 40px; }
-.footer-form-section .section-inner { max-width: 600px; }
-.footer-form-section h3 {
+.footer-form-wrap h3 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 28px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  margin-bottom: 32px;
-  text-align: center;
+  margin: 0 0 28px;
 }
 .footer-form { display: flex; flex-direction: column; gap: 20px; }
+
+@media (max-width: 700px) {
+  .footer-layout { grid-template-columns: 1fr; gap: 40px; }
+  .footer-main { padding: 40px 24px; }
+}
 .form-group { position: relative; }
 .form-group label {
   display: block;
@@ -388,7 +379,7 @@ footer {
 }
 @media (max-width: 768px) {
   footer { padding: 16px; flex-direction: column; gap: 8px; text-align: center; }
-  .footer-form-section { padding: 40px 16px 24px; }
+  .footer-main { padding: 40px 16px; }
 }
 
 /* ═══════════════════════════════
@@ -473,14 +464,30 @@ footer {
   </div>
 </section>
 
-<!-- ─── Skills (3D Tech Stack) ─── -->
+<!-- ─── Skills ─── -->
 <section class="skills-section" id="techstack">
-  <div class="skills-canvas-wrap" id="techCanvasWrap">
-    <div class="skills-overlay">
-      <h2>
-        <span class="txt-fill">Tech</span><br>
-        <span class="txt-outline">Stack.</span>
-      </h2>
+  <div class="section-inner">
+    <div class="skills-title scroll-reveal">
+      <h2><span class="txt-fill">Technical</span></h2>
+      <h2><span class="txt-outline">Skills.</span></h2>
+    </div>
+    <div class="skills-grid scroll-reveal">
+      <div class="skill-cat">
+        <h4>AI &amp; Automation</h4>
+        <p>n8n workflow automation, Claude Code, Claude by Anthropic, Google Anti-Gravity framework, API integration &amp; orchestration, Business process automation, Webhook handling, SaaS product development</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Backend Development</h4>
+        <p>Java, Spring Boot, Rust, Actix-web, REST API development, PostgreSQL, MySQL, JWT, bcrypt, RBAC, AES-256-GCM encryption, Stellar Soroban (blockchain)</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Systems &amp; Infrastructure</h4>
+        <p>Linux Ubuntu, CLI, Server administration, Active Directory management, Networking &amp; DNS</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Tools</h4>
+        <p>Git/GitHub, Bash/Shell scripting, DevTools, API reverse engineering</p>
+      </div>
     </div>
   </div>
 </section>
@@ -500,51 +507,45 @@ footer {
 </section>
 
 
-<!-- ─── Contact ─── -->
-<section class="contact-section" id="contact">
-  <div class="contact-canvas-wrap" id="contactCanvasWrap">
-    <div class="contact-overlay">
-      <h2>
-        <span class="txt-fill">Let's</span><br>
-        <span class="txt-outline">Talk</span><br>
-        <span class="txt-fill">.</span>
-      </h2>
-    </div>
-  </div>
+<!-- ─── Footer: Contact + Form ─── -->
+<section class="footer-main" id="contact">
   <div class="section-inner">
-    <div class="contact-links scroll-reveal">
-      <a href="mailto:justrhey.tambong@gmail.com" class="contact-email">justrhey.tambong@gmail.com</a>
-      <div class="contact-socials">
-        <a href="https://github.com/justrhey" target="_blank" rel="noopener" class="contact-social">GitHub</a>
-        <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener" class="contact-social">LinkedIn</a>
+    <div class="footer-layout scroll-reveal">
+      <div class="footer-contact">
+        <h2>
+          <span class="txt-fill">Let's</span><br>
+          <span class="txt-outline">Talk</span><br>
+          <span class="txt-fill">.</span>
+        </h2>
+        <a href="mailto:justrhey.tambong@gmail.com" class="footer-email">justrhey.tambong@gmail.com</a>
+        <div class="footer-socials">
+          <a href="https://github.com/justrhey" target="_blank" rel="noopener" class="footer-social">GitHub</a>
+          <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener" class="footer-social">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-form-wrap">
+        <h3><span class="txt-fill">Send</span> <span class="txt-outline">a message</span></h3>
+        <form class="footer-form" id="contactForm">
+          <div class="form-group">
+            <label for="formName">Name</label>
+            <input type="text" id="formName" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label for="formEmail">Email</label>
+            <input type="email" id="formEmail" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="formMessage">Message</label>
+            <textarea id="formMessage" placeholder="What would you like to say?" required></textarea>
+          </div>
+          <button type="submit" class="form-submit">
+            <span>Send Message</span>
+            <span class="arrow">→</span>
+          </button>
+          <div class="form-status" id="formStatus"></div>
+        </form>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ─── Footer Form ─── -->
-<section class="footer-form-section" id="form">
-  <div class="section-inner">
-    <h3><span class="txt-fill">Send</span> <span class="txt-outline">a message</span></h3>
-    <form class="footer-form" id="contactForm">
-      <div class="form-group">
-        <label for="formName">Name</label>
-        <input type="text" id="formName" placeholder="Your name" required>
-      </div>
-      <div class="form-group">
-        <label for="formEmail">Email</label>
-        <input type="email" id="formEmail" placeholder="you@example.com" required>
-      </div>
-      <div class="form-group">
-        <label for="formMessage">Message</label>
-        <textarea id="formMessage" placeholder="What would you like to say?" required></textarea>
-      </div>
-      <button type="submit" class="form-submit">
-        <span>Send Message</span>
-        <span class="arrow">→</span>
-      </button>
-      <div class="form-status" id="formStatus"></div>
-    </form>
   </div>
 </section>
 
@@ -617,11 +618,6 @@ const PROJECTS = [
 ];
 
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
-
-const TECH_NAMES = [
-  'Java', 'React', 'Rust', 'Python', 'PostgreSQL', 'Docker',
-  'Spring Boot', 'Next.js', 'TypeScript', 'Django', 'Linux', 'Three.js'
-];
 
 /* ═══════════════════════════════════════════════
    CURSOR
@@ -920,251 +916,6 @@ function initHeroScene() {
   }, container);
 }
 
-/* ═══════════════════════════════════════════════
-   TECH STACK — 3D INTERACTIVE GLOBE
-   ═══════════════════════════════════════════════ */
-let techGlobeOrbitX = 0, techGlobeOrbitY = 0;
-let techGlobeTargetX = 0, techGlobeTargetY = 0;
-let techOrbiters = [];
-
-function initTechScene() {
-  const container = document.getElementById('techCanvasWrap');
-  const w = container.clientWidth;
-  const h = container.clientHeight || 400;
-
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setSize(w, h);
-  renderer.setClearColor(0x080808, 1);
-  container.prepend(renderer.domElement);
-
-  const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x080808, 12, 26);
-
-  const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 30);
-  camera.position.set(0, 0, 9);
-  camera.lookAt(0, 0, 0);
-
-  // Lights
-  const ambient = new THREE.AmbientLight(0xffffff, 0.25);
-  scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
-  dirLight.position.set(5, 8, 6);
-  scene.add(dirLight);
-  const backLight = new THREE.DirectionalLight(0xffffff, 0.35);
-  backLight.position.set(-4, -3, -6);
-  scene.add(backLight);
-
-  // === Outer wireframe globe ===
-  const globeGeo = new THREE.SphereGeometry(2.4, 24, 18);
-  const wireGeo = new THREE.WireframeGeometry(globeGeo);
-  const globe = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({ color: 0x1c1c1c }));
-  scene.add(globe);
-
-  // === Inner glowing globe (subtle) ===
-  const innerGeo = new THREE.SphereGeometry(1.6, 16, 12);
-  const innerWire = new THREE.WireframeGeometry(innerGeo);
-  const innerGlobe = new THREE.LineSegments(innerWire, new THREE.LineBasicMaterial({ color: 0x333333 }));
-  scene.add(innerGlobe);
-
-  // === Orbital rings (lat/long-ish arcs) ===
-  function makeRing(radius, segments, tiltX, tiltZ, color) {
-    const pts = [];
-    for (let i = 0; i <= segments; i++) {
-      const theta = (i / segments) * Math.PI * 2;
-      pts.push(new THREE.Vector3(
-        Math.cos(theta) * radius,
-        Math.sin(theta) * radius * 0.3,
-        0
-      ));
-    }
-    const ringGeo = new THREE.BufferGeometry().setFromPoints(pts);
-    const ring = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.3 }));
-    ring.rotation.x = tiltX;
-    ring.rotation.z = tiltZ;
-    scene.add(ring);
-    return ring;
-  }
-
-  makeRing(3.2, 48, 0.3, 0.2, 0x444444);
-  makeRing(3.2, 48, -0.5, 0.6, 0x333333);
-  makeRing(3.2, 48, 0.8, -0.3, 0x222222);
-
-  // === Orbiting text sprites ===
-  const orbitRadius = 4.0;
-
-  function makeTextSprite(text) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 512;
-    canvas.height = 128;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.font = 'Bold 48px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    // Outline stroke
-    ctx.strokeStyle = '#f0f0f0';
-    ctx.lineWidth = 3;
-    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
-
-    // Fill
-    ctx.fillStyle = '#f0f0f0';
-    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
-
-    const mat = new THREE.SpriteMaterial({
-      map: texture,
-      transparent: true,
-      depthTest: true,
-      depthWrite: false
-    });
-    const sprite = new THREE.Sprite(mat);
-    // Scale sprite so text is sized relative to scene
-    sprite.scale.set(3.0, 0.75, 1);
-    return sprite;
-  }
-
-  TECH_NAMES.forEach((name, i) => {
-    const angleOffset = (i / TECH_NAMES.length) * Math.PI * 2;
-    const verticalOffset = (i - (TECH_NAMES.length - 1) / 2) * 0.35;
-
-    const sprite = makeTextSprite(name);
-    sprite.position.set(
-      Math.cos(angleOffset) * orbitRadius,
-      verticalOffset,
-      Math.sin(angleOffset) * orbitRadius
-    );
-    sprite.userData = {
-      angleOffset,
-      orbitRadius,
-      verticalOffset,
-      orbitSpeed: 0.12 + (i % 6) * 0.04,
-      phase: Math.random() * Math.PI * 2
-    };
-    scene.add(sprite);
-    techOrbiters.push(sprite);
-  });
-
-  // === Mouse interaction ===
-  let mouseX = 0, mouseY = 0;
-  container.addEventListener('mousemove', e => {
-    const rect = container.getBoundingClientRect();
-    mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-    mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
-  });
-
-  sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
-    // Rotate globe and rings
-    globe.rotation.x += delta * 0.08;
-    globe.rotation.y += delta * 0.12;
-    innerGlobe.rotation.x -= delta * 0.05;
-    innerGlobe.rotation.y += delta * 0.08;
-
-    // Orbit text sprites around the globe
-    techOrbiters.forEach((sprite) => {
-      const ud = sprite.userData;
-      ud.angleOffset += delta * ud.orbitSpeed;
-
-      sprite.position.x = Math.cos(ud.angleOffset) * ud.orbitRadius;
-      sprite.position.z = Math.sin(ud.angleOffset) * ud.orbitRadius;
-      sprite.position.y = ud.verticalOffset + Math.sin(elapsed * 0.5 + ud.phase) * 0.3;
-    });
-
-    // Mouse-follow rotation of the whole scene
-    techGlobeTargetX = -mouseX * 1.2;
-    techGlobeTargetY = -mouseY * 0.6;
-    techGlobeOrbitX += (techGlobeTargetX - techGlobeOrbitX) * 0.035;
-    techGlobeOrbitY += (techGlobeTargetY - techGlobeOrbitY) * 0.035;
-
-    // Apply rotation to all objects by rotating the camera around the origin
-    camera.position.x = Math.sin(techGlobeOrbitX * 0.3) * 9;
-    camera.position.z = Math.cos(techGlobeOrbitX * 0.3) * 9;
-    camera.position.y = 0 + techGlobeOrbitY * 0.3;
-    camera.lookAt(0, 0, 0);
-  }, container);
-}
-
-/* ═══════════════════════════════════════════════
-   CONTACT 3D SCENE
-   ═══════════════════════════════════════════════ */
-let contactScale = 0.1;
-let contactHasAnimated = false;
-
-function initContactScene() {
-  const container = document.getElementById('contactCanvasWrap');
-  const w = container.clientWidth;
-  const h = container.clientHeight || 200;
-
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setSize(w, h);
-  renderer.setClearColor(0x080808, 1);
-  container.prepend(renderer.domElement);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 30);
-  camera.position.z = 6;
-
-  const ambient = new THREE.AmbientLight(0xffffff, 0.3);
-  scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-  dirLight.position.set(3, 4, 5);
-  scene.add(dirLight);
-
-  const sphereGeo = new THREE.SphereGeometry(2.2, 20, 20);
-  const wireGeo = new THREE.WireframeGeometry(sphereGeo);
-  const sphere = new THREE.LineSegments(wireGeo, new THREE.LineBasicMaterial({ color: 0x1c1c1c }));
-  sphere.scale.set(0.1, 0.1, 0.1);
-  scene.add(sphere);
-
-  // Inner glow — smaller concentric wireframe sphere
-  const innerGeo = new THREE.SphereGeometry(1.5, 12, 12);
-  const innerWire = new THREE.WireframeGeometry(innerGeo);
-  const innerSphere = new THREE.LineSegments(innerWire, new THREE.LineBasicMaterial({ color: 0x333333 }));
-  innerSphere.scale.set(0.1, 0.1, 0.1);
-  innerSphere.position.z = -0.3;
-  scene.add(innerSphere);
-
-  const obs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !contactHasAnimated) {
-      contactHasAnimated = true;
-      const startTime = performance.now();
-      const startScale = 0.1;
-
-      function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
-
-      function animateScale(now) {
-        const elapsed = now - startTime;
-        const t = Math.min(elapsed / 800, 1);
-        const eased = easeOutCubic(t);
-        const s = startScale + (1.0 - startScale) * eased;
-        sphere.scale.set(s, s, s);
-        innerSphere.scale.set(s, s, s);
-        contactScale = s;
-        if (t < 1) requestAnimationFrame(animateScale);
-      }
-      requestAnimationFrame(animateScale);
-    }
-  }, { threshold: 0.2 });
-  obs.observe(container);
-
-  sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
-    sphere.rotation.x += delta * 0.15;
-    sphere.rotation.y += delta * 0.25;
-    innerSphere.rotation.x += delta * -0.2;
-    innerSphere.rotation.y += delta * 0.35;
-
-    if (contactHasAnimated && contactScale >= 0.99) {
-      const pulse = 1 + Math.sin(elapsed * 0.6) * 0.02;
-      sphere.scale.set(pulse, pulse, pulse);
-      const innerPulse = 1 + Math.sin(elapsed * 0.6 + 1) * 0.02;
-      innerSphere.scale.set(innerPulse, innerPulse, innerPulse);
-    }
-  }, container);
-}
 
 /* ═══════════════════════════════════════════════
    RESIZE
@@ -1189,8 +940,6 @@ window.addEventListener('resize', handleResize);
    ═══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initHeroScene();
-  initTechScene();
-  initContactScene();
   sceneManager.start();
   handleResize();
 });
