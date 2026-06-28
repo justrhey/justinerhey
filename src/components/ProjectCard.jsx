@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState } from 'react'
 import { motion } from 'motion/react'
 import { GithubLogo, Globe } from '@phosphor-icons/react'
 
-/* ─── Project Card ─── */
 export function ProjectCard({ project, onClick, featured = false, isHovered, onHover, index = 0 }) {
   const [imgLoaded, setImgLoaded] = useState(false)
   const hasImage = project.images && project.images.length > 0 && project.id
@@ -11,32 +10,39 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
 
   const handleClick = () => { if (onClick) onClick(project) }
 
-  const cardContent = (
+  const content = (
     <div
       role="article"
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
-      className="project-card"
+      className="project-card-aero"
       style={{
         display: 'flex',
         flexDirection: featured ? 'row' : 'column',
-        height: '100%',
       }}
+      onMouseEnter={() => onHover && onHover(project.id)}
+      onMouseLeave={() => onHover && onHover(null)}
     >
-      {/* Image / placeholder */}
+      {/* Image */}
       {imgSrc ? (
         <div style={{
-          width: featured ? '40%' : '100%',
-          minHeight: featured ? 240 : 160,
+          width: featured ? '45%' : '100%',
+          minHeight: featured ? 220 : 160,
           aspectRatio: featured ? 'auto' : '16/9',
           overflow: 'hidden', position: 'relative',
-          background: 'var(--bg-deep)',
-          borderRight: featured ? '1px solid var(--border-mid)' : 'none',
-          borderBottom: featured ? 'none' : '1px solid var(--border-mid)',
+          background: 'rgba(200,232,248,0.3)',
+          borderRight: featured ? '1px solid rgba(90,180,220,0.15)' : 'none',
+          borderBottom: featured ? 'none' : '1px solid rgba(90,180,220,0.15)',
           flexShrink: 0,
         }}>
-          {!imgLoaded && <div className="skeleton" style={{ position: 'absolute', inset: 0 }} />}
+          {!imgLoaded && (
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: 'linear-gradient(135deg, #d4eef8, #b8dce8)',
+              animation: 'pulse-soft 1.5s ease-in-out infinite',
+            }} />
+          )}
           <img
             src={imgSrc}
             alt={`${project.name} screenshot`}
@@ -47,22 +53,21 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
               width: '100%', height: '100%',
               objectFit: 'cover', display: 'block',
               opacity: imgLoaded ? 1 : 0,
-              transition: 'transform 0.5s ease, opacity 0.35s ease',
-              transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+              transition: 'opacity 0.35s ease',
             }}
           />
         </div>
       ) : (
         <div style={{
-          width: featured ? '40%' : '100%',
-          minHeight: featured ? 240 : 130,
+          width: featured ? '45%' : '100%',
+          minHeight: featured ? 220 : 120,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: 'var(--bg-deep)',
-          borderRight: featured ? '1px solid var(--border-mid)' : 'none',
-          borderBottom: featured ? 'none' : '1px solid var(--border-mid)',
+          background: 'linear-gradient(135deg, rgba(90,184,212,0.06), rgba(74,158,106,0.06))',
+          borderRight: featured ? '1px solid rgba(90,180,220,0.15)' : 'none',
+          borderBottom: featured ? 'none' : '1px solid rgba(90,180,220,0.15)',
           flexShrink: 0,
         }}>
-          <GithubLogo size={28} weight="light" opacity={0.2} />
+          <GithubLogo size={36} weight="light" color="var(--aqua-mid)" opacity={0.35} />
         </div>
       )}
 
@@ -71,9 +76,11 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
         padding: 20, flex: 1,
         display: 'flex', flexDirection: 'column',
       }}>
-        {/* Category badge */}
+        {/* Category */}
         {project.category && (
-          <span className="project-category-badge" style={{ alignSelf: 'flex-start', marginBottom: 10 }}>
+          <span className={`badge-aero ${project.category === 'ai' ? 'badge-success' : 'badge-info'}`}
+            style={{ alignSelf: 'flex-start', marginBottom: 8 }}
+          >
             {project.category === 'fullstack' ? 'Full-Stack' :
              project.category === 'backend' ? 'Backend' :
              project.category === 'frontend' ? 'Frontend' :
@@ -81,35 +88,24 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
           </span>
         )}
 
-        {/* Name */}
         <h3 style={{
-          fontFamily: 'var(--font-heading)',
-          fontSize: '0.85rem', letterSpacing: '2px',
+          fontSize: '1rem', fontWeight: 600,
           marginBottom: 4,
         }}>
           {project.name}
         </h3>
 
-        {/* Problem */}
         <p style={{
-          fontFamily: 'var(--font-body)',
-          fontSize: '0.65rem', letterSpacing: '0.5px',
-          color: 'var(--text-muted)',
-          lineHeight: 1.5,
-          marginBottom: 10,
+          fontSize: '0.82rem', color: 'var(--mid-text)',
+          lineHeight: 1.5, marginBottom: 10,
         }}>
           {project.problem}
         </p>
 
-        {/* Description (featured only) */}
         {featured && (
           <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.7rem', letterSpacing: '0.5px',
-            color: 'var(--text-secondary)',
-            lineHeight: 1.7,
-            marginBottom: 12,
-            flex: 1,
+            fontSize: '0.85rem', color: 'var(--dark-text)',
+            lineHeight: 1.7, marginBottom: 12, flex: 1,
           }}>
             {project.description.length > 180
               ? project.description.slice(0, 180) + '...'
@@ -117,14 +113,15 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
           </p>
         )}
 
-        {/* Tags + Links */}
         <div style={{ marginTop: 'auto' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginBottom: 12 }}>
             {project.tech.slice(0, maxTags).map((t) => (
-              <span key={t} className="project-tech-tag">{t}</span>
+              <span key={t} className="tag-aero tag-aero-filled" style={{ fontSize: '0.68rem', padding: '3px 10px' }}>{t}</span>
             ))}
             {project.tech.length > maxTags && (
-              <span className="project-tech-tag">+{project.tech.length - maxTags}</span>
+              <span className="tag-aero tag-aero-filled" style={{ fontSize: '0.68rem', padding: '3px 10px' }}>
+                +{project.tech.length - maxTags}
+              </span>
             )}
           </div>
 
@@ -135,17 +132,15 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="dash-icon"
                 style={{
                   display: 'flex', alignItems: 'center', gap: 5,
-                  fontFamily: 'var(--font-body)', fontSize: '0.55rem',
-                  letterSpacing: '2px', textTransform: 'uppercase',
-                  textDecoration: 'none',
+                  fontSize: '0.78rem', color: 'var(--mid-text)',
+                  textDecoration: 'none', fontWeight: 500,
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--deep-aqua)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--mid-text)'}
               >
-                <GithubLogo size={12} weight="duotone" />
+                <GithubLogo size={14} weight="duotone" />
                 Code
               </a>
             )}
@@ -155,17 +150,15 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="dash-icon"
                 style={{
                   display: 'flex', alignItems: 'center', gap: 5,
-                  fontFamily: 'var(--font-body)', fontSize: '0.55rem',
-                  letterSpacing: '2px', textTransform: 'uppercase',
-                  textDecoration: 'none',
+                  fontSize: '0.78rem', color: 'var(--mid-text)',
+                  textDecoration: 'none', fontWeight: 500,
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
-                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--deep-aqua)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--mid-text)'}
               >
-                <Globe size={12} weight="duotone" />
+                <Globe size={14} weight="duotone" />
                 Demo
               </a>
             )}
@@ -175,33 +168,18 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
     </div>
   )
 
-  if (featured) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.1 }}
-        transition={{ type: 'spring', stiffness: 80, damping: 18, delay: index * 0.06 }}
-        style={{ height: '100%' }}
-        onMouseEnter={() => onHover && onHover(project.id)}
-        onMouseLeave={() => onHover && onHover(null)}
-      >
-        {cardContent}
-      </motion.div>
-    )
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
-      transition={{ duration: 0.3, delay: index * 0.04 }}
+      transition={{
+        type: 'spring', stiffness: 80, damping: 18,
+        delay: index * 0.05,
+      }}
       style={{ height: '100%' }}
-      onMouseEnter={() => onHover && onHover(project.id)}
-      onMouseLeave={() => onHover && onHover(null)}
     >
-      {cardContent}
+      {content}
     </motion.div>
   )
 }

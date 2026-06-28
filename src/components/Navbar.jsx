@@ -6,7 +6,7 @@ const sections = ['Experience', 'Skills', 'Projects', 'Contact']
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const activeId = useScrollSpy(sections.map(s => s.toLowerCase()), 60)
+  const activeId = useScrollSpy(sections.map(s => s.toLowerCase()), 80)
 
   const scrollTo = (id) => {
     document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })
@@ -14,53 +14,47 @@ export default function Navbar() {
   }
 
   return (
-    <header className="navbar">
-      <div className="navbar-inner">
-        {/* Logo */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="navbar-logo"
-        >
-          <span className="navbar-logo-dot" />
-          justrhey
-        </button>
+    <nav className="nav-glass">
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="nav-logo"
+      >
+        justrhey
+      </button>
 
-        {/* Desktop nav pill */}
-        <nav className="nav-pill">
-          {sections.map((s) => {
-            const isActive = activeId === s.toLowerCase()
-            return (
-              <button
-                key={s}
-                onClick={() => scrollTo(s)}
-                className={`nav-btn ${isActive ? 'nav-btn-active' : ''}`}
-              >
-                {isActive ? '▸ ' : ''}{s}
-              </button>
-            )
-          })}
-        </nav>
-
-        {/* Hamburger */}
-        <button
-          className="hamburger"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          <span className="hamburger-line" />
-          <span className="hamburger-line" />
-          <span className="hamburger-line" />
-        </button>
+      <div className="nav-glass-inner">
+        {sections.map((s) => {
+          const isActive = activeId === s.toLowerCase()
+          return (
+            <button
+              key={s}
+              onClick={() => scrollTo(s)}
+              className={`nav-btn ${isActive ? 'nav-btn-active' : ''}`}
+            >
+              {s}
+            </button>
+          )
+        })}
       </div>
 
-      {/* Mobile menu */}
+      <button
+        className="nav-hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle menu"
+      >
+        <span className="nav-hamburger-line" />
+        <span className="nav-hamburger-line" />
+        <span className="nav-hamburger-line" />
+      </button>
+
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15 }}
-            className="mobile-menu"
+            transition={{ duration: 0.12 }}
+            className="mobile-menu-glass"
           >
             {sections.map((s) => {
               const isActive = activeId === s.toLowerCase()
@@ -70,13 +64,13 @@ export default function Navbar() {
                   onClick={() => scrollTo(s)}
                   className={`mobile-nav-btn ${isActive ? 'mobile-nav-btn-active' : ''}`}
                 >
-                  {isActive ? '▸ ' : ''}{s}
+                  {s}
                 </button>
               )
             })}
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </nav>
   )
 }

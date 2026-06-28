@@ -4,46 +4,43 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="dash-footer">
-      <div className="dash-footer-inner">
+    <footer className="footer-aero">
+      <div className="footer-aero-inner">
         <span>justrhey · backend &amp; ai full-stack</span>
         <span>&copy; {year}</span>
-        <div style={{ display: 'flex', gap: 14 }}>
+        <div style={{ display: 'flex', gap: 16 }}>
           <a
             href="mailto:justrhey.tambong@gmail.com"
-            className="dash-icon"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Email"
-            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+            style={{ color: 'var(--light-text)', textDecoration: 'none', display: 'flex' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--deep-aqua)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--light-text)'}
           >
-            <At size={14} weight="duotone" />
+            <At size={15} weight="duotone" />
           </a>
           <a
             href="https://github.com/justrhey"
-            className="dash-icon"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+            style={{ color: 'var(--light-text)', textDecoration: 'none', display: 'flex' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--deep-aqua)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--light-text)'}
           >
-            <GithubLogo size={14} weight="duotone" />
+            <GithubLogo size={15} weight="duotone" />
           </a>
           <a
             href="https://linkedin.com/in/justrhey"
-            className="dash-icon"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--green-bright)'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+            style={{ color: 'var(--light-text)', textDecoration: 'none', display: 'flex' }}
+            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--deep-aqua)'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--light-text)'}
           >
-            <LinkedinLogo size={14} weight="duotone" />
+            <LinkedinLogo size={15} weight="duotone" />
           </a>
         </div>
       </div>

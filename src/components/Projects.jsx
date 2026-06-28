@@ -14,33 +14,6 @@ const CATEGORIES = [
   { id: 'ai', label: 'AI / Automation' },
 ]
 
-/* ─── Dashboard filter pill ─── */
-function FilterPill({ cat, activeCategory, setActiveCategory }) {
-  const isActive = activeCategory === cat.id
-  return (
-    <button
-      onClick={() => setActiveCategory(cat.id)}
-      style={{
-        fontFamily: 'var(--font-body)',
-        fontSize: '0.6rem', letterSpacing: '2px',
-        textTransform: 'uppercase',
-        padding: '6px 14px',
-        cursor: 'pointer',
-        background: isActive ? 'var(--green-mid)' : 'var(--bg-deep)',
-        color: isActive ? '#080808' : 'var(--text-muted)',
-        fontWeight: isActive ? 700 : 400,
-        borderTop: `2px solid ${isActive ? 'var(--green-bright)' : 'var(--border-light)'}`,
-        borderBottom: `2px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-dark)'}`,
-        borderLeft: `1px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-left)'}`,
-        borderRight: `1px solid ${isActive ? 'var(--green-shadow)' : 'var(--border-right)'}`,
-        transition: 'none',
-      }}
-    >
-      {cat.label}
-    </button>
-  )
-}
-
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [activeCategory, setActiveCategory] = useState('all')
@@ -54,7 +27,6 @@ export default function Projects() {
   const featured = allFeatured.slice(0, 3)
   const rest = [...allFeatured.slice(3), ...filtered.filter(p => !p.featured)]
 
-  // Keyboard
   useEffect(() => {
     const handler = (e) => {
       if (e.key === 'Escape') setSelectedProject(null)
@@ -70,34 +42,35 @@ export default function Projects() {
       </AnimateOnScroll>
 
       {/* Filter pills */}
-      <AnimateOnScroll direction="up" delay={0.08}>
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 36 }}>
+      <AnimateOnScroll direction="up" delay={0.06}>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 28 }}>
           {CATEGORIES.map(cat => (
-            <FilterPill
+            <button
               key={cat.id}
-              cat={cat}
-              activeCategory={activeCategory}
-              setActiveCategory={setActiveCategory}
-            />
+              onClick={() => setActiveCategory(cat.id)}
+              className={`filter-pill ${activeCategory === cat.id ? 'filter-pill-active' : ''}`}
+            >
+              {cat.label}
+            </button>
           ))}
         </div>
       </AnimateOnScroll>
 
-      {/* Bento grid */}
+      {/* Grid */}
       <AnimatePresence mode="wait">
         <motion.div
           key={activeCategory}
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.25, ease: 'easeOut' }}
         >
           {featured.length > 0 && (
-            <div className="bento-grid" style={{ marginBottom: 20 }}>
+            <div className="projects-grid-aero" style={{ marginBottom: 20 }}>
               {featured.map((p, i) => {
                 const isWide = i === 0
                 return (
-                  <div key={p.id} className={isWide ? 'bento-wide' : ''} style={{ height: '100%' }}>
+                  <div key={p.id} className={isWide ? 'wide' : ''}>
                     <ProjectCard
                       project={p}
                       onClick={setSelectedProject}
@@ -116,7 +89,7 @@ export default function Projects() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: 16,
+              gap: 20,
             }}>
               {rest.map((p, i) => (
                 <ProjectCard

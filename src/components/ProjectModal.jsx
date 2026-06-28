@@ -27,37 +27,40 @@ export default function ProjectModal({ project, onClose }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="modal-backdrop"
+      transition={{ duration: 0.15 }}
+      className="modal-aero-backdrop"
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.93, y: 20 }}
+        initial={{ opacity: 0, scale: 0.93, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.93, y: 20 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-        className="modal-content"
+        exit={{ opacity: 0, scale: 0.93, y: 16 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 26 }}
+        className="modal-aero"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-label={project.name}
       >
-        {/* Close button */}
-        <button
-          className="modal-close"
-          onClick={onClose}
-          aria-label="Close modal"
-        >
+        {/* Close */}
+        <button className="modal-aero-close" onClick={onClose} aria-label="Close">
           <X size={16} weight="bold" />
         </button>
 
-        {/* Image viewer */}
+        {/* Images */}
         {hasImages && (
-          <div className="modal-image-wrap">
+          <div style={{
+            position: 'relative',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: 'rgba(200,232,248,0.2)',
+            borderBottom: '1px solid rgba(90,180,220,0.15)',
+            height: 'clamp(160px, 45vw, 340px)',
+            overflow: 'hidden',
+          }}>
             {imgLoading && (
               <div style={{
                 position: 'absolute', inset: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'var(--text-faint)',
+                color: 'var(--aqua-mid)',
               }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" opacity="0.2" />
@@ -77,91 +80,101 @@ export default function ProjectModal({ project, onClose }) {
               onError={() => setImgLoading(false)}
               onDragStart={(e) => e.preventDefault()}
               style={{
-                maxWidth: '100%',
-                maxHeight: '100%',
-                objectFit: 'contain',
-                display: 'block',
+                maxWidth: '100%', maxHeight: '100%',
+                objectFit: 'contain', display: 'block',
                 opacity: imgLoading ? 0 : 1,
                 transition: 'opacity 0.25s ease',
               }}
             />
             {images.length > 1 && (
               <>
-                <button className="modal-image-nav" style={{ left: 0 }} onClick={prevImg}>
+                <button
+                  onClick={prevImg}
+                  style={{
+                    position: 'absolute', left: 8, top: 0, bottom: 0,
+                    width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(255,255,255,0.5)', border: 'none',
+                    color: 'var(--deep-aqua)', cursor: 'pointer',
+                    borderRadius: 8, fontFamily: 'var(--font-stack)',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.8)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.5)'}
+                >
                   <CaretLeft size={18} weight="bold" />
                 </button>
-                <button className="modal-image-nav" style={{ right: 0 }} onClick={nextImg}>
+                <button
+                  onClick={nextImg}
+                  style={{
+                    position: 'absolute', right: 8, top: 0, bottom: 0,
+                    width: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(255,255,255,0.5)', border: 'none',
+                    color: 'var(--deep-aqua)', cursor: 'pointer',
+                    borderRadius: 8, fontFamily: 'var(--font-stack)',
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.8)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.5)'}
+                >
                   <CaretRight size={18} weight="bold" />
                 </button>
-                <span className="modal-image-counter">{imgIndex + 1} / {images.length}</span>
+                <span style={{
+                  position: 'absolute', bottom: 10, right: 12,
+                  fontSize: '0.72rem', color: 'var(--light-text)',
+                  background: 'rgba(255,255,255,0.7)',
+                  padding: '2px 10px', borderRadius: 12,
+                }}>
+                  {imgIndex + 1} / {images.length}
+                </span>
               </>
             )}
           </div>
         )}
 
         {/* Body */}
-        <div style={{ padding: '0 28px 28px' }}>
+        <div style={{ padding: '0 24px 24px' }}>
           <p style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '0.9rem', letterSpacing: '2px',
-            marginBottom: 4, paddingRight: 28,
+            fontSize: '1.05rem', fontWeight: 600,
+            marginBottom: 4, paddingRight: 24,
           }}>
             {project.problem}
           </p>
           <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.65rem', letterSpacing: '1px',
-            color: 'var(--text-muted)',
-            marginBottom: 14,
+            fontSize: '0.82rem', color: 'var(--deep-aqua)',
+            marginBottom: 12,
           }}>
             {project.name}
           </p>
 
-          {/* Tech tags */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 20 }}>
+          {/* Tech */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
             {project.tech.map((t) => (
-              <span key={t} className="project-tech-tag">{t}</span>
+              <span key={t} className="tag-aero tag-aero-filled" style={{ fontSize: '0.7rem' }}>{t}</span>
             ))}
           </div>
 
           <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.5rem', letterSpacing: '3px',
-            textTransform: 'uppercase',
-            color: 'var(--text-faint)',
-            marginBottom: 10,
+            fontSize: '0.72rem', fontWeight: 600, color: 'var(--mid-text)',
+            textTransform: 'uppercase', letterSpacing: '0.5px',
+            marginBottom: 8,
           }}>
             Overview
           </p>
           <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: '0.75rem', letterSpacing: '0.5px',
-            color: 'var(--text-secondary)',
+            fontSize: '0.88rem', color: 'var(--dark-text)',
             lineHeight: 1.8,
           }}>
             {project.description}
           </p>
 
           {/* Actions */}
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 24 }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 24 }}>
             {project.githubUrl && (
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="modal-link-btn"
-              >
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="btn-glass">
                 <ArrowUpRight size={16} weight="bold" />
                 GitHub
               </a>
             )}
             {project.demoUrl && (
-              <a
-                href={project.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="modal-link-btn"
-              >
+              <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="btn-glass">
                 <ArrowUpRight size={16} weight="bold" />
                 Live Demo
               </a>
