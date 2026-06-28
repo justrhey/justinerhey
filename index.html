@@ -149,20 +149,25 @@ section { padding: 100px 40px; }
   display: inline-block;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
-.hero-bottom {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 20px 0 60px;
-  gap: 24px; flex-wrap: wrap;
+.hero-heading .hero-bio {
+  margin: 20px 0 0;
+  font-size: 13px;
+  color: #666;
+  max-width: 520px;
+  line-height: 1.75;
 }
-.hero-bio { font-size: 14px; color: #888; max-width: 500px; line-height: 1.75; }
-.hero-scroll { font-size: 11px; font-weight: 700; letter-spacing: 3px; color: #444; text-transform: uppercase; white-space: nowrap; }
+.hero-scroll {
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  color: #444; text-transform: uppercase; white-space: nowrap;
+  padding: 20px 0 60px;
+}
 
 @media (max-width: 768px) {
   .hero-eyebrow { font-size: 10px; letter-spacing: 2px; }
   .hero-canvas-wrap { height: 320px; }
   .hero-heading { bottom: 20px; }
-  .hero-bottom { padding: 16px 0 40px; }
-  .hero-bio { font-size: 13px; }
+  .hero-scroll { padding: 16px 0 40px; }
+  .hero-heading .hero-bio { font-size: 12px; margin-top: 14px; }
 }
 
 /* ═══════════════════════════════
@@ -425,13 +430,11 @@ footer {
       <h1><span class="txt-fill">Justine Rhey</span></h1>
       <h1><span class="txt-outline cycle-word" id="cycleWord">Builds</span></h1>
       <h1><span class="txt-fill">Things.</span></h1>
+      <p class="hero-bio">Backend developer and AI engineer based in Manila. Building production-grade systems, AI automation, and full-stack applications that ship real work.</p>
     </div>
   </div>
   <div class="section-inner">
-    <div class="hero-bottom">
-      <p class="hero-bio">Backend developer and AI engineer based in Manila. Building production-grade systems, AI automation, and full-stack applications that ship real work.</p>
-      <p class="hero-scroll">Scroll ——→</p>
-    </div>
+    <p class="hero-scroll">Scroll ——→</p>
   </div>
 </section>
 
