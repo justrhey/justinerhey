@@ -612,12 +612,89 @@ section {
   .nav-hamburger { display: block; }
 
   section { padding: 40px 0; }
+
+  /* Hero stack */
+  .hero-aero-inner {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .hero-aero-inner .hero-content {
+    text-align: center !important;
+    align-items: center !important;
+  }
+  .hero-aero-ctas {
+    justify-content: center !important;
+  }
+
+  /* ProjectCard featured row → column */
+  .project-card-aero.featured {
+    flex-direction: column !important;
+  }
+  .project-card-aero.featured .featured-image-wrap {
+    width: 100% !important;
+    min-height: 180px !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(90,180,220,0.15) !important;
+  }
+
+  /* hide decorative droplets on mobile */
+  .hero-droplets { display: none; }
+
+  /* reduce hero top padding */
+  #hero {
+    padding-top: 100px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* hero avatar smaller on tablet */
+  .hero-avatar > div {
+    width: 120px !important;
+    height: 120px !important;
+  }
 }
 
 @media (max-width: 640px) {
   .container { padding: 0 16px; }
 
   .section-title { font-size: 1.15rem; }
+
+  .glass-card {
+    padding: 16px !important;
+  }
+
+  .timeline-aero-item {
+    gap: 12px !important;
+  }
+
+  /* Full-width buttons on mobile */
+  .btn-aero, .btn-glass {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .social-link-aero {
+    font-size: 0.78rem;
+    padding: 8px 12px;
+  }
+
+  /* Hero top padding further reduced */
+  #hero {
+    padding-top: 90px !important;
+  }
+
+  /* Hero gap reduced */
+  .hero-aero-inner {
+    gap: 24px !important;
+  }
+
+  .hero-content h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .nav-logo {
+    font-size: 0.78rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

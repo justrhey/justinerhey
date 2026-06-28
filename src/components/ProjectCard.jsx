@@ -16,7 +16,7 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
       tabIndex={0}
       onClick={handleClick}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick() }}
-      className="project-card-aero"
+      className={`project-card-aero${featured ? ' featured' : ''}`}
       style={{
         display: 'flex',
         flexDirection: featured ? 'row' : 'column',
@@ -26,7 +26,7 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
     >
       {/* Image */}
       {imgSrc ? (
-        <div style={{
+        <div className={featured ? 'featured-image-wrap' : ''} style={{
           width: featured ? '45%' : '100%',
           minHeight: featured ? 220 : 160,
           aspectRatio: featured ? 'auto' : '16/9',
@@ -58,7 +58,7 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
           />
         </div>
       ) : (
-        <div style={{
+        <div className={featured ? 'featured-image-wrap' : ''} style={{
           width: featured ? '45%' : '100%',
           minHeight: featured ? 220 : 120,
           display: 'flex', alignItems: 'center', justifyContent: 'center',

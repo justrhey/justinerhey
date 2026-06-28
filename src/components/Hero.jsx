@@ -31,16 +31,16 @@ export default function Hero() {
       position: 'relative',
     }}>
       <div className="container" style={{ position: 'relative' }}>
-        <Droplets />
+        <div className="hero-droplets"><Droplets /></div>
 
-        <div style={{
+        <div className="hero-aero-inner" style={{
           display: 'flex',
           gap: 40,
           alignItems: 'center',
           flexWrap: 'wrap',
         }}>
           {/* Avatar */}
-          <div style={{ flexShrink: 0 }}>
+          <div className="hero-avatar" style={{ flexShrink: 0 }}>
             <div style={{
               width: 140, height: 140,
               borderRadius: '50%',
@@ -87,7 +87,10 @@ export default function Hero() {
           </div>
 
           {/* Content */}
-          <div style={{ flex: 1, minWidth: 280 }}>
+          <div className="hero-content" style={{
+            flex: 1, minWidth: 280,
+            display: 'flex', flexDirection: 'column',
+          }}>
             <h1 style={{
               fontSize: 'clamp(1.6rem, 4vw, 2.4rem)',
               marginBottom: 6,
@@ -116,7 +119,7 @@ export default function Hero() {
             </p>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <div className="hero-aero-ctas" style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <button
                 className="btn-aero"
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
