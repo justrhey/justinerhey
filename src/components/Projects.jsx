@@ -23,8 +23,9 @@ export default function Projects() {
     ? projects
     : projects.filter(p => p.category === activeCategory)
 
-  const featured = filtered.filter(p => p.featured)
-  const rest = filtered.filter(p => !p.featured)
+  const allFeatured = filtered.filter(p => p.featured)
+  const featured = allFeatured.slice(0, 3)
+  const rest = [...allFeatured.slice(3), ...filtered.filter(p => !p.featured)]
 
   // Keyboard navigation
   useEffect(() => {

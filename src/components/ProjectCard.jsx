@@ -250,7 +250,10 @@ export function ProjectCard({ project, onClick, featured = false, isHovered, onH
   // Wrap in tilt for non-featured cards only (tilt on big wide cards feels odd)
   if (!featured) {
     return (
-      <TiltCard onHover={onHover} isHovered={isHovered}>
+      <TiltCard
+        onHover={(entering) => onHover && onHover(entering ? project.id : null)}
+        isHovered={isHovered}
+      >
         {cardContent}
       </TiltCard>
     )
