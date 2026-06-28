@@ -26,6 +26,9 @@
   --accent-glow:   rgba(94,106,210,0.25);
   --accent-2:      #06B6D4;        /* cyan - AI / automation accent */
   --accent-2-dim:  rgba(6,182,212,0.12);
+  --accent-3:      #d97706;        /* amber - retro terminal accent */
+  --accent-3-dim:  rgba(217,119,6,0.10);
+  --accent-3-glow: rgba(217,119,6,0.2);
 
   --success:       #22C55E;
   --error:         #EF4444;
@@ -1050,6 +1053,30 @@ section {
 }
 
 /* ─── Mobile ─── */
+/* ─── CRT / Retro Effects ─── */
+.crt-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+}
+
+@keyframes retro-glow {
+  0%, 100% { text-shadow: 0 0 4px var(--accent-3-dim), 0 0 12px var(--accent-3-dim); }
+  50% { text-shadow: 0 0 8px var(--accent-3-dim), 0 0 24px var(--accent-3-dim); }
+}
+
+.retro-glow {
+  animation: retro-glow 3s ease-in-out infinite;
+}
+
 @media (max-width: 768px) {
   section { padding: 72px 0; }
   .container { padding: 0 20px; }

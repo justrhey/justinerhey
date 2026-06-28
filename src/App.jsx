@@ -1,3 +1,4 @@
+import { useReducedMotion } from './hooks/useReducedMotion'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import Experience from './components/Experience.jsx'
@@ -8,6 +9,8 @@ import Footer from './components/Footer.jsx'
 import { HireBadge } from './components/HireBadge.jsx'
 
 export default function App() {
+  const prefersReduced = useReducedMotion()
+
   return (
     <>
       <Navbar />
@@ -18,6 +21,9 @@ export default function App() {
       <Contact />
       <Footer />
       <HireBadge />
+
+      {/* Subtle CRT scanline overlay — retro texture */}
+      {!prefersReduced && <div className="crt-overlay" />}
     </>
   )
 }

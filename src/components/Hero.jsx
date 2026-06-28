@@ -3,6 +3,7 @@ import { motion } from 'motion/react'
 import { useReducedMotion } from '../hooks/useReducedMotion'
 import { personal } from '../data/personal'
 import { skillCategories } from '../data/skills'
+import FaultyTerminal from './FaultyTerminal'
 
 /* ─── Animated gradient blobs ─── */
 function BgGradient({ prefersReduced }) {
@@ -165,6 +166,30 @@ export default function Hero() {
       display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden',
       minHeight: '100dvh',
     }}>
+      {/* Retro terminal background */}
+      {!prefersReduced && (
+        <div style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          opacity: 0.12, mixBlendMode: 'screen',
+        }}>
+          <FaultyTerminal
+            tint="#d97706"
+            scale={1.8}
+            gridMul={[3, 2]}
+            digitSize={1.2}
+            timeScale={0.15}
+            scanlineIntensity={0.15}
+            glitchAmount={0.6}
+            flickerAmount={0.3}
+            noiseAmp={0.1}
+            curvature={0.15}
+            chromaticAberration={0.3}
+            mouseStrength={0.3}
+            brightness={1}
+          />
+        </div>
+      )}
+
       <BgGradient prefersReduced={prefersReduced} />
       <SkillCloud prefersReduced={prefersReduced} />
 
