@@ -14,21 +14,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: npm ci
-      - run: npm run build
+
+      # The portfolio is a single self-contained index.html (inline CSS/JS,
+      # three.js via CDN). Its only local dependency is images/. No build step.
+      - name: Assemble static site
+        run: |
+          mkdir -p _site
+          cp index.html .nojekyll _site/
+          cp -r images _site/
+
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
