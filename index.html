@@ -210,8 +210,10 @@ section { padding: 100px 40px; }
 .project-grid { display: grid; gap: 20px; }
 .project-row-1 { grid-template-columns: 1fr; }
 .project-row-2 { grid-template-columns: 1fr 1fr; }
+.project-row-3 { grid-template-columns: 1fr 1fr 1fr; }
 @media (max-width: 768px) {
   .project-row-2 { grid-template-columns: 1fr; }
+  .project-row-3 { grid-template-columns: 1fr; }
 }
 .project-card {
   background: #080808;
@@ -566,7 +568,7 @@ footer {
     <div class="project-grid project-row-1" id="projectGrid1"></div>
     <div class="project-grid project-row-2" id="projectGrid2" style="margin-top:20px"></div>
     <div class="project-grid project-row-1" id="projectGrid3" style="margin-top:20px"></div>
-    <div class="project-grid project-row-2" id="projectGrid4" style="margin-top:20px"></div>
+    <div class="project-grid project-row-3" id="projectGrid4" style="margin-top:20px"></div>
   </div>
 </section>
 
@@ -631,6 +633,16 @@ footer {
    DATA
    ═══════════════════════════════════════════════ */
 const PROJECTS = [
+  {
+    id: 'velour',
+    name: 'VÉLOUR',
+    desc: 'Premium wine showcase landing page with a procedurally generated 3D Bordeaux bottle rendered in Three.js. Black-and-gold editorial design with wine-liquid wave dividers, parallax scroll narrative, and a calling-card intro sequence.',
+    tags: ['Next.js 16', 'React 19', 'Three.js', 'R3F', 'GSAP', 'Lenis'],
+    year: '2026',
+    img: 'images/velour-label.png',
+    live: 'https://ve-lour.vercel.app/',
+    github: 'https://github.com/justrhey/VeLOUR'
+  },
   {
     id: 'ehr-blockchain',
     name: 'EHR Blockchain',
@@ -800,14 +812,19 @@ function buildProjects() {
     document.getElementById('projectGrid4')
   ];
 
-  // Row 1: big card
-  grids[0].innerHTML = projectCardHTML(PROJECTS[0], 0, true);
-  // Row 2: 2 standard
-  grids[1].innerHTML = projectCardHTML(PROJECTS[1], 1, false) + projectCardHTML(PROJECTS[2], 2, false);
-  // Row 3: big card
-  grids[2].innerHTML = projectCardHTML(PROJECTS[3], 3, true);
-  // Row 4: 2 standard
-  grids[3].innerHTML = projectCardHTML(PROJECTS[4], 4, false) + projectCardHTML(PROJECTS[5], 5, false);
+  // Layout: alternating big -> 2 standard -> big -> 3 standard
+  const layout = [1, 2, 1, 3];
+  let idx = 0;
+  for (let g = 0; g < grids.length; g++) {
+    let html = '';
+    for (let c = 0; c < layout[g]; c++) {
+      if (idx < PROJECTS.length) {
+        html += projectCardHTML(PROJECTS[idx], idx, layout[g] === 1);
+        idx++;
+      }
+    }
+    grids[g].innerHTML = html;
+  }
 }
 buildProjects();
 

@@ -1,5 +1,17 @@
 export const projects = [
   {
+    id: 'velour',
+    name: 'VÉLOUR',
+    problem: 'Premium Wine Brand Needed an Immersive Digital Showcase',
+    description: 'A cinematic wine showcase landing page featuring a procedurally generated 3D Bordeaux bottle rendered in Three.js (LatheGeometry + MeshPhysicalMaterial with transmission, clearcoat, and gold capsule). Black-and-gold editorial design with wine-liquid wave section dividers, parallax scroll camera rig, calling-card intro sequence, and film-grain texture overlay. Built with Next.js 16, React 19, @react-three/fiber v9, GSAP, and Lenis smooth scroll.',
+    tech: ['Next.js 16', 'React 19', 'Three.js', 'R3F', 'GSAP', 'Lenis', 'Tailwind CSS v4'],
+    githubUrl: 'https://github.com/justrhey/VeLOUR',
+    demoUrl: 'https://ve-lour.vercel.app',
+    featured: true,
+    category: 'frontend',
+    images: ['velour-label.png'],
+  },
+  {
     id: 'ehr-blockchain',
     name: 'EHR Blockchain',
     problem: 'Tamper-Proof Medical Records on the Blockchain',
