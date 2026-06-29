@@ -46,7 +46,6 @@ export const projects = [
     problem: 'Construction Company Needed a Premium Online Presence',
     description: 'Premium landing page for DM ARC Construction Services — a full-service construction company. Built with React 19, TypeScript, Tailwind CSS v4, and Motion animations. Features a hero section with WebGL background (OGL), olive/gold brand theme, service cards, project showcase, client testimonials, and a contact section. Deployed on Vercel.',
     tech: ['React 19', 'TypeScript', 'Tailwind CSS v4', 'Motion', 'OGL (WebGL)', 'Vite', 'Vercel'],
-    githubUrl: 'https://github.com/justrhey/dmarc',
     demoUrl: 'https://dmarc-construction.vercel.app',
     featured: true,
     category: 'frontend',
