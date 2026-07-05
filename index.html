@@ -145,30 +145,29 @@ img { max-width: 100%; display: block; }
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  gap: 20px;
+  align-items: flex-start;
+  gap: 12px;
   flex: 1;
+  padding: 4px 0;
 }
 .stat-item {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
+  align-items: baseline;
+  gap: 8px;
 }
 .stat-value {
   font-family: 'Geist Mono', 'Geist', monospace;
-  font-size: 32px;
+  font-size: 18px;
   font-weight: 700;
   color: #0F172A;
-  line-height: 1;
+  line-height: 1.3;
+  min-width: 28px;
 }
 .stat-label {
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 500;
-  color: #94A3B8;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  white-space: nowrap;
+  color: #64748B;
+  letter-spacing: 0.3px;
 }
 
 /* ── Contact ── */
@@ -263,7 +262,7 @@ img { max-width: 100%; display: block; }
   .sidebar-id .id-meta { display: flex; flex-direction: column; justify-content: center; text-align: left; }
   .sidebar-id .id-role { justify-content: flex-start; }
   .sidebar-divider { width: 100%; }
-  .sidebar-stats { width: 100%; flex-direction: row; flex: none; gap: 0; justify-content: space-around; padding: 8px 0; }
+  .sidebar-stats { width: 100%; flex-direction: row; flex: none; justify-content: space-around; padding: 8px 0; }
   .sidebar-contact { width: 100%; }
   .sidebar-bottom { width: 100%; }
   .main-content { padding-top: 24px; }
