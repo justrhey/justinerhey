@@ -142,45 +142,33 @@ img { max-width: 100%; display: block; }
   color: #475569;
 }
 
-/* ── Navigation — left accent bar ── */
-.sidebar-nav { display: flex; flex-direction: column; gap: 1px; }
-.sidebar-nav-btn {
-  position: relative;
+/* ── Stats / Achievements ── */
+.sidebar-stats {
   display: flex;
+  justify-content: space-around;
+  padding: 14px 10px !important;
+  gap: 4px;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 7px 10px 7px 20px;
-  background: none;
-  border: none;
-  font-family: 'Geist', sans-serif;
-  font-size: 12px;
+  gap: 1px;
+}
+.stat-value {
+  font-family: 'Geist Mono', 'Geist', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A;
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 9px;
   font-weight: 500;
   color: #94A3B8;
-  cursor: pointer;
-  transition: color 0.2s, background 0.2s;
-  text-align: left;
-  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.sidebar-nav-btn::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 0;
-  background: #5B9BD5;
-  border-radius: 2px;
-  transition: height 0.25s ease, opacity 0.25s ease;
-  opacity: 0;
-}
-.sidebar-nav-btn.active::before {
-  height: 55%;
-  opacity: 1;
-}
-.sidebar-nav-btn:hover { color: #1E293B; background: #F8FAFC; }
-.sidebar-nav-btn.active { color: #0F172A; font-weight: 600; }
-.sidebar-nav-btn .label { flex: 1; }
 
 /* ── Contact ── */
 .sidebar-contact { padding: 10px 16px !important; }
@@ -277,10 +265,7 @@ img { max-width: 100%; display: block; }
     gap: 10px;
   }
   .sidebar-card { flex: 1; min-width: 200px; }
-  .sidebar-nav { flex-direction: row; flex-wrap: wrap; gap: 2px; }
-  .sidebar-nav-btn { flex: 1; min-width: 80px; justify-content: center; padding: 10px 12px; }
-  .sidebar-nav-btn::before { display: none; }
-  .sidebar-nav-btn.active { color: #5B9BD5; }
+  .sidebar-stats { justify-content: center; gap: 24px; padding: 12px 10px !important; }
   .sidebar-cv-btn { flex: 1; }
   .sidebar-contact { display: flex; flex-direction: row; flex-wrap: wrap; gap: 12px; }
   .sidebar-contact-item { border: none !important; padding: 0; }
@@ -1235,21 +1220,19 @@ footer {
       </div>
     </div>
 
-    <!-- Navigation -->
-    <div class="sidebar-card">
-      <div class="sidebar-nav" id="sidebarNav">
-        <button class="sidebar-nav-btn active" data-section="about" onclick="scrollToSection('about')">
-          <span class="label">Overview</span>
-        </button>
-        <button class="sidebar-nav-btn" data-section="projects" onclick="scrollToSection('projects')">
-          <span class="label">Projects</span>
-        </button>
-        <button class="sidebar-nav-btn" data-section="techstack" onclick="scrollToSection('techstack')">
-          <span class="label">Tech Stack</span>
-        </button>
-        <button class="sidebar-nav-btn" data-section="contact" onclick="scrollToSection('contact')">
-          <span class="label">Contact</span>
-        </button>
+    <!-- Stats / Achievements -->
+    <div class="sidebar-card sidebar-stats">
+      <div class="stat-item">
+        <span class="stat-value">7</span>
+        <span class="stat-label">Projects</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">20+</span>
+        <span class="stat-label">Technologies</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">3</span>
+        <span class="stat-label">Years Coding</span>
       </div>
     </div>
 
@@ -1496,10 +1479,6 @@ const navObs = new IntersectionObserver(entries => {
       const id = entry.target.id;
       navLinks.forEach(link => {
         link.classList.toggle('active', link.dataset.section === id);
-      });
-      // Also update sidebar nav
-      document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.section === id);
       });
     }
   });
