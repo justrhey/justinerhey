@@ -115,9 +115,35 @@ section { padding: 100px 40px; }
   section { padding: 60px 16px; }
 }
 
-.scroll-reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1), transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+.scroll-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
 .scroll-reveal.visible { opacity: 1; transform: translateY(0); }
 .scroll-stagger { transition-delay: calc(var(--i,0) * 80ms); }
+
+/* Card reveal — tilt-up entrance */
+.scroll-reveal-card {
+  opacity: 0;
+  transform: translateY(32px) rotateX(5deg);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  transform-origin: center bottom;
+  will-change: transform, opacity;
+}
+.scroll-reveal-card.visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+/* Scroll progress bar */
+.progress-bar {
+  position: fixed; top: 0; left: 0;
+  height: 1.5px;
+  width: 0%;
+  background: #f0f0f0;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: width;
+}
+.progress-bar.active { opacity: 1; }
 
 .txt-outline {
   color: transparent;
@@ -210,8 +236,10 @@ section { padding: 100px 40px; }
 .project-grid { display: grid; gap: 20px; }
 .project-row-1 { grid-template-columns: 1fr; }
 .project-row-2 { grid-template-columns: 1fr 1fr; }
+.project-row-3 { grid-template-columns: 1fr 1fr 1fr; }
 @media (max-width: 768px) {
   .project-row-2 { grid-template-columns: 1fr; }
+  .project-row-3 { grid-template-columns: 1fr; }
 }
 .project-card {
   background: #080808;
@@ -401,12 +429,60 @@ footer {
   .skills-canvas-wrap { height: 360px; }
   .contact-canvas-wrap { height: 160px; }
 }
+/* ═══════════════════════════════
+   SERVICES MARQUEE
+   ═══════════════════════════════ */
+.services-marquee {
+  position: relative;
+  border-top: 1px solid #1c1c1c;
+  border-bottom: 1px solid #1c1c1c;
+  background: #0a0a0a;
+  padding: 28px 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.services-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  animation: services-scroll 34s linear infinite;
+  will-change: transform;
+}
+.services-marquee:hover .services-track,
+.services-marquee:focus-within .services-track { animation-play-state: paused; }
+.services-group { display: flex; align-items: center; }
+.services-item {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(22px, 4vw, 40px);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f0f0f0;
+  white-space: nowrap;
+  padding: 0 26px;
+  transition: color 0.25s ease;
+}
+/* Dim the row on hover, spotlight the hovered service */
+.services-track:hover .services-item { color: #4a4a4a; }
+.services-item:hover { color: #f0f0f0; }
+.services-sep { font-size: 12px; color: #444; transform: translateY(-5px); }
+@keyframes services-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .services-track { animation: none; width: 100%; }
+  .services-group[aria-hidden="true"] { display: none; }
+  .services-group { flex-wrap: wrap; justify-content: center; }
+  .services-marquee { -webkit-mask-image: none; mask-image: none; }
+}
 </style>
 </head>
 <body>
 
 <!-- ─── Cursor ─── -->
 <div class="cursor-dot" id="cursor"></div>
+<div class="progress-bar" id="progressBar"></div>
 
 <!-- ─── Nav ─── -->
 <nav class="nav" id="navbar">
@@ -447,6 +523,30 @@ footer {
   </div>
 </section>
 
+
+<!-- ─── Services marquee ─── -->
+<section class="services-marquee" aria-label="What I build">
+  <div class="services-track">
+    <div class="services-group">
+      <span class="services-item">Backend Systems</span><span class="services-sep">✦</span>
+      <span class="services-item">AI Automation</span><span class="services-sep">✦</span>
+      <span class="services-item">REST &amp; API Design</span><span class="services-sep">✦</span>
+      <span class="services-item">Full-Stack Web Apps</span><span class="services-sep">✦</span>
+      <span class="services-item">Landing Pages</span><span class="services-sep">✦</span>
+      <span class="services-item">Database Architecture</span><span class="services-sep">✦</span>
+      <span class="services-item">Workflow Automation</span><span class="services-sep">✦</span>
+    </div>
+    <div class="services-group" aria-hidden="true">
+      <span class="services-item">Backend Systems</span><span class="services-sep">✦</span>
+      <span class="services-item">AI Automation</span><span class="services-sep">✦</span>
+      <span class="services-item">REST &amp; API Design</span><span class="services-sep">✦</span>
+      <span class="services-item">Full-Stack Web Apps</span><span class="services-sep">✦</span>
+      <span class="services-item">Landing Pages</span><span class="services-sep">✦</span>
+      <span class="services-item">Database Architecture</span><span class="services-sep">✦</span>
+      <span class="services-item">Workflow Automation</span><span class="services-sep">✦</span>
+    </div>
+  </div>
+</section>
 
 <!-- ─── About ─── -->
 <section class="about-section" id="about">
@@ -495,7 +595,7 @@ footer {
     <div class="project-grid project-row-1" id="projectGrid1"></div>
     <div class="project-grid project-row-2" id="projectGrid2" style="margin-top:20px"></div>
     <div class="project-grid project-row-1" id="projectGrid3" style="margin-top:20px"></div>
-    <div class="project-grid project-row-2" id="projectGrid4" style="margin-top:20px"></div>
+    <div class="project-grid project-row-3" id="projectGrid4" style="margin-top:20px"></div>
   </div>
 </section>
 
@@ -561,6 +661,16 @@ footer {
    ═══════════════════════════════════════════════ */
 const PROJECTS = [
   {
+    id: 'velour',
+    name: 'VÉLOUR',
+    desc: 'Premium wine showcase landing page with a procedurally generated 3D Bordeaux bottle rendered in Three.js. Black-and-gold editorial design with wine-liquid wave dividers, parallax scroll narrative, and a calling-card intro sequence.',
+    tags: ['Next.js 16', 'React 19', 'Three.js', 'R3F', 'GSAP', 'Lenis'],
+    year: '2026',
+    img: 'images/velour-label.png',
+    live: 'https://ve-lour.vercel.app/',
+    github: 'https://github.com/justrhey/VeLOUR'
+  },
+  {
     id: 'ehr-blockchain',
     name: 'EHR Blockchain',
     desc: 'Blockchain-notarized Electronic Health Records system built in Rust with Actix-web. Features AES-256-GCM field-level encryption, SHA-256 content hashing anchored on-chain with full version history.',
@@ -591,13 +701,12 @@ const PROJECTS = [
   },
   {
     id: 'dmarc',
-    name: 'DMARC Dashboard',
-    desc: 'Email authentication monitoring dashboard that aggregates and visualizes DMARC, SPF, and DKIM reports. Helps domain owners detect spoofing and improve email deliverability.',
-    tags: ['Django', 'Python', 'PostgreSQL', 'Chart.js', 'Linux'],
-    year: '2024',
+    name: 'DM ARC Construction',
+    desc: 'Premium static landing page for DM ARC Construction Services. Animated hero with a WebGL backdrop, smooth scroll-reveal sections, and a refined editorial type system showcasing the firm\'s services and past work.',
+    tags: ['React 19', 'TypeScript', 'Vite', 'Tailwind CSS v4', 'Motion', 'WebGL'],
+    year: '2025',
     img: 'images/dmarc/home-dmarc.jpeg',
-    live: 'https://dmarc-construction.vercel.app/',
-    github: 'https://github.com/justrhey/capstone'
+    live: 'https://dmarc-construction.vercel.app/'
   },
   {
     id: 'cassie',
@@ -624,13 +733,109 @@ const PROJECTS = [
 const CYCLE_WORDS = ['Builds', 'Ships', 'Crafts', 'Codes'];
 
 const SKILL_ITEMS = [
-  'n8n', 'Claude Code', 'Anti-Gravity',
+  'n8n', 'Claude Code',
   'Java', 'Spring Boot', 'Rust', 'Actix-web', 'Python', 'Django REST', 'Laravel',
-  'PostgreSQL', 'MySQL', 'JWT', 'bcrypt', 'RBAC', 'AES-256', 'Soroban',
+  'PostgreSQL', 'MySQL', 'JWT',
   'React', 'TypeScript',
-  'Linux', 'CLI', 'AD', 'DNS',
-  'Git', 'Bash', 'DevTools', 'REST API'
+  'Linux', 'Git', 'Bash',
+  'Anti-Gravity', 'Soroban',
 ];
+
+/* ═══════════════════════════════════════════════
+   SCROLL STATE TRACKER
+   ═══════════════════════════════════════════════ */
+const scrollState = { y: 0, targetY: 0, velocity: 0, prevY: 0, heroFactor: 1, globeSpeed: 1 };
+let scrollFrame = null;
+
+function tickScroll() {
+  const now = window.scrollY;
+  scrollState.velocity = now - scrollState.prevY;
+  scrollState.prevY = now;
+  scrollState.targetY = now;
+  scrollState.y += (scrollState.targetY - scrollState.y) * 0.08;
+  scrollState.heroFactor = Math.max(0, Math.min(1, 1 - scrollState.targetY / 500));
+  scrollState.globeSpeed = Math.max(0.25, Math.min(3, Math.abs(scrollState.velocity) * 0.025 + 0.25));
+  const pct = (scrollState.y / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+  const pb = document.getElementById('progressBar');
+  pb.style.width = pct + '%';
+  pb.classList.toggle('active', scrollState.y > 60);
+  if (Math.abs(scrollState.targetY - scrollState.y) > 0.5) {
+    scrollFrame = requestAnimationFrame(tickScroll);
+  } else {
+    scrollFrame = null;
+    scrollState.y = scrollState.targetY;
+  }
+}
+
+window.addEventListener('scroll', () => {
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(tickScroll);
+}, { passive: true });
+
+/* ═══════════════════════════════════════════════
+   SKILL ICON SPRITES — simpleicons.org via Blob URL
+   ═══════════════════════════════════════════════ */
+
+const ICON_SLUGS = {
+  'n8n': 'n8n', 'Claude Code': 'anthropic',
+  'Java': 'openjdk', 'Spring Boot': 'spring', 'Rust': 'rust', 'Actix-web': 'actix',
+  'Python': 'python', 'Django REST': 'django', 'Laravel': 'laravel',
+  'PostgreSQL': 'postgresql', 'MySQL': 'mysql', 'JWT': 'jsonwebtokens',
+  'React': 'react', 'TypeScript': 'typescript',
+  'Linux': 'linux', 'Git': 'git', 'Bash': 'gnubash',
+};
+
+const iconImages = {};
+function loadIcon(name, cb) {
+  const slug = ICON_SLUGS[name];
+  if (!slug) { cb(); return; }
+  fetch('https://cdn.simpleicons.org/' + slug + '/fff')
+    .then(function(r) { return r.text(); })
+    .then(function(svg) {
+      var img = new Image();
+      var blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      img.onload = function() { iconImages[name] = img; URL.revokeObjectURL(url); cb(); };
+      img.onerror = function() { URL.revokeObjectURL(url); cb(); };
+      img.src = url;
+    })
+    .catch(function() { cb(); });
+}
+function preloadAllIcons(cb) {
+  var total = SKILL_ITEMS.length, done = 0;
+  SKILL_ITEMS.forEach(function(n) {
+    loadIcon(n, function() { done++; if (done >= total && cb) cb(); });
+  });
+}
+
+function makeSkillSprite(name) {
+  var S = 120, c = document.createElement('canvas');
+  c.width = c.height = S;
+  var ctx = c.getContext('2d');
+  var img = iconImages[name];
+  if (img) {
+    var siz = S * 0.55;
+    ctx.drawImage(img, (S - siz) / 2, (S - siz) / 2, siz, siz);
+  } else {
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#f0f0f0';
+    var fs = 28;
+    ctx.font = '500 ' + fs + 'px Inter, sans-serif';
+    while (ctx.measureText(name).width > S - 14 && fs > 10) {
+      fs -= 2;
+      ctx.font = '500 ' + fs + 'px Inter, sans-serif';
+    }
+    ctx.fillText(name, S / 2, S / 2 + 1);
+  }
+  var tex = new THREE.CanvasTexture(c);
+  tex.needsUpdate = true;
+  var mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: true, depthWrite: false });
+  var s = new THREE.Sprite(mat);
+  s.scale.set(0.85, 0.85, 1);
+  return s;
+}
+
+var techOrbiters = [];
+var techGlobeOrbitX = 0, techGlobeOrbitY = 0, techGlobeTargetX = 0, techGlobeTargetY = 0;
 
 /* ═══════════════════════════════════════════════
    CURSOR
@@ -716,8 +921,12 @@ const revealObs = new IntersectionObserver(entries => {
       entry.target.classList.add('visible');
     }
   });
-}, { threshold: 0.08 });
-document.querySelectorAll('.scroll-reveal').forEach(el => revealObs.observe(el));
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+function observeReveals() {
+  document.querySelectorAll('.scroll-reveal, .scroll-reveal-card').forEach(el => revealObs.observe(el));
+}
+observeReveals();
 
 /* ═══════════════════════════════════════════════
    PROJECT CARDS (with real images)
@@ -730,20 +939,27 @@ function buildProjects() {
     document.getElementById('projectGrid4')
   ];
 
-  // Row 1: big card
-  grids[0].innerHTML = projectCardHTML(PROJECTS[0], 0, true);
-  // Row 2: 2 standard
-  grids[1].innerHTML = projectCardHTML(PROJECTS[1], 1, false) + projectCardHTML(PROJECTS[2], 2, false);
-  // Row 3: big card
-  grids[2].innerHTML = projectCardHTML(PROJECTS[3], 3, true);
-  // Row 4: 2 standard
-  grids[3].innerHTML = projectCardHTML(PROJECTS[4], 4, false) + projectCardHTML(PROJECTS[5], 5, false);
+  // Layout: alternating big -> 2 standard -> big -> 3 standard
+  const layout = [1, 2, 1, 3];
+  let idx = 0;
+  for (let g = 0; g < grids.length; g++) {
+    let html = '';
+    for (let c = 0; c < layout[g]; c++) {
+      if (idx < PROJECTS.length) {
+        html += projectCardHTML(PROJECTS[idx], idx, layout[g] === 1, c);
+        idx++;
+      }
+    }
+    grids[g].innerHTML = html;
+  }
 }
 buildProjects();
+// Observe newly created card elements
+document.querySelectorAll('.scroll-reveal-card').forEach(el => revealObs.observe(el));
 
-function projectCardHTML(p, idx, isBig) {
+function projectCardHTML(p, idx, isBig, staggerIdx) {
   return `
-    <div class="project-card" data-index="${idx}">
+    <div class="project-card scroll-reveal-card" data-index="${idx}" style="--i:${staggerIdx}">
       <a href="${p.live || p.github || '#'}" target="_blank" rel="noopener" class="project-card-link">
         <div class="project-card-img ${isBig ? 'big' : ''}">
           <img src="${p.img}" alt="${p.name}" loading="lazy">
@@ -877,88 +1093,101 @@ function initHeroScene() {
   container.prepend(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x080808, 8, 24);
+  scene.fog = new THREE.Fog(0x080808, 10, 28);
 
   const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 50);
-  camera.position.set(0, 0, 12);
+  camera.position.set(0, 0.4, 14);
 
-  const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+  const ambient = new THREE.AmbientLight(0xffffff, 0.2);
   scene.add(ambient);
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
   dirLight.position.set(5, 8, 6);
   scene.add(dirLight);
-  const pointLight = new THREE.PointLight(0xffffff, 0.8, 20);
+  const pointLight = new THREE.PointLight(0xffffff, 0.5, 20);
   scene.add(pointLight);
 
-  const shapes = [];
-  const configs = [
-    { geo: new THREE.TorusKnotGeometry(0.6, 0.2, 64, 8), pos: [-3, 1.5, -2], rotSpeed: [0.3, 0.5, 0.1], driftSpeed: 0.15 },
-    { geo: new THREE.IcosahedronGeometry(0.55, 0), pos: [2.5, -1, -1], rotSpeed: [0.2, 0.4, 0], driftSpeed: 0.12 },
-    { geo: new THREE.OctahedronGeometry(0.5, 0), pos: [-1.5, -2, -4], rotSpeed: [0.5, 0.3, 0.2], driftSpeed: 0.18 },
-    { geo: new THREE.TorusGeometry(0.5, 0.2, 16, 32), pos: [3.8, 2, -3], rotSpeed: [0.4, 0.2, 0], driftSpeed: 0.1 },
-    { geo: new THREE.TorusKnotGeometry(0.4, 0.15, 48, 6), pos: [-3.5, -1.8, -5], rotSpeed: [0.6, 0.4, 0.3], driftSpeed: 0.2 },
-    { geo: new THREE.IcosahedronGeometry(0.7, 1), pos: [1.8, 2.8, -6], rotSpeed: [0.15, 0.25, 0.1], driftSpeed: 0.08 },
-    { geo: new THREE.OctahedronGeometry(0.35, 0), pos: [-2, 3, -7], rotSpeed: [0.7, 0.5, 0], driftSpeed: 0.22 },
-    { geo: new THREE.TorusGeometry(0.6, 0.15, 12, 24), pos: [4, -2.5, -8], rotSpeed: [0.3, 0.3, 0.2], driftSpeed: 0.14 },
+  // --- Node graph --- backend systems constellation ---
+  const P = [
+    [-3.0, 2.0, -4], [-2.2, 0, -3], [-2.5, -2.0, -5],
+    [0, 3.0, -3.8],  [0, 0.5, -2.2], [0, -2.5, -4.5],
+    [3.0, 2.0, -4],  [2.2, 0, -3],   [2.5, -2.0, -5],
+    [-1.5, 3.2, -6], [1.5, 3.2, -6], [-1.5, -3.0, -6.5],
+    [1.5, -3.0, -6.5], [-3.5, -0.5, -7], [3.5, -0.5, -7],
+    [0, 0, -5.5],    [-0.8, -1.2, -4], [0.8, -1.2, -4],
   ];
 
-  configs.forEach(cfg => {
-    const mat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.3, metalness: 0.1 });
-    const mesh = new THREE.Mesh(cfg.geo, mat);
-    mesh.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
-    mesh.userData = { rotSpeed: cfg.rotSpeed, driftSpeed: cfg.driftSpeed, startY: cfg.pos[1], phase: Math.random() * Math.PI * 2 };
-    scene.add(mesh);
-    shapes.push(mesh);
+  const nodeMat = new THREE.MeshStandardMaterial({
+    color: 0xf0f0f0, roughness: 0.2, metalness: 0.1,
+    emissive: 0xf0f0f0, emissiveIntensity: 0.12,
+  });
+  const nodeGeo = new THREE.SphereGeometry(0.07, 8, 8);
+  const nodes = P.map((p, i) => {
+    const m = new THREE.Mesh(nodeGeo, nodeMat);
+    m.position.set(p[0], p[1], p[2]);
+    m.userData = { phase: i * 0.9 };
+    scene.add(m);
+    return m;
+  });
+
+  // --- Connection lines between nearby nodes ---
+  const lineMat = new THREE.LineBasicMaterial({ color: 0x222222, transparent: true, opacity: 0.3 });
+  for (let i = 0; i < P.length; i++) {
+    for (let j = i + 1; j < P.length; j++) {
+      const dx = P[i][0] - P[j][0], dy = P[i][1] - P[j][1], dz = P[i][2] - P[j][2];
+      if (dx*dx + dy*dy + dz*dz < 12) {
+        const g = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(P[i][0], P[i][1], P[i][2]),
+          new THREE.Vector3(P[j][0], P[j][1], P[j][2])
+        ]);
+        scene.add(new THREE.Line(g, lineMat));
+      }
+    }
+  }
+
+  // --- Distant star field ---
+  const starCount = 120;
+  const starPos = new Float32Array(starCount * 3);
+  for (let i = 0; i < starCount * 3; i++) starPos[i] = (Math.random() - 0.5) * 24;
+  const starGeo = new THREE.BufferGeometry();
+  starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+  const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color: 0x222222, size: 0.03, transparent: true }));
+  scene.add(stars);
+
+  // --- Brighter core nodes ---
+  const coreIdxs = [1, 4, 7, 13, 14];
+  const coreMat = new THREE.MeshStandardMaterial({
+    color: 0xf0f0f0, roughness: 0.1,
+    emissive: 0xf0f0f0, emissiveIntensity: 0.35,
+  });
+  const coreGeo = new THREE.SphereGeometry(0.12, 10, 10);
+  coreIdxs.forEach(i => {
+    const m = new THREE.Mesh(coreGeo, coreMat);
+    m.position.set(P[i][0], P[i][1], P[i][2]);
+    m.userData = { phase: i * 0.9, isCore: true };
+    scene.add(m);
+    nodes.push(m);
   });
 
   let orbitAngle = 0;
 
   sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
-    shapes.forEach((mesh) => {
-      const ud = mesh.userData;
-      mesh.rotation.x += ud.rotSpeed[0] * delta;
-      mesh.rotation.y += ud.rotSpeed[1] * delta;
-      mesh.rotation.z += ud.rotSpeed[2] * delta;
-      mesh.position.y += ud.driftSpeed * delta;
-      if (mesh.position.y > 5) {
-        mesh.position.y = -4;
-        mesh.position.x = (Math.random() - 0.5) * 8;
-        mesh.position.z = -(Math.random() * 6 + 2);
-      }
+    const sf = 0.6 + 0.4 * scrollState.heroFactor;
+
+    nodes.forEach(m => {
+      const pulse = 0.85 + Math.sin(elapsed * 0.5 + m.userData.phase) * 0.15;
+      const s = pulse * (scrollState.heroFactor * 0.35 + 0.65);
+      m.scale.setScalar(s);
     });
 
-    orbitAngle += delta * 0.4;
-    pointLight.position.x = Math.sin(orbitAngle) * 5;
-    pointLight.position.z = Math.cos(orbitAngle) * 5;
-    pointLight.position.y = Math.sin(orbitAngle * 0.7) * 3;
+    stars.rotation.y += delta * 0.015 * sf;
+    stars.rotation.x += delta * 0.008 * sf;
+
+    orbitAngle += delta * 0.2 * (0.4 + 0.6 * scrollState.heroFactor);
+    pointLight.position.x = Math.sin(orbitAngle) * 6;
+    pointLight.position.z = Math.cos(orbitAngle) * 6;
+    pointLight.position.y = Math.sin(orbitAngle * 0.7) * 2;
   }, container);
 }
-
-
-/* ═══════════════════════════════════════════════
-   RESIZE
-   ═══════════════════════════════════════════════ */
-function handleResize() {
-  sceneManager.scenes.forEach(entry => {
-    if (!entry.container) return;
-    const w = entry.container.clientWidth;
-    const h = entry.container.clientHeight || 420;
-    const aspect = w / h;
-    if (entry.camera.isPerspectiveCamera) {
-      entry.camera.aspect = aspect;
-      entry.camera.updateProjectionMatrix();
-    }
-    entry.renderer.setSize(w, h);
-  });
-}
-window.addEventListener('resize', handleResize);
-
-/* ═══════════════════════════════════════════════
-   TECH STACK — 3D GLOBE
-   ═══════════════════════════════════════════════ */
-let techGlobeOrbitX = 0, techGlobeOrbitY = 0;
-let techGlobeTargetX = 0, techGlobeTargetY = 0;
-let techOrbiters = [];
 
 function initTechScene() {
   const container = document.getElementById('techCanvasWrap');
@@ -1000,69 +1229,49 @@ function initTechScene() {
   const innerGlobe = new THREE.LineSegments(innerWire, new THREE.LineBasicMaterial({ color: 0x333333 }));
   scene.add(innerGlobe);
 
-  // === Orbital rings ===
-  function makeRing(radius, segments, tiltX, tiltZ, color) {
-    const pts = [];
-    for (let i = 0; i <= segments; i++) {
-      const theta = (i / segments) * Math.PI * 2;
-      pts.push(new THREE.Vector3(Math.cos(theta) * radius, Math.sin(theta) * radius * 0.3, 0));
+  // === Planetary orbit rings & sprites ===
+  function addPlanetRing(radius, tilt) {
+    const seg = 48, pts = [];
+    const cT = Math.cos(tilt), sT = Math.sin(tilt);
+    for (let i = 0; i <= seg; i++) {
+      const theta = (i / seg) * Math.PI * 2;
+      const x = Math.cos(theta) * radius;
+      const z = Math.sin(theta) * radius;
+      pts.push(new THREE.Vector3(x, -z * sT, z * cT));
     }
-    const ringGeo = new THREE.BufferGeometry().setFromPoints(pts);
-    const ring = new THREE.Line(ringGeo, new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.3 }));
-    ring.rotation.x = tiltX;
-    ring.rotation.z = tiltZ;
+    const ring = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(pts),
+      new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.12 })
+    );
     scene.add(ring);
-    return ring;
   }
-  makeRing(3.2, 48, 0.3, 0.2, 0x444444);
-  makeRing(3.2, 48, -0.5, 0.6, 0x333333);
-  makeRing(3.2, 48, 0.8, -0.3, 0x222222);
 
-  // === Orbiting text sprites ===
-  const orbitRadius = 4.0;
-
-  function makeTextSprite(text) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 512;
-    canvas.height = 96;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = 'Bold 36px Inter, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.strokeStyle = '#f0f0f0';
-    ctx.lineWidth = 2.5;
-    ctx.strokeText(text, canvas.width / 2, canvas.height / 2);
-    ctx.fillStyle = '#f0f0f0';
-    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.needsUpdate = true;
-    const mat = new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: true, depthWrite: false });
-    const sprite = new THREE.Sprite(mat);
-    sprite.scale.set(2.5, 0.5, 1);
-    return sprite;
-  }
+  var drawnOrbitRings = {};
+  var totalItems = SKILL_ITEMS.length;
 
   SKILL_ITEMS.forEach((name, i) => {
-    const total = SKILL_ITEMS.length;
-    const angleOffset = (i / total) * Math.PI * 2;
-    const verticalOffset = (i - (total - 1) / 2) * 0.25;
+    var frac = i / Math.max(totalItems - 1, 1);
+    var radius = 2.4 + frac * 1.8;            // 2.4 → 4.2
+    var tilt = (i - (totalItems - 1) / 2) * 0.09; // even spread around equator
+    var speed = 0.06 + (1 - frac) * 0.18;      // inner = faster
 
-    const sprite = makeTextSprite(name);
-    sprite.position.set(
-      Math.cos(angleOffset) * orbitRadius,
-      verticalOffset,
-      Math.sin(angleOffset) * orbitRadius
-    );
-    sprite.userData = {
-      angleOffset,
-      orbitRadius,
-      verticalOffset,
-      orbitSpeed: 0.12 + (i % 6) * 0.025,
-      phase: Math.random() * Math.PI * 2
-    };
+    var a0 = (i / totalItems) * Math.PI * 2;
+    var cT = Math.cos(tilt), sT = Math.sin(tilt);
+    var x0 = Math.cos(a0) * radius;
+    var z0 = Math.sin(a0) * radius;
+
+    var sprite = makeSkillSprite(name);
+    sprite.position.set(x0, -z0 * sT, z0 * cT);
+    sprite.userData = { angle: a0, radius: radius, tilt: tilt, speed: speed };
     scene.add(sprite);
     techOrbiters.push(sprite);
+
+    // Only draw a ring once per unique orbit (rounded key)
+    var rk = Math.round(radius * 2) + '|' + Math.round(tilt * 4);
+    if (!drawnOrbitRings[rk]) {
+      drawnOrbitRings[rk] = true;
+      addPlanetRing(radius, tilt);
+    }
   });
 
   // === Mouse interaction ===
@@ -1074,17 +1283,20 @@ function initTechScene() {
   });
 
   sceneManager.add(renderer, scene, camera, (delta, elapsed) => {
-    globe.rotation.x += delta * 0.08;
-    globe.rotation.y += delta * 0.12;
-    innerGlobe.rotation.x -= delta * 0.05;
-    innerGlobe.rotation.y += delta * 0.08;
+    globe.rotation.x += delta * 0.08 * scrollState.globeSpeed;
+    globe.rotation.y += delta * 0.12 * scrollState.globeSpeed;
+    innerGlobe.rotation.x -= delta * 0.05 * scrollState.globeSpeed;
+    innerGlobe.rotation.y += delta * 0.08 * scrollState.globeSpeed;
 
     techOrbiters.forEach((sprite) => {
-      const ud = sprite.userData;
-      ud.angleOffset += delta * ud.orbitSpeed;
-      sprite.position.x = Math.cos(ud.angleOffset) * ud.orbitRadius;
-      sprite.position.z = Math.sin(ud.angleOffset) * ud.orbitRadius;
-      sprite.position.y = ud.verticalOffset + Math.sin(elapsed * 0.5 + ud.phase) * 0.3;
+      var ud = sprite.userData;
+      ud.angle += delta * ud.speed * scrollState.globeSpeed;
+      var a = ud.angle, r = ud.radius, t = ud.tilt;
+      var cA = Math.cos(a), sA = Math.sin(a);
+      var cT = Math.cos(t), sT = Math.sin(t);
+      sprite.position.x = cA * r;
+      sprite.position.z = sA * r * cT;
+      sprite.position.y = sA * r * (-sT);
     });
 
     techGlobeTargetX = -mouseX * 1.2;
@@ -1099,13 +1311,34 @@ function initTechScene() {
 }
 
 /* ═══════════════════════════════════════════════
+   RESIZE
+   ═══════════════════════════════════════════════ */
+function handleResize() {
+  window.dispatchEvent(new Event('resize'));
+}
+
+window.addEventListener('resize', function() {
+  sceneManager.scenes.forEach(function(entry) {
+    var container = entry.container;
+    if (!container) return;
+    var w = container.clientWidth;
+    var h = container.clientHeight || 400;
+    entry.renderer.setSize(w, h);
+    entry.camera.aspect = w / h;
+    entry.camera.updateProjectionMatrix();
+  });
+});
+
+/* ═══════════════════════════════════════════════
    INIT
    ═══════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  initHeroScene();
-  initTechScene();
-  sceneManager.start();
-  handleResize();
+  preloadAllIcons(function() {
+    initHeroScene();
+    initTechScene();
+    sceneManager.start();
+    handleResize();
+  });
 });
 
 window.addEventListener('beforeunload', () => {
