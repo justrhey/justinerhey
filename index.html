@@ -1229,33 +1229,23 @@ function initTechScene() {
   const innerGlobe = new THREE.LineSegments(innerWire, new THREE.LineBasicMaterial({ color: 0x333333 }));
   scene.add(innerGlobe);
 
-  // === Planetary orbit rings & sprites ===
-  function addPlanetRing(radius, tilt) {
-    const seg = 48, pts = [];
-    const cT = Math.cos(tilt), sT = Math.sin(tilt);
-    for (let i = 0; i <= seg; i++) {
-      const theta = (i / seg) * Math.PI * 2;
-      const x = Math.cos(theta) * radius;
-      const z = Math.sin(theta) * radius;
-      pts.push(new THREE.Vector3(x, -z * sT, z * cT));
-    }
-    const ring = new THREE.Line(
-      new THREE.BufferGeometry().setFromPoints(pts),
-      new THREE.LineBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.12 })
-    );
-    scene.add(ring);
+  // === Scrambled orbit sprites ===
+  function hashStr(s) {
+    var h = 0;
+    for (var j = 0; j < s.length; j++) { h = ((h << 5) - h + s.charCodeAt(j)) | 0; }
+    return Math.abs(h);
   }
 
-  var drawnOrbitRings = {};
-  var totalItems = SKILL_ITEMS.length;
-
   SKILL_ITEMS.forEach((name, i) => {
-    var frac = i / Math.max(totalItems - 1, 1);
-    var radius = 2.4 + frac * 1.8;            // 2.4 → 4.2
-    var tilt = (i - (totalItems - 1) / 2) * 0.09; // even spread around equator
-    var speed = 0.06 + (1 - frac) * 0.18;      // inner = faster
+    var seed = hashStr(name) + i * 7919;
+    // Deterministic pseudo-random from seed
+    function rnd() { seed = (seed * 16807 + 0) % 2147483647; return (seed & 0x7fffffff) / 2147483647; }
 
-    var a0 = (i / totalItems) * Math.PI * 2;
+    var radius = 2.0 + rnd() * 2.6;           // 2.0 – 4.6
+    var tilt = (rnd() - 0.5) * 1.6;           // -0.8 – 0.8 rad
+    var speed = 0.04 + rnd() * 0.28;           // 0.04 – 0.32
+    var a0 = rnd() * Math.PI * 2;
+
     var cT = Math.cos(tilt), sT = Math.sin(tilt);
     var x0 = Math.cos(a0) * radius;
     var z0 = Math.sin(a0) * radius;
@@ -1265,13 +1255,6 @@ function initTechScene() {
     sprite.userData = { angle: a0, radius: radius, tilt: tilt, speed: speed };
     scene.add(sprite);
     techOrbiters.push(sprite);
-
-    // Only draw a ring once per unique orbit (rounded key)
-    var rk = Math.round(radius * 2) + '|' + Math.round(tilt * 4);
-    if (!drawnOrbitRings[rk]) {
-      drawnOrbitRings[rk] = true;
-      addPlanetRing(radius, tilt);
-    }
   });
 
   // === Mouse interaction ===
