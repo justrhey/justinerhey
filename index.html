@@ -6,11 +6,18 @@
   <title>Justine Rhey — Backend &amp; AI Engineer</title>
   <meta name="description" content="Justine Rhey M. Tambong — Backend developer and AI engineer. Builds production-grade systems.">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+  <link rel="icon" href="favicon.ico">
 <style>
+@font-face{font-family:'Geist';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/geist-latin-300.woff2)format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/geist-latin-400.woff2)format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/geist-latin-500.woff2)format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/geist-latin-600.woff2)format('woff2')}
+@font-face{font-family:'Geist';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/geist-latin-700.woff2)format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:300;font-display:swap;src:url(fonts/geist-mono-latin-300.woff2)format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/geist-mono-latin-400.woff2)format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/geist-mono-latin-500.woff2)format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/geist-mono-latin-600.woff2)format('woff2')}
+@font-face{font-family:'Geist Mono';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/geist-mono-latin-700.woff2)format('woff2')}
 /* ═══════════════════════════════════════════════
    DESIGN SYSTEM: Minimalist White + Creamy Blue
    ─────────────────────────────────────────────
@@ -30,7 +37,7 @@ html { scroll-behavior: smooth; }
 body {
   background: #F8FAFC;
   color: #1E293B;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 14px;
   line-height: 1.75;
   overflow-x: hidden;
@@ -145,7 +152,7 @@ img { max-width: 100%; display: block; }
   padding: 7px 10px 7px 20px;
   background: none;
   border: none;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #94A3B8;
@@ -238,7 +245,7 @@ img { max-width: 100%; display: block; }
   color: #1E293B;
   border: 1.5px solid #E2E8F0;
   border-radius: 8px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -317,7 +324,7 @@ img { max-width: 100%; display: block; }
   z-index: 100;
 }
 .nav-logo {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -434,7 +441,7 @@ section { padding: 80px 0; }
   color: #94A3B8;
   text-transform: uppercase;
   margin-bottom: 14px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
 }
 .hero-canvas-wrap {
   position: relative;
@@ -457,7 +464,7 @@ section { padding: 80px 0; }
   pointer-events: none;
 }
 .hero-heading h1 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(44px, 9vw, 110px);
   line-height: 0.88;
   margin: 0;
@@ -518,7 +525,7 @@ section { padding: 80px 0; }
 .services-marquee:focus-within .services-track { animation-play-state: paused; }
 .services-group { display: flex; align-items: center; }
 .services-item {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(18px, 3vw, 32px);
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -548,7 +555,7 @@ section { padding: 80px 0; }
 .about-section { padding-top: 60px; }
 .about-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
 .about-heading h2 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(44px, 7vw, 88px);
   line-height: 0.85;
   font-weight: 700;
@@ -573,7 +580,7 @@ section { padding: 80px 0; }
 .stat-box:nth-child(4) { padding-bottom: 0; }
 .stat-box:nth-child(odd) { padding-right: 20px; }
 .stat-num {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 32px;
   font-weight: 700;
   line-height: 1;
@@ -599,7 +606,7 @@ section { padding: 80px 0; }
 .projects-section { padding-top: 60px; }
 .projects-title { margin-bottom: 40px; }
 .projects-title h2 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 700;
   line-height: 0.9;
@@ -649,7 +656,7 @@ section { padding: 80px 0; }
   padding: 18px 22px 22px;
 }
 .project-card-index {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1px;
@@ -657,7 +664,7 @@ section { padding: 80px 0; }
   margin-bottom: 6px;
 }
 .project-card-name {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 19px;
   font-weight: 700;
   color: #1E293B;
@@ -780,7 +787,7 @@ section { padding: 80px 0; }
   border: 1px solid #D4E4F0;
 }
 .modal-title {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 32px;
   font-weight: 700;
   text-transform: uppercase;
@@ -854,7 +861,7 @@ section { padding: 80px 0; }
   pointer-events: none;
 }
 .skills-overlay h2 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(44px, 7vw, 72px);
   font-weight: 700;
   text-transform: uppercase;
@@ -872,7 +879,7 @@ section { padding: 80px 0; }
 .footer-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
 
 .footer-contact h2 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: clamp(36px, 5vw, 56px);
   font-weight: 700;
   line-height: 0.85;
@@ -901,7 +908,7 @@ section { padding: 80px 0; }
 .footer-social::after { content: " ↗"; }
 
 .footer-form-wrap h3 {
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 24px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -933,7 +940,7 @@ section { padding: 80px 0; }
   border: 1px solid #E2E8F0;
   border-radius: 10px;
   padding: 14px 16px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 14px;
   color: #1E293B;
   outline: none;
@@ -957,7 +964,7 @@ section { padding: 80px 0; }
   border-radius: 10px;
   color: #FFFFFF;
   padding: 16px 24px;
-  font-family: 'Archivo', sans-serif;
+  font-family: 'Geist Mono', 'Geist', monospace;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -967,7 +974,7 @@ section { padding: 80px 0; }
   margin-top: 4px;
 }
 .form-submit:hover { background: #334155; transform: translateY(-1px); }
-.form-submit .arrow { font-size: 18px; font-family: 'Space Grotesk', sans-serif; }
+.form-submit .arrow { font-size: 18px; font-family: 'Geist', sans-serif; }
 .form-status {
   font-size: 12px;
   color: #64748B;
@@ -1007,7 +1014,7 @@ footer {
   position: fixed; inset: 0;
   display: flex; align-items: center; justify-content: center;
   background: #F8FAFC; color: #1E293B;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Geist', sans-serif;
   font-size: 14px; z-index: 9999;
   text-align: center; padding: 24px;
 }
@@ -1217,7 +1224,7 @@ footer {
     <!-- ID Card -->
     <div class="sidebar-card sidebar-id">
       <div class="id-photo">
-        <img src="images/1764dc98-3aa0-4e23-b396-6ff2eb956e74.png" alt="Justine Rhey" loading="lazy">
+        <img src="images/profile.webp" alt="Justine Rhey" onerror="this.onerror=null;this.parentElement.innerHTML='<span style=font-size:36px>👤</span>'" loading="eager">
       </div>
       <p class="id-name">Justine Rhey</p>
       <p class="id-handle">@justrhey</p>
@@ -1452,10 +1459,10 @@ function makeSkillSprite(name) {
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillStyle = '#1E293B';
     var fs = 28;
-    ctx.font = '500 ' + fs + 'px Space Grotesk, sans-serif';
+    ctx.font = '500 ' + fs + 'px Geist, sans-serif';
     while (ctx.measureText(name).width > S - 14 && fs > 10) {
       fs -= 2;
-      ctx.font = '500 ' + fs + 'px Space Grotesk, sans-serif';
+      ctx.font = '500 ' + fs + 'px Geist, sans-serif';
     }
     ctx.fillText(name, S / 2, S / 2 + 1);
   }
