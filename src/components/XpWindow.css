@@ -1,0 +1,186 @@
+/* ───────────────────────────────────────────────────────────
+   XpWindow — Windows XP application window frame
+   ─────────────────────────────────────────────────────────── */
+
+.xp-window {
+  position: absolute;
+  background: #ECE9D8; /* XP face color */
+  border: 2px solid;
+  border-color: #FEFEFE #0A0A0A #0A0A0A #FEFEFE;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.35), inset 0 0 0 1px #A0A0A0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 100px;
+  animation: xpWindowEnter 0.2s ease;
+}
+
+@keyframes xpWindowEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ─── Title bar ─── */
+.xpw-title-bar {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 4px 0 6px;
+  gap: 6px;
+  background: linear-gradient(180deg, #0A5EB8 0%, #1860B0 10%, #297AC8 50%, #0F5CAC 100%);
+  flex-shrink: 0;
+  cursor: default;
+  user-select: none;
+  border-radius: 2px 2px 0 0;
+}
+
+.xpw-title-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.xpw-btn {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 2px;
+  border: 1px solid;
+  position: relative;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.xpw-btn::before,
+.xpw-btn::after {
+  content: '';
+  position: absolute;
+}
+
+.xpw-close {
+  background: linear-gradient(180deg, #E08A80 0%, #D15A4A 40%, #C04030 50%, #D06050 100%);
+  border-color: #8B3A2A #602010 #602010 #8B3A2A;
+}
+.xpw-close:hover {
+  background: linear-gradient(180deg, #F09080 0%, #E06050 40%, #D04030 50%, #E06050 100%);
+}
+.xpw-close::before,
+.xpw-close::after {
+  width: 14px; height: 2px; background: #fff;
+  top: 50%; left: 50%;
+}
+.xpw-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.xpw-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+.xpw-min {
+  background: linear-gradient(180deg, #E8C870 0%, #D8B040 40%, #C8A030 50%, #D8B040 100%);
+  border-color: #9A8020 #7A6010 #7A6010 #9A8020;
+}
+.xpw-min:hover {
+  background: linear-gradient(180deg, #F0D880 0%, #E8C050 40%, #D8B040 50%, #E8C050 100%);
+}
+.xpw-min::before {
+  width: 12px; height: 2px; background: #fff;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+.xpw-max {
+  background: linear-gradient(180deg, #6CC06C 0%, #4AA04A 40%, #3A903A 50%, #4AA04A 100%);
+  border-color: #2A7A2A #1A5A1A #1A5A1A #2A7A2A;
+}
+.xpw-max:hover {
+  background: linear-gradient(180deg, #7CD07C 0%, #5AB05A 40%, #4AA04A 50%, #5AB05A 100%);
+}
+.xpw-max::before {
+  width: 11px; height: 11px; border: 2px solid #fff;
+  top: 5px; left: 6px;
+}
+
+.xpw-title-icon {
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.xpw-title-icon img { width: 20px; height: 20px; }
+
+.xpw-title-text {
+  flex: 1;
+  color: #fff;
+  font-family: Tahoma, 'Geist', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+
+/* ─── Menu bar ─── */
+.xpw-menu-bar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 6px;
+  gap: 2px;
+  background: #ECE9D8;
+  border-bottom: 1px solid #ACA899;
+  flex-shrink: 0;
+}
+
+.xpw-menu-item {
+  font-family: Tahoma, 'Geist', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #1E293B;
+  padding: 1px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+.xpw-menu-item:hover {
+  background: #316AC5;
+  color: #fff;
+}
+
+/* ─── Body ─── */
+.xpw-body {
+  flex: 1;
+  background: #fff;
+  overflow: auto;
+  min-height: 80px;
+}
+.xpw-body::-webkit-scrollbar { width: 14px; }
+.xpw-body::-webkit-scrollbar-track { background: #E4E2DC; border-left: 1px solid #C0BEB6; }
+.xpw-body::-webkit-scrollbar-thumb { background: #C0BEB6; border: 2px solid #E4E2DC; border-radius: 7px; }
+.xpw-body::-webkit-scrollbar-thumb:hover { background: #A8A69E; }
+
+/* ─── Status bar ─── */
+.xpw-status-bar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  background: #ECE9D8;
+  border-top: 1px solid #ACA899;
+  flex-shrink: 0;
+  font-family: Tahoma, 'Geist', sans-serif;
+  font-size: 11px;
+  color: #444;
+  gap: 16px;
+}
+
+/* ─── Windows default embedded content styling ─── */
+.xpw-body .window-content {
+  padding: 16px 20px;
+}

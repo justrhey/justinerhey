@@ -1,0 +1,570 @@
+/* ─── Overlay backdrop ─── */
+.wpad-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─── WordPad Window ─── */
+.wpad-window {
+  width: 650px;
+  max-width: 94vw;
+  max-height: 88vh;
+  background: #D4D0C8;
+  border: 2px solid;
+  border-color: #FEFEFE #0A0A0A #0A0A0A #FEFEFE;
+  border-radius: 4px 4px 0 0;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: wpadEnter 0.2s ease;
+}
+
+@keyframes wpadEnter {
+  from { opacity: 0; transform: translateY(12px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ─── Title bar ─── */
+.wpad-title-bar {
+  background: linear-gradient(180deg, #2470C0 0%, #1C5EAA 48%, #16509A 50%, #2D72C0 100%);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 6px;
+  gap: 6px;
+  cursor: default;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.wpad-title-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.wpad-title-text {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: Tahoma, sans-serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.35);
+  letter-spacing: 0.2px;
+  flex: 1;
+}
+
+.wpad-title-buttons {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.wpad-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid;
+  border-radius: 2px;
+  display: block;
+  position: relative;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.wpad-btn::before,
+.wpad-btn::after {
+  content: '';
+  position: absolute;
+}
+
+.wpad-btn-close {
+  background: linear-gradient(180deg, #E08A80 0%, #D15A4A 40%, #C04030 50%, #D06050 100%);
+  border-color: #8B3A2A #602010 #602010 #8B3A2A;
+}
+.wpad-btn-close:hover {
+  background: linear-gradient(180deg, #F09080 0%, #E06050 40%, #D04030 50%, #E06050 100%);
+}
+.wpad-btn-close::before,
+.wpad-btn-close::after {
+  width: 14px; height: 2px; background: #fff;
+  top: 50%; left: 50%;
+}
+.wpad-btn-close::before { transform: translate(-50%, -50%) rotate(45deg); }
+.wpad-btn-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
+
+.wpad-btn-min {
+  background: linear-gradient(180deg, #E8C870 0%, #D8B040 40%, #C8A030 50%, #D8B040 100%);
+  border-color: #9A8020 #7A6010 #7A6010 #9A8020;
+}
+.wpad-btn-min::before {
+  width: 12px; height: 2px; background: #fff;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+}
+
+.wpad-btn-max {
+  background: linear-gradient(180deg, #6CC06C 0%, #4AA04A 40%, #3A903A 50%, #4AA04A 100%);
+  border-color: #2A7A2A #1A5A1A #1A5A1A #2A7A2A;
+}
+.wpad-btn-max::before {
+  width: 11px; height: 11px; border: 2px solid #fff;
+  top: 5px; left: 6px;
+}
+
+/* ─── Menu bar ─── */
+.wpad-menu-bar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 4px;
+  background: #ECE9D8;
+  border-bottom: 1px solid #ACA899;
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.wpad-menu-item {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #1E293B;
+  padding: 1px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+}
+.wpad-menu-item:hover {
+  background: #316AC5;
+  color: #fff;
+}
+.wpad-menu-item.active {
+  background: #316AC5;
+  color: #fff;
+}
+
+/* ─── Toolbar ─── */
+.wpad-toolbar {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 1px 6px;
+  background: #D4D0C8;
+  border-bottom: 1px solid #ACA899;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.wpad-tb-group {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.wpad-tb-divider {
+  width: 2px;
+  height: 22px;
+  background: #ACA899;
+  border-right: 1px solid #FEFEFE;
+  flex-shrink: 0;
+  margin: 0 1px;
+}
+
+.wpad-tb-font {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  background: #fff;
+  border: 1px solid #7A7A7A;
+  border-top-color: #4A4A4A;
+  border-left-color: #4A4A4A;
+  padding: 1px 16px 1px 4px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  min-width: 110px;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+.wpad-tb-font::after {
+  content: '▼';
+  position: absolute;
+  right: 3px;
+  font-size: 7px;
+  color: #444;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.wpad-tb-size {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  background: #fff;
+  border: 1px solid #7A7A7A;
+  border-top-color: #4A4A4A;
+  border-left-color: #4A4A4A;
+  padding: 1px 18px 1px 4px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  min-width: 36px;
+  cursor: default;
+  user-select: none;
+  position: relative;
+}
+.wpad-tb-size::after {
+  content: '▼';
+  position: absolute;
+  right: 3px;
+  font-size: 7px;
+  color: #444;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.wpad-tb-btn {
+  width: 24px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid transparent;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.wpad-tb-btn:hover {
+  border-color: #FEFEFE #7A7A7A #7A7A7A #FEFEFE;
+  background: #E8E4DC;
+}
+.wpad-tb-btn:active {
+  border-color: #7A7A7A #FEFEFE #FEFEFE #7A7A7A;
+  background: #C8C4BC;
+}
+
+.wpad-tb-bold b { font-size: 13px; font-weight: 800; font-family: Tahoma, sans-serif; }
+.wpad-tb-italic i { font-size: 13px; font-style: italic; font-family: Tahoma, sans-serif; }
+.wpad-tb-underline u { font-size: 13px; text-decoration: underline; font-family: Tahoma, sans-serif; }
+
+.wpad-tb-filler {
+  flex: 1;
+}
+
+.wpad-tb-office {
+  font-size: 12px;
+}
+
+/* ─── Ruler ─── */
+.wpad-ruler {
+  height: 20px;
+  background: #FFFFFF;
+  border-bottom: 1px solid #C0C0C0;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.wpad-ruler-inner {
+  position: absolute;
+  left: 10px;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0px,
+    #C0C0C0 0px, #C0C0C0 1px,
+    transparent 1px,
+    transparent 4px,
+    #C0C0C0 4px, #C0C0C0 5px,
+    transparent 5px,
+    transparent 8px,
+    #C0C0C0 8px, #C0C0C0 9px,
+    transparent 9px
+  );
+  background-size: 36px 100%;
+}
+
+.wpad-ruler-notch {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 36px;
+}
+.wpad-ruler-notch span {
+  position: absolute;
+  left: -2px;
+  top: 4px;
+  font-size: 7px;
+  font-family: Tahoma, sans-serif;
+  color: #555;
+  font-weight: 600;
+}
+
+/* ─── Document body ─── */
+.wpad-document {
+  flex: 1;
+  overflow-y: auto;
+  background: #808080;
+  padding: 8px;
+  min-height: 200px;
+}
+
+.wpad-document::-webkit-scrollbar {
+  width: 14px;
+}
+.wpad-document::-webkit-scrollbar-track {
+  background: #D4D0C8;
+  border-left: 1px solid #ACA899;
+}
+.wpad-document::-webkit-scrollbar-thumb {
+  background: #A0A0A0;
+  border: 2px solid #D4D0C8;
+  border-radius: 7px;
+}
+.wpad-document::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.wpad-doc-paper {
+  background: #FFFFFF;
+  min-height: 400px;
+  padding: 32px 36px;
+  box-shadow: 0 0 0 1px #C0C0C0;
+  font-family: 'Times New Roman', Georgia, serif;
+  color: #000;
+  line-height: 1.5;
+}
+
+/* ─── Document content ─── */
+
+/* Header with photo */
+.wpad-header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.wpad-photo-wrap {
+  flex-shrink: 0;
+  order: 1;
+  margin-left: auto;
+}
+
+.wpad-photo {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border: 2px solid #D4D0C8;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+}
+
+.wpad-header-text {
+  flex: 1;
+}
+
+.wpad-doc-name {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: 'Times New Roman', Georgia, serif;
+  margin: 0 0 2px 0;
+  color: #000;
+  line-height: 1.2;
+}
+
+.wpad-doc-handle {
+  font-size: 13px;
+  color: #555;
+  font-family: 'Courier New', monospace;
+  margin: 0 0 6px 0;
+}
+
+.wpad-doc-role {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+}
+
+.wpad-doc-loc {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 4px 0;
+}
+
+.wpad-doc-email {
+  font-size: 13px;
+  margin: 0;
+}
+.wpad-doc-email a {
+  color: #0000CC;
+  text-decoration: underline;
+}
+.wpad-doc-email a:hover {
+  color: #6666FF;
+}
+
+/* Horizontal rule */
+.wpad-hr {
+  border: none;
+  border-top: 1px solid #999;
+  margin: 16px 0;
+}
+
+/* Sections */
+.wpad-section {
+  margin-bottom: 4px;
+}
+
+.wpad-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Times New Roman', Georgia, serif;
+  color: #000;
+  margin: 0 0 8px 0;
+}
+
+.wpad-body-text {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #222;
+  margin: 0 0 8px 0;
+  text-indent: 0;
+}
+
+/* Skills list */
+.wpad-skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+}
+
+.wpad-skills-list li {
+  font-size: 13px;
+  color: #222;
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+.wpad-skills-list li::before {
+  content: '•';
+  position: absolute;
+  left: 4px;
+  color: #000;
+  font-weight: bold;
+}
+
+/* Stats table */
+.wpad-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.wpad-stats-table td {
+  padding: 6px 12px;
+  text-align: center;
+  border: 1px solid #D4D0C8;
+}
+.wpad-stat-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1A4A8A;
+  font-family: Tahoma, sans-serif;
+  width: 12%;
+}
+.wpad-stat-label {
+  font-size: 11px;
+  color: #555;
+  font-family: Tahoma, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 13%;
+}
+
+/* Cursor */
+.wpad-cursor {
+  margin: 12px 0 0 0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: #000;
+}
+.wpad-cursor-blink {
+  animation: wpadCurBlink 1s step-end infinite;
+  font-weight: 700;
+}
+@keyframes wpadCurBlink {
+  50% { opacity: 0; }
+}
+
+/* ─── Status bar ─── */
+.wpad-status-bar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  background: #D4D0C8;
+  border-top: 1px solid #ACA899;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+.wpad-status-item {
+  font-family: Tahoma, sans-serif;
+  font-size: 11px;
+  color: #444;
+  white-space: nowrap;
+}
+
+.wpad-status-sep {
+  color: #888;
+  font-size: 11px;
+  margin: 0 2px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .wpad-window {
+    max-height: 92vh;
+    max-width: 96vw;
+  }
+  .wpad-doc-paper {
+    padding: 16px 18px;
+  }
+  .wpad-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .wpad-photo-wrap {
+    order: 0;
+    margin-left: 0;
+    margin-bottom: 12px;
+  }
+  .wpad-skills-list {
+    grid-template-columns: 1fr;
+  }
+  .wpad-tb-font {
+    min-width: 80px;
+  }
+  .wpad-tb-btn.wpad-tb-office {
+    display: none;
+  }
+  .wpad-status-item:nth-child(n+7) {
+    display: none;
+  }
+}

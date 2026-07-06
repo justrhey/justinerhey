@@ -1,0 +1,88 @@
+.id-card {
+  width: 100%;
+  padding: 14px 0 0;
+}
+
+.id-card-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.id-card-photo {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+  border: 2px solid #F0F5FA;
+}
+
+.id-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.id-card-name {
+  font-family: 'Geist', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0F172A;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.id-card-handle {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  color: #94A3B8;
+}
+
+.id-card-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #F0F5FA;
+}
+
+.id-card-role {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 5px;
+  font-family: 'Geist', sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  background: #F0F5FA;
+  color: #475569;
+  letter-spacing: 0.2px;
+}
+
+.id-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #F0F5FA;
+}
+
+.id-card-id {
+  font-family: 'Geist Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: #5B9BD5;
+  letter-spacing: 0.5px;
+}
+
+.id-card-location {
+  font-family: 'Geist', sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  color: #94A3B8;
+  letter-spacing: 0.8px;
+}

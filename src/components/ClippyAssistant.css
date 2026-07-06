@@ -1,0 +1,163 @@
+/* ─── Clippy Assistant ─── */
+
+.clippy-container {
+  position: fixed;
+  bottom: 56px;
+  right: 20px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  animation: clippyEnter 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clippy-hiding {
+  animation: clippyExit 0.3s ease-in forwards;
+}
+
+@keyframes clippyEnter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes clippyExit {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px) scale(0.7);
+  }
+}
+
+/* ─── Speech bubble ─── */
+.clippy-bubble {
+  position: relative;
+  background: #FFFFE1;
+  border: 1px solid #000;
+  border-radius: 4px;
+  padding: 12px 18px;
+  margin-bottom: 8px;
+  max-width: 340px;
+  box-shadow:
+    2px 2px 4px rgba(0,0,0,0.15),
+    inset 0 0 0 1px #FFFDE0;
+  animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+@keyframes bubblePop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.clippy-bubble-text {
+  font-family: Tahoma, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000;
+  margin: 0;
+}
+
+.clippy-bubble-tail {
+  position: absolute;
+  bottom: -8px;
+  right: 28px;
+  width: 14px;
+  height: 8px;
+  background: #FFFFE1;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  border: none;
+}
+
+/* ─── Clippy character ─── */
+.clippy-character {
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: clippyBob 2s ease-in-out infinite;
+  transition: filter 0.15s;
+}
+.clippy-character:hover {
+  filter: brightness(1.1) drop-shadow(0 0 8px rgba(255,255,0,0.3));
+}
+.clippy-character:active {
+  filter: brightness(0.9);
+}
+
+@keyframes clippyBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.clippy-img {
+  width: 88px;
+  height: auto;
+  image-rendering: auto;
+  pointer-events: none;
+}
+
+/* ─── Close button ─── */
+.clippy-close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #F0A8A0 0%, #D07060 48%, #C05040 50%, #D87868 100%);
+  border: 1px solid #A04030;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.clippy-character:hover .clippy-close {
+  opacity: 1;
+}
+.clippy-close:hover {
+  background: linear-gradient(180deg, #F8B8B0 0%, #E08070 48%, #D06050 50%, #E08878 100%);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 640px) {
+  .clippy-container {
+    bottom: 50px;
+    right: 8px;
+  }
+  .clippy-img {
+    width: 64px;
+  }
+  .clippy-bubble {
+    max-width: 240px;
+    padding: 10px 14px;
+  }
+  .clippy-bubble-text {
+    font-size: 11px;
+  }
+}
