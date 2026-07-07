@@ -68,41 +68,6 @@ export default function App() {
     return () => clearInterval(iv);
   }, []);
 
-  /* ─── Alt+Tab window switcher ─── */
-  useEffect(() => {
-    let altHeld = false;
-    const onDown = (e) => {
-      if (e.key === 'Alt' && !altHeld) { altHeld = true; return; }
-      if (e.key === 'Tab' && altHeld) {
-        e.preventDefault();
-        const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
-        if (!openWs.length) return;
-        if (!altTabActive) {
-          setAltTabActive(true);
-          setAltTabIdx(e.shiftKey ? openWs.length - 1 : 0);
-        } else {
-          setAltTabIdx(prev => {
-            const len = openWs.length;
-            return e.shiftKey ? (prev - 1 + len) % len : (prev + 1) % len;
-          });
-        }
-      }
-    };
-    const onUp = (e) => {
-      if (e.key === 'Alt') {
-        altHeld = false;
-        if (altTabActive) {
-          const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
-          if (openWs[altTabIdx]) focusWindow(openWs[altTabIdx][0]);
-          setAltTabActive(false);
-        }
-      }
-    };
-    window.addEventListener('keydown', onDown);
-    window.addEventListener('keyup', onUp);
-    return () => { window.removeEventListener('keydown', onDown); window.removeEventListener('keyup', onUp); };
-  }, [altTabActive, altTabIdx, winState, focusWindow]);
-
   /* ─── Click outside to close clock flyout ─── */
   useEffect(() => {
     if (!clockFlyout) return;
@@ -219,6 +184,41 @@ export default function App() {
       return { ...prev, [id]: { ...w, zIndex: nextZ.current++ } };
     });
   }, []);
+
+  /* ─── Alt+Tab window switcher ─── */
+  useEffect(() => {
+    let altHeld = false;
+    const onDown = (e) => {
+      if (e.key === 'Alt' && !altHeld) { altHeld = true; return; }
+      if (e.key === 'Tab' && altHeld) {
+        e.preventDefault();
+        const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
+        if (!openWs.length) return;
+        if (!altTabActive) {
+          setAltTabActive(true);
+          setAltTabIdx(e.shiftKey ? openWs.length - 1 : 0);
+        } else {
+          setAltTabIdx(prev => {
+            const len = openWs.length;
+            return e.shiftKey ? (prev - 1 + len) % len : (prev + 1) % len;
+          });
+        }
+      }
+    };
+    const onUp = (e) => {
+      if (e.key === 'Alt') {
+        altHeld = false;
+        if (altTabActive) {
+          const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
+          if (openWs[altTabIdx]) focusWindow(openWs[altTabIdx][0]);
+          setAltTabActive(false);
+        }
+      }
+    };
+    window.addEventListener('keydown', onDown);
+    window.addEventListener('keyup', onUp);
+    return () => { window.removeEventListener('keydown', onDown); window.removeEventListener('keyup', onUp); };
+  }, [altTabActive, altTabIdx, winState, focusWindow]);
 
   /* ─── Window dragging ─── */
   const handleDragStart = useCallback((id, clientX, clientY) => {
