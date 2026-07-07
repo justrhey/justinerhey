@@ -17,12 +17,12 @@ const SHORTCUTS = [
 ];
 
 const DESKTOP_ICONS = {
-  txt: <img src="/icons/Documents.png" alt="" width={72} height={72} />,
+  txt: <img src="/icons/textfile.png" alt="" width={72} height={72} />,
   info: <img src="/icons/My computer.png" alt="" width={72} height={72} />,
   folder: <img src="/icons/Documents.png" alt="" width={72} height={72} />,
   globe: <img src="/icons/Network.png" alt="" width={72} height={72} />,
   mail: <img src="/icons/My computer.png" alt="" width={72} height={72} />,
-  doom: <img src="/doom.png" alt="" width={72} height={72} />,
+  doom: <img src="/doom-icon.png" alt="" width={72} height={72} />,
 };
 
 export default function App() {
@@ -36,6 +36,12 @@ export default function App() {
   const dragRef = useRef(null);
   const [ctxMenu, setCtxMenu] = useState(null);
   const ctxRef = useRef(null);
+  const [desktopCtx, setDesktopCtx] = useState(null);
+  const desktopCtxRef = useRef(null);
+  const [desktopSub, setDesktopSub] = useState(null);
+  const [selRect, setSelRect] = useState(null);
+  const selStart = useRef(null);
+  const iconRefs = useRef({});
 
   const activeWindow = winState
     ? Object.entries(winState)
@@ -63,6 +69,47 @@ export default function App() {
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, [startOpen]);
+
+  /* ─── Desktop right-click context menu ─── */
+  const handleDesktopCtx = useCallback((e) => {
+    if (e.target.closest('.desktop-shortcut') || e.target.closest('.taskbar') || e.target.closest('.xp-window') || e.target.closest('.proj-modal-overlay') || e.target.closest('.start-menu') || e.target.closest('.clippy-container')) return;
+    e.preventDefault();
+    setDesktopCtx({ x: e.clientX, y: e.clientY });
+    setDesktopSub(null);
+  }, []);
+
+  /* Close desktop context menu */
+  useEffect(() => {
+    if (!desktopCtx) return;
+    const handler = (e) => {
+      if (desktopCtxRef.current && !desktopCtxRef.current.contains(e.target)) {
+        setDesktopCtx(null);
+        setDesktopSub(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [desktopCtx]);
+
+  /* ─── Desktop drag selection (rubber band) ─── */
+  const handleDeskMouseDown = useCallback((e) => {
+    if (e.button !== 0) return;
+    if (e.target.closest('.desktop-shortcut') || e.target.closest('.xp-window') || e.target.closest('.taskbar') || e.target.closest('.start-menu')) return;
+    selStart.current = { x: e.clientX, y: e.clientY };
+    setSelRect({ sx: e.clientX, sy: e.clientY, cx: e.clientX, cy: e.clientY });
+  }, []);
+
+  useEffect(() => {
+    if (!selRect) return;
+    const handleMove = (e) => {
+      if (!selStart.current) return;
+      setSelRect(prev => prev ? { ...prev, cx: e.clientX, cy: e.clientY } : null);
+    };
+    const handleUp = () => { selStart.current = null; setSelRect(null); };
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleUp);
+    return () => { document.removeEventListener('mousemove', handleMove); document.removeEventListener('mouseup', handleUp); };
+  }, [selRect]);
 
   /* ─── Right-click context menu ─── */
   const handleCtxMenu = useCallback((id, e) => {
@@ -93,7 +140,7 @@ export default function App() {
   const win = useCallback((id) => winState[id] || { open: false, zIndex: 0, offset: 0, posX: 80, posY: 80 }, [winState]);
 
   const openWindow = useCallback((id) => {
-    const sizes = { profile: [520, 400], projects: [700, 500], skills: [700, 500], contact: [620, 450], doom: [700, 480] };
+    const sizes = { profile: [880, 640], projects: [960, 720], skills: [960, 720], contact: [900, 680], doom: [664, 540] };
     const [w, h] = sizes[id] || [600, 420];
     const posX = Math.max(20, (window.innerWidth - w) / 2);
     const posY = Math.max(20, (window.innerHeight - h) / 2);
@@ -157,22 +204,23 @@ export default function App() {
   const openModal = useCallback((idx) => setModalIdx(idx), []);
   const closeModal = useCallback(() => setModalIdx(null), []);
 
-  /* ─── Contact form submit ─── */
+  /* ─── Contact form submit (Outlook Express style) ─── */
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
-    const fd = new FormData(e.target);
-    const name = fd.get('name')?.trim();
-    const email = fd.get('email')?.trim();
-    const message = fd.get('message')?.trim();
-    const status = document.getElementById('formStatus');
-    if (!name || !email || !message) {
-      if (status) { status.textContent = 'Please fill in all fields.'; }
+    const cc = document.getElementById('oeCc')?.value?.trim();
+    const subject = document.getElementById('oeSubject')?.value?.trim() || 'Portfolio Contact';
+    const message = document.getElementById('oeMessage')?.value?.trim();
+    const status = document.getElementById('oeStatus');
+    if (!message) {
+      if (status) status.textContent = 'Please write a message.';
       return;
     }
-    const mailto = `mailto:justrhey.tambong@gmail.com?subject=Portfolio%20-%20${encodeURIComponent(name)}&body=${encodeURIComponent(message)}%0A%0A--%20${encodeURIComponent(email)}`;
+    let body = encodeURIComponent(message);
+    if (cc) body += `%0A%0A--%20${encodeURIComponent(cc)}`;
+    const mailto = `mailto:justrhey.tambong@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
     if (status) status.textContent = 'Opening your mail client...';
     window.location.href = mailto;
-    setTimeout(() => { e.target.reset(); if (status) status.textContent = 'Message ready. Thanks!'; }, 1000);
+    setTimeout(() => { if (status) status.textContent = 'Message ready. Thanks!'; }, 1000);
   }, []);
 
   /* ─── Window position ─── */
@@ -201,7 +249,7 @@ export default function App() {
   return (
     <>
       {/* ─── Desktop ─── */}
-      <div className="desktop" id="desktop">
+      <div className="desktop" id="desktop" onContextMenu={handleDesktopCtx} onMouseDown={handleDeskMouseDown}>
         <h1 className="visually-hidden">Justine Rhey - Portfolio</h1>
 
         {/* Desktop shortcut icons */}
@@ -233,7 +281,7 @@ export default function App() {
                 onClose={() => closeWindow('projects')}
                 onFocus={() => focusWindow('projects')}
                 onDragStart={(e) => handleDragStart('projects', e.clientX, e.clientY)}
-                width={700}
+                width={960}
                 menuItems={['File', 'Edit', 'View', 'Favorites', 'Help']}
               >
                 <div className="window-content">
@@ -267,7 +315,7 @@ export default function App() {
                 onClose={() => closeWindow('skills')}
                 onFocus={() => focusWindow('skills')}
                 onDragStart={(e) => handleDragStart('skills', e.clientX, e.clientY)}
-                width={700}
+                width={960}
                 menuItems={['File', 'Edit', 'View', 'Help']}
               >
                 <SkillsContent />
@@ -279,21 +327,13 @@ export default function App() {
             <motion.div key="doom" style={winStyle('doom')} {...winAnim}>
               <XpWindow
                 title="DOOM (1993)"
-                icon={
-                  <svg viewBox="0 0 16 16" width={16} height={16} aria-hidden="true">
-                    <circle cx="8" cy="9" r="5" fill="#1a1a1a" stroke="#8b0000" strokeWidth="0.8"/>
-                    <ellipse cx="6" cy="8" rx="1.2" ry="1.5" fill="#ff4400" opacity="0.9"/>
-                    <ellipse cx="10" cy="8" rx="1.2" ry="1.5" fill="#ff4400" opacity="0.9"/>
-                    <path d="M4 11c1.2 1.5 3.5 1.5 4.7 0" stroke="#8b0000" strokeWidth="0.8"/>
-                    <path d="M3 5l-2-3M13 5l2-3" stroke="#5c0000" strokeWidth="1"/>
-                  </svg>
-                }
+                icon={<img src="/doom-logo-20.png" alt="" width={20} height={20} />}
                 open={win('doom').open}
                 zIndex={win('doom').zIndex}
                 onClose={() => closeWindow('doom')}
                 onFocus={() => focusWindow('doom')}
                 onDragStart={(e) => handleDragStart('doom', e.clientX, e.clientY)}
-                width={700}
+                width={664}
                 menuItems={['File', 'Edit', 'View', 'Help']}
               >
                 <div className="window-content" style={{ padding: '8px 10px' }}>
@@ -313,42 +353,130 @@ export default function App() {
                 onClose={() => closeWindow('contact')}
                 onFocus={() => focusWindow('contact')}
                 onDragStart={(e) => handleDragStart('contact', e.clientX, e.clientY)}
-                width={620}
-                menuItems={['File', 'Edit', 'Format', 'Help']}
+                width={900}
+                menuItems={['File', 'Edit', 'View', 'Insert', 'Format']}
               >
-                <div className="window-content">
-                  <div className="cw">
-                    <div className="cw-info">
-                      <h3 className="cw-name">Justine Rhey</h3>
-                      <a className="cw-email" href="mailto:justrhey.tambong@gmail.com">justrhey.tambong@gmail.com</a>
-                      <div className="cw-socials">
-                        <a href="https://github.com/justrhey" target="_blank" rel="noopener">GitHub</a>
-                        <a href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener">LinkedIn</a>
-                        <a href="CV_Justine_Rhey_Tambong.pdf" download>CV ↓</a>
-                      </div>
+                <div className="window-content" style={{ padding: 0 }}>
+                  <div className="oe-window">
+                    {/* Toolbar */}
+                    <div className="oe-toolbar">
+                      <button className="oe-toolbar-btn" title="Send">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="1" y="3" width="14" height="10" rx="1" stroke="#316AC5" strokeWidth="1.2" fill="#E8EFF8"/>
+                          <polyline points="1,3 8,9 15,3" stroke="#316AC5" strokeWidth="1.2" fill="none"/>
+                          <line x1="1" y1="6" x2="5" y2="8" stroke="#316AC5" strokeWidth="0.8"/>
+                          <line x1="15" y1="6" x2="11" y2="8" stroke="#316AC5" strokeWidth="0.8"/>
+                        </svg>
+                        Send
+                      </button>
+                      <div className="oe-toolbar-sep" />
+                      <button className="oe-toolbar-btn" title="Cut">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM14 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" stroke="#666" strokeWidth="1"/>
+                          <line x1="3.5" y1="9" x2="12.5" y2="3" stroke="#666" strokeWidth="1"/>
+                          <line x1="4" y1="8.5" x2="12" y2="11" stroke="#666" strokeWidth="1"/>
+                        </svg>
+                      </button>
+                      <button className="oe-toolbar-btn" title="Copy">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="4.5" y="0.5" width="9" height="11" rx="1" stroke="#666" strokeWidth="1" fill="#fff"/>
+                          <rect x="2.5" y="2.5" width="9" height="11" rx="1" fill="#fff" stroke="#666" strokeWidth="1"/>
+                          <line x1="6" y1="6" x2="10" y2="6" stroke="#666" strokeWidth="0.8"/>
+                          <line x1="6" y1="8" x2="10" y2="8" stroke="#666" strokeWidth="0.8"/>
+                          <line x1="6" y1="10" x2="9" y2="10" stroke="#666" strokeWidth="0.8"/>
+                        </svg>
+                      </button>
+                      <button className="oe-toolbar-btn" title="Paste">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="3" y="2" width="10" height="12" rx="1" fill="#fff" stroke="#666" strokeWidth="1"/>
+                          <rect x="5.5" y="0.5" width="5" height="3" rx="0.5" fill="#fff" stroke="#666" strokeWidth="1"/>
+                          <line x1="5" y1="6" x2="11" y2="6" stroke="#666" strokeWidth="0.8"/>
+                          <line x1="5" y1="8" x2="11" y2="8" stroke="#666" strokeWidth="0.8"/>
+                          <line x1="5" y1="10" x2="9" y2="10" stroke="#666" strokeWidth="0.8"/>
+                        </svg>
+                      </button>
+                      <div className="oe-toolbar-sep" />
+                      <button className="oe-toolbar-btn" title="Attach File">
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M4 15a3 3 0 0 1-3-3V4a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v8a3 3 0 0 0 6 0V5" stroke="#666" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                          <circle cx="12" cy="4" r="1.5" fill="#ff4444"/>
+                        </svg>
+                      </button>
                     </div>
-                    <form className="cw-form" onSubmit={handleSubmit}>
-                      <div className="cw-field">
-                        <label htmlFor="formName">Name</label>
-                        <input type="text" id="formName" name="name" placeholder="Your name" required />
-                      </div>
-                      <div className="cw-field">
-                        <label htmlFor="formEmail">Email</label>
-                        <input type="email" id="formEmail" name="email" placeholder="you@example.com" required />
-                      </div>
-                      <div className="cw-field">
-                        <label htmlFor="formMessage">Message</label>
-                        <textarea id="formMessage" name="message" placeholder="What would you like to say?" required />
-                      </div>
-                      <button type="submit" className="cw-submit">Send Message →</button>
-                      <div className="cw-status" id="formStatus" />
-                    </form>
+
+                    {/* Header fields */}
+                    <div className="oe-fields">
+                      <label>
+                        <span className="oe-lbl">To:</span>
+                        <input type="text" value="Justine Rhey" readOnly
+                          style={{ color: '#666', fontStyle: 'italic' }} />
+                      </label>
+                      <label>
+                        <span className="oe-lbl">Cc:</span>
+                        <input id="oeCc" type="text" placeholder="your.name@example.com" />
+                      </label>
+                      <label>
+                        <span className="oe-lbl">Subject:</span>
+                        <input id="oeSubject" type="text" defaultValue="Portfolio Contact" />
+                      </label>
+                    </div>
+
+                    <div className="oe-header-sep" />
+
+                    {/* Message body */}
+                    <div className="oe-body">
+                      <textarea id="oeMessage" placeholder="Write your message here..." />
+                    </div>
+
+                    {/* Bottom bar */}
+                    <div className="oe-bottom">
+                      <span className="oe-status" id="oeStatus">Connected</span>
+                      <button className="oe-send" onClick={handleSubmit}>
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <rect x="1" y="3" width="14" height="10" rx="1" stroke="#316AC5" strokeWidth="0.8" fill="#E8EFF8"/>
+                          <polyline points="1,3 8,9 15,3" stroke="#316AC5" strokeWidth="1" fill="none"/>
+                          <line x1="1" y1="6" x2="5" y2="8" stroke="#316AC5" strokeWidth="0.6"/>
+                          <line x1="15" y1="6" x2="11" y2="8" stroke="#316AC5" strokeWidth="0.6"/>
+                        </svg>
+                        Send Message
+                      </button>
+                    </div>
+
+                    {/* Contact links (like address book) */}
+                    <div className="oe-contacts">
+                      <a className="oe-contact-item" href="https://github.com/justrhey" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+                        GitHub
+                      </a>
+                      <a className="oe-contact-item" href="https://linkedin.com/in/justrhey" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+                        LinkedIn
+                      </a>
+                      <a className="oe-contact-item" href="mailto:justrhey.tambong@gmail.com">
+                        <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757ZM16 4.697v7.104l-5.803-3.558L16 4.697Z"/></svg>
+                        Email
+                      </a>
+                      <a className="oe-contact-item" href="CV_Justine_Rhey_Tambong.pdf" download>
+                        <svg viewBox="0 0 16 16" width="12" height="12" fill="currentColor"><path d="M4 0h5.5v1H5v3h1V1.5L9 5l1 4H6v1h5v1H5V9H3.5L4 0ZM0 11v4h4v-1H1v-3H0Zm15 4v-3h-1v3h-3v1h3v-1h1Z"/></svg>
+                        CV ↓
+                      </a>
+                    </div>
                   </div>
                 </div>
               </XpWindow>
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* ─── Rubber-band selection rectangle ─── */}
+        {selRect && (
+          <div className="desk-sel-rect" style={{
+            left: Math.min(selRect.sx, selRect.cx),
+            top: Math.min(selRect.sy, selRect.cy),
+            width: Math.abs(selRect.cx - selRect.sx),
+            height: Math.abs(selRect.cy - selRect.sy),
+          }} />
+        )}
       </div>
 
       {/* ─── Project detail modal (XP style) ─── */}
@@ -443,6 +571,55 @@ export default function App() {
               <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 4l8 8M12 4l-8 8"/></svg>
             </span>
             Close
+          </button>
+        </div>
+      )}
+
+      {/* ─── Desktop Context Menu ─── */}
+      {desktopCtx && (
+        <div className="desk-ctx-menu" ref={desktopCtxRef} style={{ left: desktopCtx.x, top: desktopCtx.y }} role="menu" aria-label="Desktop actions">
+          <button className="task-ctx-item" role="menuitem" onClick={() => { setDesktopCtx(null); setDesktopSub(desktopSub === 'new' ? null : 'new'); }}>
+            <span className="task-ctx-icon">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><rect x="2" y="6" width="12" height="8" rx="1"/><path d="M7 3h2v3H7z"/><path d="M6 2h4v2H6z"/></svg>
+            </span>
+            New
+            <span className="task-ctx-arrow">▸</span>
+          </button>
+          {desktopSub === 'new' && (
+            <div className="desk-ctx-sub" style={{ left: '100%', top: 0 }}>
+              <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>Folder</button>
+              <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>Shortcut</button>
+              <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>Text Document</button>
+            </div>
+          )}
+          <div className="task-ctx-sep" />
+          <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>
+            <span className="task-ctx-icon">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.2"><path d="M2 8h3l2-4 3 8 2-4h2"/></svg>
+            </span>
+            Arrange Icons By
+            <span className="task-ctx-arrow">▸</span>
+          </button>
+          <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>
+            <span className="task-ctx-icon">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 10l3-3-3-3M4 6l-3 3 3 3"/></svg>
+            </span>
+            Refresh
+          </button>
+          <div className="task-ctx-sep" />
+          <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>
+            <span className="task-ctx-icon">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.2"><rect x="3" y="5" width="10" height="9" rx="1"/><path d="M5 5V3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </span>
+            Paste
+            <span className="task-ctx-shortcut">Ctrl+V</span>
+          </button>
+          <div className="task-ctx-sep" />
+          <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>
+            <span className="task-ctx-icon">
+              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 4v8M8 4v8M11 4v8M4 5h8M4 8h8M4 11h8"/></svg>
+            </span>
+            Properties
           </button>
         </div>
       )}

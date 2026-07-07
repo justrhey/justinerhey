@@ -31,32 +31,40 @@
 .xpw-title-bar {
   display: flex;
   align-items: center;
-  height: 36px;
-  padding: 0 4px 0 6px;
-  gap: 6px;
-  background: linear-gradient(180deg, #0A5EB8 0%, #1860B0 10%, #297AC8 50%, #0F5CAC 100%);
+  height: 30px;
+  padding: 0 2px 0 6px;
+  gap: 5px;
+  background: linear-gradient(180deg, #0d5cb3 0%, #1160b7 5%, #1569bf 18%, #136ec5 48%, #0b65be 52%, #085bb6 80%, #0753ad 100%);
   flex-shrink: 0;
   cursor: default;
   user-select: none;
-  border-radius: 2px 2px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 
 .xpw-title-buttons {
   display: flex;
+  align-items: center;
   gap: 2px;
   flex-shrink: 0;
   margin-left: auto;
+  padding: 0 4px 0 0;
 }
 
 .xpw-btn {
-  width: 28px;
-  height: 28px;
-  display: block;
+  width: 21px;
+  height: 21px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 2px;
   border: 1px solid;
   position: relative;
   cursor: pointer;
   box-sizing: border-box;
+  padding: 0;
+}
+.xpw-btn:active {
+  transform: scale(0.96);
 }
 
 .xpw-btn::before,
@@ -65,43 +73,53 @@
   position: absolute;
 }
 
+/* ─── Close ─── */
 .xpw-close {
-  background: linear-gradient(180deg, #E08A80 0%, #D15A4A 40%, #C04030 50%, #D06050 100%);
-  border-color: #8B3A2A #602010 #602010 #8B3A2A;
+  background: linear-gradient(180deg, #e08375 0%, #d27563 10%, #cf6251 40%, #bb503f 49%, #ac3d2c 50%, #b44230 55%, #ce5a48 80%, #da6a58 100%);
+  border-color: #a03a28 #602010 #602010 #a03a28;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 .xpw-close:hover {
-  background: linear-gradient(180deg, #F09080 0%, #E06050 40%, #D04030 50%, #E06050 100%);
+  background: linear-gradient(180deg, #f69a8b 0%, #ea8573 10%, #e07260 40%, #d66250 49%, #c9503e 50%, #cf5a48 55%, #e07362 80%, #ee8473 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.05);
 }
 .xpw-close::before,
 .xpw-close::after {
-  width: 14px; height: 2px; background: #fff;
-  top: 50%; left: 50%;
+  width: 11px; height: 1.5px; background: #fff;
+  top: 50%; left: 50%; border-radius: 1px;
 }
 .xpw-close::before { transform: translate(-50%, -50%) rotate(45deg); }
 .xpw-close::after { transform: translate(-50%, -50%) rotate(-45deg); }
 
+/* ─── Minimize ─── */
 .xpw-min {
-  background: linear-gradient(180deg, #E8C870 0%, #D8B040 40%, #C8A030 50%, #D8B040 100%);
-  border-color: #9A8020 #7A6010 #7A6010 #9A8020;
+  background: linear-gradient(180deg, #f3da73 0%, #edce58 10%, #e8c241 40%, #dbb332 49%, #cca328 50%, #d1a92c 55%, #e3b93a 80%, #edc54e 100%);
+  border-color: #a08528 #7a6010 #7a6010 #a08528;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 .xpw-min:hover {
-  background: linear-gradient(180deg, #F0D880 0%, #E8C050 40%, #D8B040 50%, #E8C050 100%);
+  background: linear-gradient(180deg, #fbe889 0%, #f5dd6e 10%, #f1d258 40%, #e5c549 49%, #d6b73e 50%, #dcba43 55%, #efcf58 80%, #f7da6e 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.05);
 }
 .xpw-min::before {
-  width: 12px; height: 2px; background: #fff;
-  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 9px; height: 1.5px; background: #fff;
+  border-radius: 1px;
 }
 
+/* ─── Maximize ─── */
 .xpw-max {
-  background: linear-gradient(180deg, #6CC06C 0%, #4AA04A 40%, #3A903A 50%, #4AA04A 100%);
-  border-color: #2A7A2A #1A5A1A #1A5A1A #2A7A2A;
+  background: linear-gradient(180deg, #70be5a 0%, #5db044 10%, #4ea432 40%, #429627 49%, #35871b 50%, #3b8e22 55%, #4ea034 80%, #5dae44 100%);
+  border-color: #2f7a1a #1a5a0a #1a5a0a #2f7a1a;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -1px 0 rgba(0,0,0,0.1);
 }
 .xpw-max:hover {
-  background: linear-gradient(180deg, #7CD07C 0%, #5AB05A 40%, #4AA04A 50%, #5AB05A 100%);
+  background: linear-gradient(180deg, #84d46e 0%, #74c55c 10%, #62b748 40%, #54a83a 49%, #47992c 50%, #4da033 55%, #62b748 80%, #74c55c 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -1px 0 rgba(0,0,0,0.05);
 }
 .xpw-max::before {
-  width: 11px; height: 11px; border: 2px solid #fff;
-  top: 5px; left: 6px;
+  width: 9px; height: 9px; border: 1.5px solid #fff;
+  border-radius: 1px;
+  top: 4px; left: 4px;
 }
 
 .xpw-title-icon {
@@ -157,8 +175,7 @@
 .xpw-body {
   flex: 1;
   background: #fff;
-  overflow: auto;
-  min-height: 80px;
+  overflow: hidden;
 }
 .xpw-body::-webkit-scrollbar { width: 14px; }
 .xpw-body::-webkit-scrollbar-track { background: #E4E2DC; border-left: 1px solid #C0BEB6; }

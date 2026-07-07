@@ -9,13 +9,26 @@ function fireKey(canvas, keyCode, type) {
   }));
 }
 
-/* WASD → arrow-key remap (DOOM WASM doesn't always map WASD by default) */
-const WASD = { 87: 38, 83: 40, 65: 37, 68: 39 };
+function releaseX(state) {
+  if (state.activeX !== 0) {
+    fireKey(state.canvas, state.activeX === -1 ? 37 : 39, 'keyup');
+    state.activeX = 0;
+  }
+}
+function releaseY(state) {
+  if (state.activeY !== 0) {
+    fireKey(state.canvas, state.activeY === -1 ? 38 : 40, 'keyup');
+    state.activeY = 0;
+  }
+}
+function releaseAll(state) {
+  releaseX(state);
+  releaseY(state);
+}
 
 export default function DoomWindow({ onClose }) {
   const canvasRef = useRef(null);
   const isActiveRef = useRef(true);
-  const pointerLockRef = useRef(false);
   const [status, setStatus] = useState('loading');
   const [pointerLocked, setPointerLocked] = useState(false);
 
@@ -25,60 +38,83 @@ export default function DoomWindow({ onClose }) {
     const ctx = canvas.getContext('2d');
     isActiveRef.current = true;
 
-    /* ─── Mouse → keyboard (pointer-lock look) ─── */
-    let accX = 0, accY = 0;
-    let dirX = 0, dirY = 0; // -1/0/1 per axis
-    let pollId = null;
-    const THRESH = 3;
-    const DECAY = 0.7;
-
-    function releaseMouseKeys() {
-      if (dirX === -1) { fireKey(canvas, 37, 'keyup'); dirX = 0; }
-      if (dirX === 1)  { fireKey(canvas, 39, 'keyup'); dirX = 0; }
-      if (dirY === -1) { fireKey(canvas, 38, 'keyup'); dirY = 0; }
-      if (dirY === 1)  { fireKey(canvas, 40, 'keyup'); dirY = 0; }
-      accX = 0; accY = 0;
-    }
+    /* ─── Mouse → keyboard (pointer-lock look) ───
+         Accumulate movementX/movementY per frame and map to arrow key
+         events. A timer-based idle check releases all keys 50ms after
+         the mouse stops, preventing the "keeps spinning" bug.      */
+    const state = {
+      canvas,
+      accX: 0, accY: 0,          // accumulated pointer deltas
+      activeX: 0, activeY: 0,     // -1/0/1 per axis — last dispatched dir
+      lastMoveTime: 0,            // performance.now() of last mousemove
+      frameId: null,
+    };
+    const THRESH = 8;
 
     function pollMouse() {
-      const wantX = accX > THRESH ? 1 : accX < -THRESH ? -1 : 0;
-      if (wantX !== dirX) {
-        if (dirX === -1) fireKey(canvas, 37, 'keyup');
-        if (dirX === 1)  fireKey(canvas, 39, 'keyup');
-        if (wantX === -1) fireKey(canvas, 37, 'keydown');
-        if (wantX === 1)  fireKey(canvas, 39, 'keydown');
-        dirX = wantX;
+      if (!pointerLockRef.current || !isActiveRef.current) {
+        releaseAll(state);
+        state.frameId = null;
+        return;
       }
-      const wantY = accY > THRESH ? 1 : accY < -THRESH ? -1 : 0;
-      if (wantY !== dirY) {
-        if (dirY === -1) fireKey(canvas, 38, 'keyup');
-        if (dirY === 1)  fireKey(canvas, 40, 'keyup');
-        if (wantY === -1) fireKey(canvas, 38, 'keydown');
-        if (wantY === 1)  fireKey(canvas, 40, 'keydown');
-        dirY = wantY;
-      }
-      accX *= DECAY; accY *= DECAY;
-      if (Math.abs(accX) < 0.5) accX = 0;
-      if (Math.abs(accY) < 0.5) accY = 0;
-      if (pointerLockRef.current && isActiveRef.current)
-        pollId = requestAnimationFrame(pollMouse);
-    }
 
-    function startPoll() { pollMouse(); }
+      // If mouse has been idle for 50ms, release all and stop polling
+      if (performance.now() - state.lastMoveTime > 50) {
+        releaseAll(state);
+        state.accX = 0;
+        state.accY = 0;
+        state.frameId = null;
+        return;
+      }
+
+      // Map accumulated movement to direction (-1/0/1 per axis)
+      const wantX = state.accX > THRESH ? 1 : state.accX < -THRESH ? -1 : 0;
+      const wantY = state.accY > THRESH ? 1 : state.accY < -THRESH ? -1 : 0;
+
+      // Dispatch key changes
+      if (wantX !== state.activeX) {
+        releaseX(state);
+        if (wantX !== 0)
+          fireKey(canvas, wantX === -1 ? 37 : 39, 'keydown');
+        state.activeX = wantX;
+      }
+      if (wantY !== state.activeY) {
+        releaseY(state);
+        if (wantY !== 0)
+          fireKey(canvas, wantY === -1 ? 38 : 40, 'keydown');
+        state.activeY = wantY;
+      }
+
+      // Aggressive decay — values drop fast so keys release promptly
+      state.accX = Math.abs(state.accX) < 1 ? 0 : state.accX * 0.35;
+      state.accY = Math.abs(state.accY) < 1 ? 0 : state.accY * 0.35;
+
+      state.frameId = requestAnimationFrame(pollMouse);
+    }
 
     /* ─── Native event handlers (document-level for pointer-lock safety) ─── */
     function onPointerChange() {
       const locked = document.pointerLockElement === canvas;
       pointerLockRef.current = locked;
       setPointerLocked(locked);
-      if (!locked) releaseMouseKeys();
-      else startPoll();
+      if (!locked) {
+        releaseAll(state);
+        state.accX = 0; state.accY = 0;
+        if (state.frameId) cancelAnimationFrame(state.frameId);
+        state.frameId = null;
+      } else {
+        state.lastMoveTime = performance.now();
+        if (!state.frameId) state.frameId = requestAnimationFrame(pollMouse);
+      }
     }
 
     function onMouseMove(e) {
       if (document.pointerLockElement !== canvas) return;
-      accX += e.movementX || 0;
-      accY += e.movementY || 0;
+      state.accX += e.movementX || 0;
+      state.accY += e.movementY || 0;
+      state.lastMoveTime = performance.now();
+      // Start poll if not already running
+      if (!state.frameId) state.frameId = requestAnimationFrame(pollMouse);
     }
 
     function onMouseDown(e) {
@@ -97,23 +133,34 @@ export default function DoomWindow({ onClose }) {
       if (!pointerLockRef.current) canvas.requestPointerLock();
     }
 
-    /* ─── WASD → arrow key remap ─── */
+    /* ─── WASD remap ───
+         W/S → up/down arrows (forward/backward).
+         A/D pass through to DOOM's native handler for strafe.
+         stopImmediatePropagation prevents DOOM from getting the
+         *original* key AND our synthetic arrow key (which would
+         double-fire forward/backward on W/S).                   */
+    const WASD_MAP = { 87: 38, 83: 40 }; // W→up, S→down
     function onKeyDown(e) {
-      const mapped = WASD[e.keyCode];
+      const mapped = WASD_MAP[e.keyCode];
       if (mapped) {
-        fireKey(canvas, mapped, 'keydown');
+        e.stopImmediatePropagation();
         e.preventDefault();
-        e.stopPropagation();
+        fireKey(canvas, mapped, 'keydown');
       }
     }
     function onKeyUp(e) {
-      const mapped = WASD[e.keyCode];
-      if (mapped) fireKey(canvas, mapped, 'keyup');
+      const mapped = WASD_MAP[e.keyCode];
+      if (mapped) {
+        e.stopImmediatePropagation();
+        fireKey(canvas, mapped, 'keyup');
+      }
     }
 
     /* Bind */
+    const pointerLockRef = { current: false };
+    function onPointerError() {}
     document.addEventListener('pointerlockchange', onPointerChange);
-    document.addEventListener('pointerlockerror', () => { /* fail silent */ });
+    document.addEventListener('pointerlockerror', onPointerError);
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mousedown', onMouseDown);
     document.addEventListener('mouseup', onMouseUp);
@@ -147,12 +194,17 @@ export default function DoomWindow({ onClose }) {
 
     return () => {
       isActiveRef.current = false;
-      if (pollId) cancelAnimationFrame(pollId);
+      if (state.frameId) cancelAnimationFrame(state.frameId);
+      releaseAll(state);
       if (document.pointerLockElement === canvas) document.exitPointerLock();
       document.removeEventListener('pointerlockchange', onPointerChange);
+      document.removeEventListener('pointerlockerror', onPointerError);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mousedown', onMouseDown);
       document.removeEventListener('mouseup', onMouseUp);
+      canvas.removeEventListener('click', onCanvasClick);
+      canvas.removeEventListener('keydown', onKeyDown);
+      canvas.removeEventListener('keyup', onKeyUp);
     };
   }, []);
 
@@ -177,10 +229,9 @@ export default function DoomWindow({ onClose }) {
 
       {status === 'ready' && (
         <div className={`doom-overlay-hint${pointerLocked ? ' hidden' : ''}`}>
-          {pointerLocked
-            ? <span className="doom-hint-text">Escape to release mouse</span>
-            : <span className="doom-hint-text">Click to play (WASD + mouse look)</span>
-          }
+          <span className="doom-hint-text">
+            {pointerLocked ? 'Escape to release mouse' : 'Click to play (WASD + mouse look)'}
+          </span>
         </div>
       )}
 

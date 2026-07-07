@@ -17,9 +17,9 @@
 
 /* ─── WordPad Window ─── */
 .wpad-window {
-  width: 650px;
+  width: 880px;
   max-width: 94vw;
-  max-height: 88vh;
+  max-height: 94vh;
   background: #D4D0C8;
   border: 2px solid;
   border-color: #FEFEFE #0A0A0A #0A0A0A #FEFEFE;
@@ -316,10 +316,9 @@
 /* ─── Document body ─── */
 .wpad-document {
   flex: 1;
-  overflow-y: auto;
+  overflow: hidden;
   background: #808080;
   padding: 8px;
-  min-height: 200px;
 }
 
 .wpad-document::-webkit-scrollbar {
