@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './PortfolioBrowser.css';
 
 const MENU_ITEMS = ['File', 'Edit', 'View', 'Favorites', 'Tools', 'Help'];
-const BASE_URL = '/portfoliobackup/index.html';
+const BASE_URL = `${import.meta.env.BASE_URL}portfoliobackup/index.html`;
 
 /* ─── Browser globe icon (replaces IE "e" logo) ─── */
 export function GlobeIcon({ size = 16 }) {
