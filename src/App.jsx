@@ -17,12 +17,12 @@ const SHORTCUTS = [
 ];
 
 const DESKTOP_ICONS = {
-  txt: <img src="/icons/textfile.png" alt="" width={72} height={72} />,
-  info: <img src="/icons/My computer.png" alt="" width={72} height={72} />,
-  folder: <img src="/icons/Documents.png" alt="" width={72} height={72} />,
-  globe: <img src="/icons/Network.png" alt="" width={72} height={72} />,
-  mail: <img src="/icons/My computer.png" alt="" width={72} height={72} />,
-  doom: <img src="/doom-icon.png" alt="" width={72} height={72} />,
+  txt: <img src="./icons/textfile.png" alt="" width={72} height={72} />,
+  info: <img src="./icons/My computer.png" alt="" width={72} height={72} />,
+  folder: <img src="./icons/Documents.png" alt="" width={72} height={72} />,
+  globe: <img src="./icons/Network.png" alt="" width={72} height={72} />,
+  mail: <img src="./icons/My computer.png" alt="" width={72} height={72} />,
+  doom: <img src="./doom-icon.png" alt="" width={72} height={72} />,
 };
 
 export default function App() {
@@ -275,7 +275,7 @@ export default function App() {
             <motion.div key="projects" style={winStyle('projects')} {...winAnim}>
               <XpWindow
                 title="Projects"
-                icon={<img src="/icons/Documents.png" alt="" width={20} height={20} />}
+                icon={<img src="./icons/Documents.png" alt="" width={20} height={20} />}
                 open={win('projects').open}
                 zIndex={win('projects').zIndex}
                 onClose={() => closeWindow('projects')}
@@ -309,7 +309,7 @@ export default function App() {
             <motion.div key="skills" style={winStyle('skills')} {...winAnim}>
               <XpWindow
                 title="Skills"
-                icon={<img src="/icons/Network.png" alt="" width={20} height={20} />}
+                icon={<img src="./icons/Network.png" alt="" width={20} height={20} />}
                 open={win('skills').open}
                 zIndex={win('skills').zIndex}
                 onClose={() => closeWindow('skills')}
@@ -327,7 +327,7 @@ export default function App() {
             <motion.div key="doom" style={winStyle('doom')} {...winAnim}>
               <XpWindow
                 title="DOOM (1993)"
-                icon={<img src="/doom-logo-20.png" alt="" width={20} height={20} />}
+                icon={<img src="./doom-logo-20.png" alt="" width={20} height={20} />}
                 open={win('doom').open}
                 zIndex={win('doom').zIndex}
                 onClose={() => closeWindow('doom')}
@@ -347,7 +347,7 @@ export default function App() {
             <motion.div key="contact" style={winStyle('contact')} {...winAnim}>
               <XpWindow
                 title="Contact Me"
-                icon={<img src="/icons/Documents.png" alt="" width={20} height={20} />}
+                icon={<img src="./icons/Documents.png" alt="" width={20} height={20} />}
                 open={win('contact').open}
                 zIndex={win('contact').zIndex}
                 onClose={() => closeWindow('contact')}
@@ -531,7 +531,7 @@ export default function App() {
       <div className="taskbar">
         <button className={'taskbar-start' + (startOpen ? ' open' : '')} onClick={() => setStartOpen(v => !v)}>
           <span className="taskbar-start-logo">
-            <img src="/startxpblue.png" alt="" width={25} height={20} />
+            <img src="./startxpblue.png" alt="" width={25} height={20} />
           </span>
           Start
         </button>

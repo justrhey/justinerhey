@@ -104,7 +104,7 @@ export default function ClippyAssistant() {
         aria-label="Ask Clippy for help"
         title="Click me!"
       >
-        <img src="/clippy.png" alt="Clippy" className="clippy-img" />
+        <img src="./clippy.png" alt="Clippy" className="clippy-img" />
         <button
           className="clippy-close"
           onClick={handleDismiss}

@@ -134,7 +134,7 @@ export default function ProfileWordPad({ onClose, window: windowMode, onDragStar
           {/* Header with photo */}
           <div className="wpad-header">
             <div className="wpad-photo-wrap">
-              <img src="/profile-1.png" alt="Justine Rhey" className="wpad-photo" />
+              <img src="./profile-1.png" alt="Justine Rhey" className="wpad-photo" />
             </div>
             <div className="wpad-header-text">
               <h1 className="wpad-doc-name">Justine Rhey M. Tambong</h1>
