@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import './ProfileWordPad.css';
 
-export default function ProfileWordPad({ onClose, window: windowMode, onDragStart }) {
+export default function ProfileWordPad({ onClose, onMinimize, onMaximize, maximized, window: windowMode, onDragStart }) {
   const overlayRef = useRef(null);
   const docRef = useRef(null);
 
@@ -17,12 +17,13 @@ export default function ProfileWordPad({ onClose, window: windowMode, onDragStar
 
   const handleTitleMouseDown = (e) => {
     if (e.target.closest('.wpad-title-buttons')) return;
+    if (maximized && onMaximize) onMaximize();
     if (onDragStart) onDragStart(e);
   };
 
   const wordpad = (
     <div
-      className="wpad-window"
+      className={`wpad-window${maximized ? ' wpad-maximized' : ''}`}
       ref={docRef}
       role="dialog"
       aria-modal="true"
@@ -42,8 +43,18 @@ export default function ProfileWordPad({ onClose, window: windowMode, onDragStar
         </span>
         <span className="wpad-title-text">profile.txt - WordPad</span>
         <div className="wpad-title-buttons">
-          <span className="wpad-btn wpad-btn-min" aria-hidden="true" title="Minimize" />
-          <span className="wpad-btn wpad-btn-max" aria-hidden="true" title="Maximize" />
+          <button
+            className="wpad-btn wpad-btn-min"
+            onClick={onMinimize}
+            aria-label="Minimize"
+            title="Minimize"
+          />
+          <button
+            className={`wpad-btn ${maximized ? 'wpad-btn-restore' : 'wpad-btn-max'}`}
+            onClick={onMaximize}
+            aria-label={maximized ? 'Restore' : 'Maximize'}
+            title={maximized ? 'Restore' : 'Maximize'}
+          />
           <button
             className="wpad-btn wpad-btn-close"
             onClick={onClose}

@@ -31,6 +31,16 @@
   animation: wpadEnter 0.2s ease;
 }
 
+.wpad-window.wpad-maximized {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+  max-height: none;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
 @keyframes wpadEnter {
   from { opacity: 0; transform: translateY(12px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -120,6 +130,29 @@
 .wpad-btn-max::before {
   width: 11px; height: 11px; border: 2px solid #fff;
   top: 5px; left: 6px;
+}
+
+.wpad-btn-restore {
+  background: linear-gradient(180deg, #6CC06C 0%, #4AA04A 40%, #3A903A 50%, #4AA04A 100%);
+  border-color: #2A7A2A #1A5A1A #1A5A1A #2A7A2A;
+}
+.wpad-btn-restore:hover {
+  background: linear-gradient(180deg, #7DD07D 0%, #5BB05B 40%, #4AA04A 50%, #5BB05B 100%);
+}
+.wpad-btn-restore::before {
+  content: '';
+  position: absolute;
+  width: 11px; height: 11px; border: 2px solid #fff;
+  top: 6px; left: 7px;
+  z-index: 1;
+  background: transparent;
+}
+.wpad-btn-restore::after {
+  content: '';
+  position: absolute;
+  width: 11px; height: 11px; border: 2px solid #fff;
+  top: 4px; left: 5px;
+  background: #3A903A;
 }
 
 /* ─── Menu bar ─── */

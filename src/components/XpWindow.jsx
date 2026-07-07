@@ -9,6 +9,9 @@ export default function XpWindow({
   onClose,
   onFocus,
   onDragStart,
+  onMinimize,
+  onMaximize,
+  maximized,
   children,
   width = 540,
   menuItems,
@@ -30,6 +33,10 @@ export default function XpWindow({
 
   const handleTitleMouseDown = (e) => {
     if (e.target.closest('.xpw-title-buttons')) return;
+    if (maximized && onMaximize) {
+      // XP behavior: dragging a maximized window restores it first
+      onMaximize();
+    }
     if (onDragStart) onDragStart(e);
   };
 
@@ -38,8 +45,8 @@ export default function XpWindow({
   return (
     <div
       ref={winRef}
-      className="xp-window"
-      style={{ zIndex, width: Math.min(width, window.innerWidth - 16) }}
+      className={`xp-window${maximized ? ' maximized' : ''}`}
+      style={{ zIndex, width: maximized ? '100%' : Math.min(width, window.innerWidth - 16) }}
       onMouseDown={onFocus}
       role="dialog"
       aria-modal="true"
@@ -59,15 +66,15 @@ export default function XpWindow({
         <div className="xpw-title-buttons">
           <button
             className="xpw-btn xpw-min"
-            aria-hidden="true"
+            onClick={onMinimize}
+            aria-label="Minimize"
             title="Minimize"
-            tabIndex={-1}
           />
           <button
-            className="xpw-btn xpw-max"
-            aria-hidden="true"
-            title="Maximize"
-            tabIndex={-1}
+            className={`xpw-btn ${maximized ? 'xpw-restore' : 'xpw-max'}`}
+            onClick={onMaximize}
+            aria-label={maximized ? 'Restore' : 'Maximize'}
+            title={maximized ? 'Restore' : 'Maximize'}
           />
           <button
             className="xpw-btn xpw-close"

@@ -288,7 +288,8 @@ a:focus:not(:focus-visible) {
   height: 14px;
   flex-shrink: 0;
 }
-.taskbar-btn-icon img {
+.taskbar-btn-icon img,
+.taskbar-btn-icon svg {
   width: 14px;
   height: 14px;
 }
@@ -1652,74 +1653,6 @@ a:focus:not(:focus-visible) {
 }
 
 /* ─── XP Yellow Balloon Notification ─── */
-.xp-balloon-notif {
-  position: fixed;
-  bottom: 36px;
-  right: 12px;
-  z-index: 297;
-  width: 260px;
-  background: #FFFFE1;
-  border: 1px solid #000;
-  padding: 8px 10px 10px;
-  font-family: 'Tahoma', 'Geist', sans-serif;
-  font-size: 11px;
-  color: #000;
-  box-shadow: 2px 2px 6px rgba(0,0,0,0.25);
-  cursor: default;
-  animation: balloonEnter 0.3s ease-out;
-}
-@keyframes balloonEnter {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.xp-balloon-notif-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-.xp-balloon-notif-title {
-  flex: 1;
-  font-weight: 700;
-  font-size: 12px;
-  color: #1A3B6E;
-}
-.xp-balloon-notif-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 10px;
-  color: #666;
-  padding: 0 2px;
-  font-family: 'Tahoma', sans-serif;
-  line-height: 1;
-}
-.xp-balloon-notif-close:hover { color: #000; }
-.xp-balloon-notif-body {
-  line-height: 1.4;
-  font-size: 11px;
-  color: #222;
-}
-.xp-balloon-notif-tail {
-  position: absolute;
-  bottom: -7px;
-  right: 18px;
-  width: 0; height: 0;
-  border-left: 7px solid transparent;
-  border-right: 7px solid transparent;
-  border-top: 7px solid #000;
-}
-.xp-balloon-notif-tail::after {
-  content: '';
-  position: absolute;
-  top: -8px;
-  left: -5px;
-  width: 0; height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 6px solid #FFFFE1;
-}
-
 /* ─── Noscript ─── */
 .noscript-overlay {
   position: fixed; inset: 0; z-index: 9999;
@@ -1839,15 +1772,6 @@ a:focus:not(:focus-visible) {
   .alttab-icon img { width: 32px; height: 32px; }
   .alttab-icon svg { width: 28px; height: 28px; }
   .alttab-label { font-size: 9px; max-width: 56px; }
-
-  /* ─── Balloon notification ─── */
-  .xp-balloon-notif {
-    right: 4px;
-    width: calc(100vw - 16px);
-    max-width: 280px;
-    bottom: 34px;
-    font-size: 10px;
-  }
 
   /* ─── Outlook Express ─── */
   .oe-fields label { grid-template-columns: 40px 1fr; }

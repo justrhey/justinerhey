@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, createContext, useContext } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { PROJECTS } from './data/projects';
 import XpWindow from './components/XpWindow';
@@ -6,6 +6,7 @@ import ProfileWordPad from './components/ProfileWordPad';
 import SkillsContent from './components/SkillsContent';
 import ClippyAssistant from './components/ClippyAssistant';
 import DoomWindow from './components/DoomWindow';
+import PortfolioBrowser, { GlobeIcon } from './components/PortfolioBrowser';
 import './App.css';
 
 const SHORTCUTS = [
@@ -14,6 +15,7 @@ const SHORTCUTS = [
   { id: 'skills', label: 'Skills', icon: 'globe' },
   { id: 'contact', label: 'Contact', icon: 'mail' },
   { id: 'doom', label: 'DOOM', icon: 'doom' },
+  { id: 'portfolio', label: 'Portfolio', icon: 'browser' },
 ];
 
 const DESKTOP_ICONS = {
@@ -23,6 +25,7 @@ const DESKTOP_ICONS = {
   globe: <img src="./icons/Network.png" alt="" width={72} height={72} />,
   mail: <img src="./icons/My computer.png" alt="" width={72} height={72} />,
   doom: <img src="./doom-icon.png" alt="" width={72} height={72} />,
+  browser: <GlobeIcon size={72} />,
 };
 
 export default function App() {
@@ -36,7 +39,6 @@ export default function App() {
   const [altTabActive, setAltTabActive] = useState(false);
   const [altTabIdx, setAltTabIdx] = useState(0);
   const [clockFlyout, setClockFlyout] = useState(false);
-  const [balloonTip, setBalloonTip] = useState(true);
   const clockRef = useRef(null);
   const [displayProps, setDisplayProps] = useState(false);
   const [dpTab, setDpTab] = useState(0);
@@ -158,13 +160,13 @@ export default function App() {
   const win = useCallback((id) => winState[id] || { open: false, zIndex: 0, offset: 0, posX: 80, posY: 80 }, [winState]);
 
   const openWindow = useCallback((id) => {
-    const sizes = { profile: [880, 640], projects: [960, 720], skills: [960, 720], contact: [900, 680], doom: [664, 540] };
+    const sizes = { profile: [880, 640], projects: [960, 720], skills: [960, 720], contact: [900, 680], doom: [664, 540], portfolio: [980, 680] };
     const [w, h] = sizes[id] || [600, 420];
     const posX = Math.max(20, (window.innerWidth - w) / 2);
     const posY = Math.max(20, (window.innerHeight - h) / 2);
     setWinState(prev => ({
       ...prev,
-      [id]: { open: true, zIndex: nextZ.current++, offset: 0, posX, posY },
+      [id]: { open: true, minimized: false, zIndex: nextZ.current++, offset: 0, posX, posY },
     }));
     setStartOpen(false);
   }, []);
@@ -172,7 +174,7 @@ export default function App() {
   const closeWindow = useCallback((id) => {
     setWinState(prev => {
       const next = { ...prev };
-      if (next[id]) next[id] = { ...next[id], open: false };
+      if (next[id]) next[id] = { ...next[id], open: false, minimized: false };
       return next;
     });
   }, []);
@@ -181,7 +183,23 @@ export default function App() {
     setWinState(prev => {
       const w = prev[id];
       if (!w || !w.open) return prev;
-      return { ...prev, [id]: { ...w, zIndex: nextZ.current++ } };
+      return { ...prev, [id]: { ...w, zIndex: nextZ.current++, minimized: false } };
+    });
+  }, []);
+
+  const minimizeWindow = useCallback((id) => {
+    setWinState(prev => {
+      const w = prev[id];
+      if (!w || !w.open) return prev;
+      return { ...prev, [id]: { ...w, minimized: true } };
+    });
+  }, []);
+
+  const maximizeWindow = useCallback((id) => {
+    setWinState(prev => {
+      const w = prev[id];
+      if (!w || !w.open) return prev;
+      return { ...prev, [id]: { ...w, maximized: !w.maximized } };
     });
   }, []);
 
@@ -279,6 +297,9 @@ export default function App() {
   /* ─── Window position ─── */
   function winStyle(id) {
     const w = win(id);
+    if (w.maximized) {
+      return { zIndex: 250, position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, width: 'auto', height: 'auto' };
+    }
     return { zIndex: w.zIndex, left: w.posX || 60, top: w.posY || 30, position: 'absolute' };
   }
 
@@ -296,6 +317,55 @@ export default function App() {
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [modalIdx, closeModal]);
+
+  const ctxValue = useMemo(() => ({
+    winState, activeWindow, nextZ, startOpen, timeStr, modalIdx,
+    dragId, altTabActive, altTabIdx, clockFlyout, clockRef,
+    displayProps, dpTab, dpTabs, dragRef, ctxMenu, ctxRef,
+    desktopCtx, desktopCtxRef, desktopSub, selRect, selStart, iconRefs,
+    setWinState, setStartOpen, setModalIdx,
+    setDragId, setAltTabActive, setAltTabIdx, setClockFlyout,
+    setDisplayProps, setDpTab, setCtxMenu, setDesktopCtx, setDesktopSub, setSelRect,
+    openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow,
+    handleDragStart, handleSubmit, handleDesktopCtx, handleCtxMenu,
+    handleDeskMouseDown, showDesktop, openModal, closeModal,
+    win, winStyle, winAnim, SHORTCUTS, DESKTOP_ICONS, PROJECTS,
+  }), [winState, activeWindow, nextZ, startOpen, timeStr, modalIdx,
+    dragId, altTabActive, altTabIdx, clockFlyout,
+    displayProps, dpTab, dpTabs, ctxMenu, desktopCtx, desktopCtxRef, desktopSub,
+    selRect, openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow,
+    handleDragStart, handleSubmit, handleDesktopCtx, handleCtxMenu,
+    handleDeskMouseDown, showDesktop, openModal, closeModal,
+  ]);
+
+  return (
+    <DesktopContext.Provider value={ctxValue}>
+      <DesktopContent />
+    </DesktopContext.Provider>
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   DesktopContent — reads from DesktopContext
+   ═══════════════════════════════════════════════════ */
+const DesktopContext = createContext(null);
+export function useDesktop() { return useContext(DesktopContext); }
+
+function DesktopContent() {
+  const ctx = useDesktop();
+  if (!ctx) return null;
+  const {
+    winState, activeWindow, startOpen, timeStr, modalIdx,
+    altTabActive, altTabIdx, clockFlyout, clockRef,
+    displayProps, dpTab, dpTabs,
+    ctxMenu, ctxRef, desktopCtx, desktopCtxRef, desktopSub, selRect,
+    setStartOpen, setModalIdx, setClockFlyout,
+    setDisplayProps, setDpTab, setCtxMenu, setDesktopCtx, setDesktopSub,
+    openWindow, closeWindow, focusWindow, minimizeWindow, maximizeWindow,
+    handleDragStart, handleSubmit, handleDesktopCtx, handleCtxMenu,
+    handleDeskMouseDown, showDesktop, openModal, closeModal,
+    win, winStyle, winAnim, SHORTCUTS, DESKTOP_ICONS, PROJECTS,
+  } = ctx;
 
   const p = PROJECTS[modalIdx];
 
@@ -317,14 +387,17 @@ export default function App() {
 
         {/* ─── Windows with Framer Motion ─── */}
         <AnimatePresence>
-          {win('profile').open && (
+          {win('profile').open && !win('profile').minimized && (
             <motion.div key="profile" className="desktop-window-wrap" style={winStyle('profile')} {...winAnim}>
               <ProfileWordPad onClose={() => closeWindow('profile')} window
+                onMinimize={() => minimizeWindow('profile')}
+                onMaximize={() => maximizeWindow('profile')}
+                maximized={win('profile').maximized}
                 onDragStart={(e) => handleDragStart('profile', e.clientX, e.clientY)} />
             </motion.div>
           )}
 
-          {win('projects').open && (
+          {win('projects').open && !win('projects').minimized && (
             <motion.div key="projects" className="win-wrap" style={winStyle('projects')} {...winAnim}>
               <XpWindow
                 title="Projects"
@@ -334,6 +407,9 @@ export default function App() {
                 onClose={() => closeWindow('projects')}
                 onFocus={() => focusWindow('projects')}
                 onDragStart={(e) => handleDragStart('projects', e.clientX, e.clientY)}
+                onMinimize={() => minimizeWindow('projects')}
+                onMaximize={() => maximizeWindow('projects')}
+                maximized={win('projects').maximized}
                 width={960}
                 menuItems={['File', 'Edit', 'View', 'Favorites', 'Help']}
               >
@@ -358,7 +434,7 @@ export default function App() {
             </motion.div>
           )}
 
-          {win('skills').open && (
+          {win('skills').open && !win('skills').minimized && (
             <motion.div key="skills" className="win-wrap" style={winStyle('skills')} {...winAnim}>
               <XpWindow
                 title="Skills"
@@ -368,6 +444,9 @@ export default function App() {
                 onClose={() => closeWindow('skills')}
                 onFocus={() => focusWindow('skills')}
                 onDragStart={(e) => handleDragStart('skills', e.clientX, e.clientY)}
+                onMinimize={() => minimizeWindow('skills')}
+                onMaximize={() => maximizeWindow('skills')}
+                maximized={win('skills').maximized}
                 width={960}
                 menuItems={['File', 'Edit', 'View', 'Help']}
               >
@@ -396,7 +475,23 @@ export default function App() {
             </motion.div>
           )}
 
-          {win('contact').open && (
+          {win('portfolio').open && !win('portfolio').minimized && (
+            <motion.div key="portfolio" className="win-wrap" style={winStyle('portfolio')} {...winAnim}>
+              <PortfolioBrowser
+                onClose={() => closeWindow('portfolio')}
+                onMinimize={() => minimizeWindow('portfolio')}
+                onMaximize={() => maximizeWindow('portfolio')}
+                maximized={win('portfolio').maximized}
+                windowProps={{
+                  zIndex: win('portfolio').zIndex,
+                  onFocus: () => focusWindow('portfolio'),
+                  onDragStart: (e) => handleDragStart('portfolio', e.clientX, e.clientY),
+                }}
+              />
+            </motion.div>
+          )}
+
+          {win('contact').open && !win('contact').minimized && (
             <motion.div key="contact" className="win-wrap" style={winStyle('contact')} {...winAnim}>
               <XpWindow
                 title="Contact Me"
@@ -406,6 +501,9 @@ export default function App() {
                 onClose={() => closeWindow('contact')}
                 onFocus={() => focusWindow('contact')}
                 onDragStart={(e) => handleDragStart('contact', e.clientX, e.clientY)}
+                onMinimize={() => minimizeWindow('contact')}
+                onMaximize={() => maximizeWindow('contact')}
+                maximized={win('contact').maximized}
                 width={900}
                 menuItems={['File', 'Edit', 'View', 'Insert', 'Format']}
               >
@@ -604,21 +702,7 @@ export default function App() {
       </div>
 
       {/* ─── XP Yellow Balloon Tooltip ─── */}
-      {balloonTip && (
-        <div className="xp-balloon-notif">
-          <div className="xp-balloon-notif-header">
-            <img src="./icons/My computer.png" alt="" width={20} height={20} />
-            <span className="xp-balloon-notif-title">Desktop Experience</span>
-            <button className="xp-balloon-notif-close" onClick={() => setBalloonTip(false)}>✕</button>
-          </div>
-          <div className="xp-balloon-notif-body">
-            Click <strong>Start</strong> to open apps • Right-click the desktop for options • Hover taskbar buttons for actions
-          </div>
-          <div className="xp-balloon-notif-tail" />
-        </div>
-      )}
-
-      {/* ─── Task Button Context Menu ─── */}
+{/* ─── Task Button Context Menu ─── */}
       {ctxMenu && (
         <div className="task-ctx-menu" ref={ctxRef} style={{ left: ctxMenu.x, top: ctxMenu.y }} role="menu" aria-label="Window actions">
           <button className="task-ctx-item" role="menuitem" onClick={() => { focusWindow(ctxMenu.id); setCtxMenu(null); }}>
@@ -729,6 +813,13 @@ export default function App() {
                 <div className="start-menu-item-text">
                   <span className="start-menu-item-label">Skills</span>
                   <span className="start-menu-item-desc">Shortcut</span>
+                </div>
+              </button>
+              <button className="start-menu-item" onClick={() => openWindow('portfolio')}>
+                <span className="start-menu-item-icon">{DESKTOP_ICONS.browser}</span>
+                <div className="start-menu-item-text">
+                  <span className="start-menu-item-label">Portfolio</span>
+                  <span className="start-menu-item-desc">Internet Shortcut</span>
                 </div>
               </button>
 
