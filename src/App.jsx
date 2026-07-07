@@ -15,7 +15,7 @@ const SHORTCUTS = [
   { id: 'skills', label: 'Skills', icon: 'globe' },
   { id: 'contact', label: 'Contact', icon: 'mail' },
   { id: 'doom', label: 'DOOM', icon: 'doom' },
-  { id: 'portfolio', label: 'Portfolio', icon: 'browser' },
+  { id: 'portfolio', label: 'Portfolio (v2)', icon: 'browser' },
 ];
 
 const DESKTOP_ICONS = {
@@ -162,8 +162,9 @@ export default function App() {
   const openWindow = useCallback((id) => {
     const sizes = { profile: [880, 640], projects: [960, 720], skills: [960, 720], contact: [900, 680], doom: [664, 540], portfolio: [980, 680] };
     const [w, h] = sizes[id] || [600, 420];
-    const posX = Math.max(20, (window.innerWidth - w) / 2);
-    const posY = Math.max(20, (window.innerHeight - h) / 2);
+    const cascade = (cascadeOff.current += 24) % 120;
+    const posX = Math.max(20, (window.innerWidth - w) / 2 + cascade);
+    const posY = Math.max(20, (window.innerHeight - h) / 2 + cascade);
     setWinState(prev => ({
       ...prev,
       [id]: { open: true, minimized: false, zIndex: nextZ.current++, offset: 0, posX, posY },

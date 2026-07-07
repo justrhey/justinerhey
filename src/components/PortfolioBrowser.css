@@ -202,14 +202,19 @@
   .ie-address-input {
     font-size: 10px;
   }
+  .ie-address-bar {
+    display: none;
+  }
+  .ie-go-btn {
+    display: none;
+  }
   .ie-toolbar-divider {
     margin: 0 1px;
   }
   .ie-status-right {
     display: none;
   }
-  .portfolio-menu-bar .xpw-menu-item {
-    padding: 1px 4px;
-    font-size: 10px;
+  .portfolio-menu-bar {
+    display: none;
   }
 }
