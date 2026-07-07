@@ -8,10 +8,13 @@
   border: 2px solid transparent;
   border-image: var(--xp-border-raise) 2;
   background: #fff;
+  width: 980px;
   height: 680px;
+  max-width: 96vw;
 }
 
 .portfolio-browser.maximized {
+  width: 100% !important;
   height: 100% !important;
 }
 
@@ -172,4 +175,41 @@
 .portfolio-browser.maximized .ie-content {
   height: 1px; /* flex will fill */
   flex: 1;
+}
+
+/* ─── Responsive mobile ─── */
+@media (max-width: 768px) {
+  .portfolio-browser {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: calc(100vh - 34px) !important;
+  }
+  .portfolio-browser.maximized {
+    height: 100% !important;
+  }
+  .ie-toolbar-row {
+    gap: 1px;
+    height: 26px;
+  }
+  .ie-btn {
+    min-width: 20px;
+    height: 22px;
+    padding: 0 2px;
+  }
+  .ie-address-label {
+    display: none;
+  }
+  .ie-address-input {
+    font-size: 10px;
+  }
+  .ie-toolbar-divider {
+    margin: 0 1px;
+  }
+  .ie-status-right {
+    display: none;
+  }
+  .portfolio-menu-bar .xpw-menu-item {
+    padding: 1px 4px;
+    font-size: 10px;
+  }
 }

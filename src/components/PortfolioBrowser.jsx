@@ -59,8 +59,6 @@ export default function PortfolioBrowser({ onClose, onMinimize, onMaximize, maxi
     <div
       className={`xp-window portfolio-browser${maximized ? ' maximized' : ''}`}
       style={{
-        width: maximized ? '100%' : 980,
-        height: maximized ? '100%' : undefined,
         zIndex: windowProps?.zIndex,
       }}
       onMouseDown={windowProps?.onFocus}
