@@ -325,7 +325,7 @@ export default function App() {
           )}
 
           {win('projects').open && (
-            <motion.div key="projects" style={winStyle('projects')} {...winAnim}>
+            <motion.div key="projects" className="win-wrap" style={winStyle('projects')} {...winAnim}>
               <XpWindow
                 title="Projects"
                 icon={<img src="./icons/Documents.png" alt="" width={20} height={20} />}
@@ -359,7 +359,7 @@ export default function App() {
           )}
 
           {win('skills').open && (
-            <motion.div key="skills" style={winStyle('skills')} {...winAnim}>
+            <motion.div key="skills" className="win-wrap" style={winStyle('skills')} {...winAnim}>
               <XpWindow
                 title="Skills"
                 icon={<img src="./icons/Network.png" alt="" width={20} height={20} />}
@@ -377,7 +377,7 @@ export default function App() {
           )}
 
           {win('doom').open && (
-            <motion.div key="doom" style={winStyle('doom')} {...winAnim}>
+            <motion.div key="doom" className="win-wrap" style={winStyle('doom')} {...winAnim}>
               <XpWindow
                 title="DOOM (1993)"
                 icon={<img src="./doom-logo-20.png" alt="" width={20} height={20} />}
@@ -397,7 +397,7 @@ export default function App() {
           )}
 
           {win('contact').open && (
-            <motion.div key="contact" style={winStyle('contact')} {...winAnim}>
+            <motion.div key="contact" className="win-wrap" style={winStyle('contact')} {...winAnim}>
               <XpWindow
                 title="Contact Me"
                 icon={<img src="./icons/Documents.png" alt="" width={20} height={20} />}
