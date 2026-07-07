@@ -17,7 +17,7 @@ const SHORTCUTS = [
 ];
 
 const DESKTOP_ICONS = {
-  txt: <img src="./icons/textfile.png" alt="" width={72} height={72} />,
+  txt: <img src="./icons/file-icon.png" alt="" width={72} height={72} />,
   info: <img src="./icons/My computer.png" alt="" width={72} height={72} />,
   folder: <img src="./icons/Documents.png" alt="" width={72} height={72} />,
   globe: <img src="./icons/Network.png" alt="" width={72} height={72} />,
@@ -33,6 +33,14 @@ export default function App() {
   const [timeStr, setTimeStr] = useState('');
   const [modalIdx, setModalIdx] = useState(null);
   const [dragId, setDragId] = useState(null);
+  const [altTabActive, setAltTabActive] = useState(false);
+  const [altTabIdx, setAltTabIdx] = useState(0);
+  const [clockFlyout, setClockFlyout] = useState(false);
+  const [balloonTip, setBalloonTip] = useState(true);
+  const clockRef = useRef(null);
+  const [displayProps, setDisplayProps] = useState(false);
+  const [dpTab, setDpTab] = useState(0);
+  const dpTabs = ['Desktop', 'Screen Saver', 'Appearance', 'Settings'];
   const dragRef = useRef(null);
   const [ctxMenu, setCtxMenu] = useState(null);
   const ctxRef = useRef(null);
@@ -59,6 +67,51 @@ export default function App() {
     tick(); const iv = setInterval(tick, 30000);
     return () => clearInterval(iv);
   }, []);
+
+  /* ─── Alt+Tab window switcher ─── */
+  useEffect(() => {
+    let altHeld = false;
+    const onDown = (e) => {
+      if (e.key === 'Alt' && !altHeld) { altHeld = true; return; }
+      if (e.key === 'Tab' && altHeld) {
+        e.preventDefault();
+        const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
+        if (!openWs.length) return;
+        if (!altTabActive) {
+          setAltTabActive(true);
+          setAltTabIdx(e.shiftKey ? openWs.length - 1 : 0);
+        } else {
+          setAltTabIdx(prev => {
+            const len = openWs.length;
+            return e.shiftKey ? (prev - 1 + len) % len : (prev + 1) % len;
+          });
+        }
+      }
+    };
+    const onUp = (e) => {
+      if (e.key === 'Alt') {
+        altHeld = false;
+        if (altTabActive) {
+          const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
+          if (openWs[altTabIdx]) focusWindow(openWs[altTabIdx][0]);
+          setAltTabActive(false);
+        }
+      }
+    };
+    window.addEventListener('keydown', onDown);
+    window.addEventListener('keyup', onUp);
+    return () => { window.removeEventListener('keydown', onDown); window.removeEventListener('keyup', onUp); };
+  }, [altTabActive, altTabIdx, winState, focusWindow]);
+
+  /* ─── Click outside to close clock flyout ─── */
+  useEffect(() => {
+    if (!clockFlyout) return;
+    const handler = (e) => {
+      if (clockRef.current && !clockRef.current.contains(e.target) && !e.target.closest('.taskbar-clock')) setClockFlyout(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [clockFlyout]);
 
   /* ─── Close start menu on outside click ─── */
   useEffect(() => {
@@ -546,9 +599,24 @@ export default function App() {
         </div>
         <div className="taskbar-tray">
           <button className="taskbar-showdesk" onClick={showDesktop} title="Show Desktop" aria-label="Show Desktop" />
-          <span className="taskbar-clock">{timeStr}</span>
+          <button className="taskbar-clock" onClick={() => setClockFlyout(v => !v)}>{timeStr}</button>
         </div>
       </div>
+
+      {/* ─── XP Yellow Balloon Tooltip ─── */}
+      {balloonTip && (
+        <div className="xp-balloon-notif">
+          <div className="xp-balloon-notif-header">
+            <img src="./icons/My computer.png" alt="" width={20} height={20} />
+            <span className="xp-balloon-notif-title">Desktop Experience</span>
+            <button className="xp-balloon-notif-close" onClick={() => setBalloonTip(false)}>✕</button>
+          </div>
+          <div className="xp-balloon-notif-body">
+            Click <strong>Start</strong> to open apps • Right-click the desktop for options • Hover taskbar buttons for actions
+          </div>
+          <div className="xp-balloon-notif-tail" />
+        </div>
+      )}
 
       {/* ─── Task Button Context Menu ─── */}
       {ctxMenu && (
@@ -615,7 +683,7 @@ export default function App() {
             <span className="task-ctx-shortcut">Ctrl+V</span>
           </button>
           <div className="task-ctx-sep" />
-          <button className="task-ctx-item" role="menuitem" onClick={() => setDesktopCtx(null)}>
+          <button className="task-ctx-item" role="menuitem" onClick={() => { setDesktopCtx(null); setDisplayProps(true); setDpTab(0); }}>
             <span className="task-ctx-icon">
               <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.2"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M5 4v8M8 4v8M11 4v8M4 5h8M4 8h8M4 11h8"/></svg>
             </span>
@@ -624,37 +692,291 @@ export default function App() {
         </div>
       )}
 
-      {/* ─── Start Menu ─── */}
+      {/* ─── Start Menu (authentic XP Luna) ─── */}
       {startOpen && (
         <div className="start-menu">
-          <div className="start-menu-brand">
-            <span className="start-menu-user">Justine<br />Rhey</span>
-          </div>
-          <div className="start-menu-body">
-            <div className="start-menu-items">
-              {SHORTCUTS.map(s => (
-                <button key={s.id} className="start-menu-item" onClick={() => openWindow(s.id)}>
-                  <span className="start-menu-item-icon">{DESKTOP_ICONS[s.icon]}</span>
-                  <span className="start-menu-item-label">{s.label}</span>
-                </button>
-              ))}
+          {/* ─── Header ─── */}
+          <div className="start-menu-header">
+            <div className="start-menu-avatar">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="#2D5C8A">
+                <circle cx="12" cy="8" r="5" />
+                <ellipse cx="12" cy="20" rx="10" ry="6" />
+              </svg>
             </div>
-            <div className="start-menu-footer">
-              <button className="start-menu-item" onClick={() => setStartOpen(false)}>
+            <span className="start-menu-username">Justine Rhey</span>
+          </div>
+
+          {/* ─── Body ─── */}
+          <div className="start-menu-body">
+            {/* Left column — pinned programs */}
+            <div className="start-menu-col-left">
+              <button className="start-menu-item" onClick={() => openWindow('profile')}>
+                <span className="start-menu-item-icon">{DESKTOP_ICONS.txt}</span>
+                <div className="start-menu-item-text">
+                  <span className="start-menu-item-label">profile.txt</span>
+                  <span className="start-menu-item-desc">WordPad Document</span>
+                </div>
+              </button>
+              <button className="start-menu-item" onClick={() => openWindow('projects')}>
+                <span className="start-menu-item-icon">{DESKTOP_ICONS.folder}</span>
+                <div className="start-menu-item-text">
+                  <span className="start-menu-item-label">Projects</span>
+                  <span className="start-menu-item-desc">File Folder</span>
+                </div>
+              </button>
+              <button className="start-menu-item" onClick={() => openWindow('skills')}>
+                <span className="start-menu-item-icon">{DESKTOP_ICONS.globe}</span>
+                <div className="start-menu-item-text">
+                  <span className="start-menu-item-label">Skills</span>
+                  <span className="start-menu-item-desc">Shortcut</span>
+                </div>
+              </button>
+
+              <div className="start-menu-separator" />
+
+              <button className="start-menu-item" onClick={() => {
+                setStartOpen(false);
+                window.open('CV_Justine_Rhey_Tambong.pdf', '_blank');
+              }}>
                 <span className="start-menu-item-icon">
-                  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
+                  <svg viewBox="0 0 32 32" width="32" height="32">
+                    <rect x="4" y="2" width="24" height="28" rx="2" fill="#FFFFFF" stroke="#808080" strokeWidth="1.5"/>
+                    <rect x="6" y="4" width="20" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="6" y="10" width="16" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="6" y="14" width="18" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="6" y="18" width="12" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="6" y="22" width="14" height="2" rx="1" fill="#1A3B6E"/>
                   </svg>
                 </span>
-                <span className="start-menu-item-label">Log Off…</span>
+                <div className="start-menu-item-text">
+                  <span className="start-menu-item-label">CV / Resume</span>
+                  <span className="start-menu-item-desc">Adobe Acrobat Document</span>
+                </div>
               </button>
             </div>
+
+            {/* Right column — system links */}
+            <div className="start-menu-col-right">
+              <button className="start-menu-item start-menu-item-right" onClick={() => openWindow('contact')}>
+                <span className="start-menu-item-icon">
+                  <svg viewBox="0 0 32 32" width="28" height="28">
+                    <rect x="2" y="6" width="28" height="20" rx="2" fill="#F0F0F0" stroke="#808080" strokeWidth="1.5"/>
+                    <rect x="4" y="8" width="24" height="16" rx="1" fill="#FFFFFF"/>
+                    <path d="M2 26L12 18" stroke="#808080" strokeWidth="1.5" fill="none"/>
+                    <path d="M30 26L20 18" stroke="#808080" strokeWidth="1.5" fill="none"/>
+                    <circle cx="16" cy="16" r="4" fill="#FFD700" stroke="#DAA520" strokeWidth="1"/>
+                  </svg>
+                </span>
+                <span className="start-menu-item-label">Contact Me</span>
+              </button>
+
+              <div className="start-menu-separator-right" />
+
+              <button className="start-menu-item start-menu-item-right" onClick={() => openWindow('doom')}>
+                <span className="start-menu-item-icon">
+                  <img src="./doom-icon.png" alt="" width={28} height={28} />
+                </span>
+                <span className="start-menu-item-label">DOOM (1993)</span>
+              </button>
+
+              <div className="start-menu-separator-right" />
+
+              <button className="start-menu-item start-menu-item-right" onClick={() => setStartOpen(false)}>
+                <span className="start-menu-item-icon">
+                  <svg viewBox="0 0 32 32" width="28" height="28">
+                    <rect x="6" y="4" width="20" height="24" rx="2" fill="#FFFFFF" stroke="#808080" strokeWidth="1.5"/>
+                    <rect x="8" y="6" width="16" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="8" y="10" width="14" height="2" rx="1" fill="#1A3B6E"/>
+                    <rect x="8" y="14" width="12" height="2" rx="1" fill="#1A3B6E"/>
+                    <circle cx="18" cy="24" r="3" fill="#FFD700" stroke="#DAA520" strokeWidth="1"/>
+                    <path d="M22 6l4 4" stroke="#808080" strokeWidth="1.5" fill="none"/>
+                  </svg>
+                </span>
+                <span className="start-menu-item-label">Help and Support</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ─── Bottom bar ─── */}
+          <div className="start-menu-bottom">
+            <button className="start-menu-bottom-btn" onClick={() => setStartOpen(false)}>
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 2H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+                <polyline points="11 11 14 8 11 5" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <line x1="14" y1="8" x2="7" y2="8" stroke="#fff" strokeWidth="1.5"/>
+              </svg>
+              Log Off
+            </button>
+            <button className="start-menu-bottom-btn" onClick={() => setStartOpen(false)}>
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="9" width="12" height="6" rx="1" stroke="#fff" strokeWidth="1.2" fill="none"/>
+                <path d="M12 6a4 4 0 0 0-8 0" stroke="#fff" strokeWidth="1.5" fill="none"/>
+                <circle cx="8" cy="11" r="1.5" fill="#FFE44D"/>
+                <line x1="8" y1="11" x2="8" y2="6" stroke="#fff" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              Turn Off Computer
+            </button>
           </div>
         </div>
       )}
       {/* ─── Clippy Assistant ─── */}
+
+      {/* ─── Alt+Tab Switcher ─── */}
+      {altTabActive && (() => {
+        const openWs = Object.entries(winState).filter(([, w]) => w.open).sort(([, a], [, b]) => b.zIndex - a.zIndex);
+        return (
+          <div className="alttab-overlay">
+            <div className="alttab-panel">
+              {openWs.map(([id], i) => {
+                const s = SHORTCUTS.find(s => s.id === id);
+                return (
+                  <div key={id} className={'alttab-item' + (i === altTabIdx ? ' active' : '')}>
+                    <span className="alttab-icon">{s ? DESKTOP_ICONS[s.icon] : null}</span>
+                    <span className="alttab-label">{s ? s.label : id}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ─── Clock/Calendar Flyout ─── */}
+      {clockFlyout && (
+        <div className="clock-flyout" ref={clockRef}>
+          <div className="clock-flyout-time">
+            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          </div>
+          <div className="clock-flyout-date">
+            {new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+          </div>
+          <div className="clock-flyout-cal">
+            <div className="clock-cal-header">
+              <button className="clock-cal-nav" onClick={() => {}}>◀</button>
+              <span>{new Date().toLocaleDateString([], { month: 'long', year: 'numeric' })}</span>
+              <button className="clock-cal-nav" onClick={() => {}}>▶</button>
+            </div>
+            <div className="clock-cal-grid">
+              {['S','M','T','W','T','F','S'].map(d => <span key={d} className="clock-cal-dow">{d}</span>)}
+              {(() => {
+                const d = new Date(); const y = d.getFullYear(); const m = d.getMonth();
+                const first = new Date(y, m, 1).getDay(); const days = new Date(y, m + 1, 0).getDate();
+                const cells = []; const today = d.getDate();
+                for (let i = 0; i < first; i++) cells.push(<span key={`e${i}`} className="clock-cal-day dim" />);
+                for (let i = 1; i <= days; i++) cells.push(
+                  <span key={i} className={'clock-cal-day' + (i === today ? ' today' : '')}>{i}</span>
+                );
+                return cells;
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Display Properties Dialog ─── */}
+      {displayProps && (
+        <div className="dp-overlay" onClick={(e) => { if (e.target === e.currentTarget) setDisplayProps(false); }}>
+          <div className="dp-dialog" onClick={e => e.stopPropagation()}>
+            <div className="dp-title-bar">
+              <span className="dp-title-text">Display Properties</span>
+              <button className="dp-title-close" onClick={() => setDisplayProps(false)}>✕</button>
+            </div>
+            <div className="dp-tabs">
+              {dpTabs.map((t, i) => (
+                <button key={t} className={'dp-tab' + (i === dpTab ? ' active' : '')} onClick={() => setDpTab(i)}>{t}</button>
+              ))}
+            </div>
+            <div className="dp-body">
+              {dpTab === 0 && (
+                <div className="dp-tab-content">
+                  <div className="dp-desktop-preview">
+                    <div className="dp-preview-inner">
+                      <span className="dp-preview-text">Desktop</span>
+                    </div>
+                  </div>
+                  <div className="dp-desktop-controls">
+                    <label className="dp-label">Background:</label>
+                    <select className="dp-select" defaultValue="Bliss">
+                      <option>Bliss</option>
+                      <option>None</option>
+                    </select>
+                    <label className="dp-label">Color:</label>
+                    <select className="dp-select" defaultValue="#3a6ea5">
+                      <option value="#3a6ea5">Blue</option>
+                      <option value="#538135">Green</option>
+                      <option value="#cc3333">Red</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+              {dpTab === 1 && (
+                <div className="dp-tab-content">
+                  <p className="dp-saver-text">No screen saver configured.</p>
+                  <select className="dp-select" defaultValue="(None)">
+                    <option>(None)</option>
+                    <option>Blank</option>
+                    <option>3D Text</option>
+                  </select>
+                  <div className="dp-saver-preview">
+                    <div className="dp-saver-inner">
+                      <span className="dp-saver-text">Preview</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {dpTab === 2 && (
+                <div className="dp-tab-content">
+                  <div className="dp-appearance-preview">
+                    <div className="dp-ap-inner">
+                      <div className="dp-ap-title">Active Window</div>
+                      <div className="dp-ap-body">Window Body</div>
+                    </div>
+                  </div>
+                  <div className="dp-appearance-controls">
+                    <label className="dp-label">Color scheme:</label>
+                    <select className="dp-select" defaultValue="Blue (Luna)">
+                      <option>Blue (Luna)</option>
+                      <option>Olive Green</option>
+                      <option>Silver</option>
+                    </select>
+                    <label className="dp-label">Font size:</label>
+                    <select className="dp-select" defaultValue="Normal">
+                      <option>Normal</option>
+                      <option>Large Fonts</option>
+                      <option>Extra Large Fonts</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+              {dpTab === 3 && (
+                <div className="dp-tab-content">
+                  <p className="dp-settings-text">Display settings let you control the resolution and color quality of your monitor.</p>
+                  <div className="dp-settings-row">
+                    <label className="dp-label">Screen resolution:</label>
+                    <div className="dp-slider-wrap">
+                      <input type="range" min="800" max="1920" defaultValue="1366" className="dp-slider" />
+                      <span className="dp-slider-label">1366 × 768 pixels</span>
+                    </div>
+                  </div>
+                  <div className="dp-settings-row">
+                    <label className="dp-label">Color quality:</label>
+                    <select className="dp-select" defaultValue="32">
+                      <option value="16">High (16 bit)</option>
+                      <option value="32">Highest (32 bit)</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="dp-buttons">
+              <button className="dp-btn dp-btn-default" onClick={() => setDisplayProps(false)}>OK</button>
+              <button className="dp-btn" onClick={() => setDisplayProps(false)}>Cancel</button>
+              <button className="dp-btn" onClick={() => setDisplayProps(false)}>Apply</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ClippyAssistant />
     </>
   );
