@@ -16,6 +16,7 @@ export const PROJECTS = [
     tags: ['Rust', 'Actix-web', 'React', 'PostgreSQL', 'Stellar Soroban', 'JWT'],
     year: '2024',
     img: 'images/ehr-blockchain/patient.jpeg',
+    live: 'https://github.com/justrhey/capstone',
     github: 'https://github.com/justrhey/capstone'
   },
   {
