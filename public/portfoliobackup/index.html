@@ -510,7 +510,7 @@ const SKILL_ITEMS = [
   {name:'SQLite',color:'o'},{name:'Bash',color:'g'},{name:'Nginx',color:'g'},{name:'Systemd',color:'g'}
 ];
 const COLOR_MAP = {b:'#2563eb',g:'#059669',p:'#7c3aed',o:'#d97706'};
-const CYCLE_WORDS = ['actually work','scale without drama','handle the edge cases','stay boring in prod'];
+const CYCLE_WORDS = ['actually work','scale without drama','handle the boring stuff','stay boring in prod'];
 
 /* ═══════════════════════════════════════
    SCROLL TO SECTION
@@ -695,15 +695,50 @@ function scrollToSection(id){
     return g;
   });
 
-  // Geometry factory per color
-  function geoFor(color,size){
-    switch(color){
-      case 'b': return new THREE.SphereGeometry(size,16,16);
-      case 'g': return new THREE.IcosahedronGeometry(size,0);
-      case 'p': return new THREE.OctahedronGeometry(size,0);
-      case 'o': return new THREE.TorusGeometry(size*0.7,size*0.3,8,12);
-      default:  return new THREE.SphereGeometry(size,16,16);
+  // Icon slug mapping for simpleicons.org CDN (real brand logos)
+  var SLUGS={
+    'n8n':'n8n','Claude Code':'claude','Java':'java','Spring Boot':'spring',
+    'Rust':'rust','TypeScript':'typescript','React':'react','Next.js':'nextdotjs',
+    'Node.js':'nodedotjs','Python':'python','PostgreSQL':'postgresql','Redis':'redis',
+    'Kafka':'apachekafka','Docker':'docker','Linux':'linux','Git':'git',
+    'WebSocket':'websocket','WebGL':'webgl','Three.js':'threedotjs','Prisma':'prisma',
+    'Tailwind':'tailwindcss','REST APIs':null,'Webhooks':null,
+    'CI/CD':null,'SQLite':'sqlite','Bash':'gnubash','Nginx':'nginx','Systemd':'systemd'
+  };
+
+  // Draw a colored rounded badge onto a canvas
+  function drawBadge(ctx,colorHex,text,w,h){
+    var x=2,y=2,r=14;
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);ctx.lineTo(w-2-r,y);
+    ctx.quadraticCurveTo(w-2,y,w-2,y+r);
+    ctx.lineTo(w-2,h-2-r);ctx.quadraticCurveTo(w-2,h-2,w-2-r,h-2);
+    ctx.lineTo(x+r,h-2);ctx.quadraticCurveTo(x,h-2,x,h-2-r);
+    ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+    ctx.fillStyle=colorHex;ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.font='bold 18px "Cabinet Grotesk",sans-serif';
+    ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,(w-2)/2,(h-2)/2);
+  }
+
+  // Creates a canvas texture for a skill icon — shows initials immediately, loads real icon async
+  function loadIconTexture(colorHex,slug,initials){
+    var canvas=document.createElement('canvas');
+    canvas.width=64;canvas.height=64;
+    var ctx=canvas.getContext('2d');
+    drawBadge(ctx,colorHex,initials,64,64);
+    var texture=new THREE.CanvasTexture(canvas);
+    if(slug){
+      var img=new Image();
+      img.crossOrigin='anonymous';
+      img.onload=function(){
+        ctx.clearRect(0,0,64,64);
+        ctx.drawImage(img,2,2,60,60);
+        texture.needsUpdate=true;
+      };
+      img.src='https://cdn.simpleicons.org/'+slug+'/'+colorHex.replace('#','');
     }
+    return texture;
   }
 
   SKILL_ITEMS.forEach(function(skill,i){
@@ -712,44 +747,23 @@ function scrollToSection(id){
     var group=ringGroups[ri];
     ringIdx++;
 
-    var col=parseInt(COLOR_MAP[skill.color].replace('#',''),16);
-
     // How many items in this ring already?
-    var inRing=group.children.length/2; // mesh + label per skill
+    var inRing=group.children.length/2; // sprite + label per skill
     var angleStep=(Math.PI*2)/Math.max(9,Math.ceil(SKILL_ITEMS.length/ringLayout.length));
     var angle=inRing*angleStep+ri*0.25; // offset per ring to avoid radial overlap
 
-    var coreSize=0.20+Math.random()*0.06;
-
-    // ─── Sphere / shape icon ───
-    var geo=geoFor(skill.color,coreSize);
-    var mat=new THREE.MeshStandardMaterial({
-      color:col,roughness:0.25,metalness:0.15,
-      emissive:col,emissiveIntensity:0.12,
-    });
-    var mesh=new THREE.Mesh(geo,mat);
-    mesh.position.set(layout.r*Math.cos(angle),0,layout.r*Math.sin(angle));
-    mesh.userData={baseY:0,phase:Math.random()*Math.PI*2,bobSpeed:0.6+Math.random()*0.8};
-    group.add(mesh);
-
-    // ─── Wireframe shell ───
-    var wGeo=geoFor(skill.color,coreSize*1.12);
-    var wMat=new THREE.MeshBasicMaterial({
-      color:col,wireframe:true,transparent:true,opacity:0.18,
-    });
-    var wire=new THREE.Mesh(wGeo,wMat);
-    mesh.add(wire);
-
-    // ─── Glow ringlet ───
-    var rGeo=new THREE.RingGeometry(coreSize*1.4,coreSize*1.8,20);
-    var rMat=new THREE.MeshBasicMaterial({
-      color:col,transparent:true,opacity:0.12,
-      side:THREE.DoubleSide,depthWrite:false,
-    });
-    var ringlet=new THREE.Mesh(rGeo,rMat);
-    ringlet.rotation.x=-Math.PI/2;
-    ringlet.position.y=-coreSize*0.5;
-    mesh.add(ringlet);
+    // ─── Real brand icon as Sprite (texture from simpleicons.org CDN) ───
+    var sname=skill.name;
+    var slug=SLUGS[sname]||null;
+    var initials=sname.split(' ').map(function(w){return w[0];}).join('').substring(0,2).toUpperCase();
+    if(sname.length<=2) initials=sname.toUpperCase();
+    var tex=loadIconTexture(COLOR_MAP[skill.color],slug,initials);
+    var spriteMat=new THREE.SpriteMaterial({map:tex,transparent:true,depthWrite:false});
+    var sprite=new THREE.Sprite(spriteMat);
+    sprite.scale.set(0.5,0.5,1);
+    sprite.position.set(layout.r*Math.cos(angle),0,layout.r*Math.sin(angle));
+    sprite.userData={baseY:0,phase:Math.random()*Math.PI*2,bobSpeed:0.6+Math.random()*0.8};
+    group.add(sprite);
 
     // ─── Text label floating below ───
     var div=document.createElement('div');
@@ -757,7 +771,7 @@ function scrollToSection(id){
     div.style.cssText='font:600 10px/1.2 "Cabinet Grotesk",sans-serif;color:'+COLOR_MAP[skill.color]+';opacity:0.85;text-shadow:0 1px 3px rgba(0,0,0,.08);white-space:nowrap;pointer-events:none;user-select:none;';
     var label=new THREE.CSS2DObject(div);
     label.position.set(layout.r*Math.cos(angle),layout.labelOff,layout.r*Math.sin(angle));
-    label.userData={parentMesh:mesh,offY:layout.labelOff};
+    label.userData={parentMesh:sprite,offY:layout.labelOff};
     group.add(label);
   });
 
@@ -812,7 +826,7 @@ function scrollToSection(id){
         g.rotation.y+=ringLayout[i].speed*0.016; // per-frame rotation
         // Bob icons + move labels with them
         g.children.forEach(function(child){
-          if(child.isMesh&&child.userData.baseY!==undefined){
+          if(child.isSprite&&child.userData.baseY!==undefined){
             child.position.y=child.userData.baseY+Math.sin(t*child.userData.bobSpeed+child.userData.phase)*0.12;
           }
           if(child.isCSS2DObject&&child.userData.parentMesh){
