@@ -13,11 +13,6 @@
   max-width: 96vw;
 }
 
-.portfolio-browser.maximized {
-  width: 100% !important;
-  height: 100% !important;
-}
-
 .portfolio-browser .ie-content {
   flex: 1;
   min-height: 0;
@@ -163,6 +158,7 @@
   position: relative !important;
   width: 100% !important;
   height: 100% !important;
+  max-height: none !important;
   border-radius: 0;
   border: none;
   box-shadow: none;

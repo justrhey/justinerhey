@@ -167,7 +167,7 @@ a:focus:not(:focus-visible) {
   align-items: center;
   gap: 3px;
   width: 99px;
-  height: 32px;
+  height: 30px;
   margin: 0 1px 0 0;
   padding: 0 14px 1px 20px;
   background: url('/startxpbluebutton.png') no-repeat;
